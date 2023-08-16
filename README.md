@@ -16,5 +16,5 @@ You may also see any lint errors in the console.
 
 ## References
 
-[Ledger Web USB/HID walkthrough](https://developers.ledger.com/docs/transport/web-hid-usb/)
-[Ledger Web Bluetooth walkthrough](https://developers.ledger.com/docs/transport/web-bluetooth/)
+- [Ledger Web USB/HID walkthrough](https://developers.ledger.com/docs/transport/web-hid-usb/)
+- [Ledger Web Bluetooth walkthrough](https://developers.ledger.com/docs/transport/web-bluetooth/)
