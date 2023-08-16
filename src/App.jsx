@@ -36,6 +36,8 @@ class ShowAddressScreen extends Component {
   state = {
     error: null,
     address: null,
+    publicKey: null,
+    chainCode: null
   };
 
   async componentDidMount() {
@@ -56,9 +58,9 @@ class ShowAddressScreen extends Component {
     try {
       const eth = new AppAelf(transport);
       const path = "44'/1616'/0'/0/0"; // HD derivation path
-      const { publicKey } = await eth.getPublicKey(path, verify);
+      const { publicKey, address, chainCode } = await eth.getAddress(path, verify);
       if (this.unmounted) return;
-      this.setState({ address: publicKey });
+      this.setState({ publicKey, address, chainCode });
     } catch (error) {
       // in this case, user is likely not on AElf app
       console.warn("Failed: " + error.message);
@@ -69,7 +71,7 @@ class ShowAddressScreen extends Component {
   };
 
   render() {
-    const { address, error } = this.state;
+    const { address, publicKey, chainCode, error } = this.state;
 
     return (
       <div className="ShowAddressScreen">
@@ -87,7 +89,22 @@ class ShowAddressScreen extends Component {
           <>
             <strong>Ledger Live AElf Account 1</strong>
             <QRCode data={address} size={300} />
-            <strong className="address">{address}</strong>
+            <table>
+              <tbody>
+                <tr>
+                  <td>Address: </td>
+                  <td>{address}</td>
+                </tr>
+                <tr>
+                  <td>Public Key: </td>
+                  <td>{publicKey}</td>
+                </tr>
+                <tr>
+                  <td>Chain Code: </td>
+                  <td>{chainCode}</td>
+                </tr>
+              </tbody>
+            </table>
           </>
         )}
       </div>

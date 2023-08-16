@@ -1,4 +1,8 @@
 import AppEth, { splitPath } from "@ledgerhq/hw-app-eth";
+import elliptic from "elliptic";
+import AElf from "aelf-sdk";
+
+const ellipticEc = new elliptic.ec("secp256k1");
 
 export default class AppAelf extends AppEth {
   constructor(transport) {
@@ -6,20 +10,21 @@ export default class AppAelf extends AppEth {
   }
 
   /**
-   * get public key for a given BIP 32 path.
+   * get address for a given BIP 32 path.
    * @param path a path in BIP 32 format
    * @option boolDisplay optionally enable or not the display
    * @option boolChaincode optionally enable or not the chaincode request
    * @return an object with a publicKey, address and (optionally) chainCode
    * @example
-   * aelf.getPublicKey("44'/60'/0'/0/0").then(o => o.publicKey)
+   * aelf.getAddress("44'/60'/0'/0/0").then(o => o.address)
    */
-  getPublicKey(
+  getAddress(
     path: string,
     boolDisplay?: boolean,
     boolChaincode?: boolean
   ): Promise<{
     publicKey: string;
+    address: string;
     chainCode?: string;
   }> {
     const paths = splitPath(path);
@@ -37,9 +42,16 @@ export default class AppAelf extends AppEth {
         buffer
       )
       .then((response) => {
+        const publicKey = response.slice(0, 65).toString("hex");
+        const address = AElf.wallet.getAddressFromPubKey(
+          ellipticEc.keyFromPublic(publicKey, "hex").getPublic()
+        );
+        const chainCode = response.slice(-2).toString("hex");
+
         return {
-          publicKey: response.slice(0, 65).toString("hex"),
-          chainCode: response.slice(-2).toString("hex"),
+          publicKey,
+          address,
+          chainCode,
         };
       });
   }

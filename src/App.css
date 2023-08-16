@@ -28,7 +28,17 @@
   margin: 1em;
 }
 
-.App .address {
+.App table {
   word-break: break-all;
-  width: 300px;
+  width: 400px;
+  border: 1px solid;
+  margin-top: 10px;
+}
+
+.App td:first-child {
+  width: 100px;
+}
+
+.App td {
+  padding: 10px;
 }
