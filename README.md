@@ -2,6 +2,17 @@
 
 This is a Companion Wallet for Ledger.
 
+## Set up
+
+Ensure that [NodeJS](https://nodejs.org/en) is installed.
+
+Clone this repository, and in a terminal, run (replace path-to-the-repo with the actual path):
+
+```bash
+cd path-to-the-repo
+npm install
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
