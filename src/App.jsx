@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
-import AppEth from "@ledgerhq/hw-app-eth";
+import AppAelf from "./AppAelf";
 import QRCode from "./QRCode";
 import "./App.css";
 
@@ -31,7 +31,7 @@ class DeviceSelectionScreen extends Component {
 }
 
 class ShowAddressScreen extends Component {
-  //Component that is responsible to display your ethereum address
+  //Component that is responsible to display your AElf address
 
   state = {
     error: null,
@@ -54,13 +54,13 @@ class ShowAddressScreen extends Component {
   fetchAddress = async (verify) => {
     const { transport } = this.props;
     try {
-      const eth = new AppEth(transport);
-      const path = "44'/60'/0'/0/0"; // HD derivation path
-      const { address } = await eth.getAddress(path, verify);
+      const eth = new AppAelf(transport);
+      const path = "44'/1616'/0'/0/0"; // HD derivation path
+      const { publicKey } = await eth.getPublicKey(path, verify);
       if (this.unmounted) return;
-      this.setState({ address });
+      this.setState({ address: publicKey });
     } catch (error) {
-      // in this case, user is likely not on Ethereum app
+      // in this case, user is likely not on AElf app
       console.warn("Failed: " + error.message);
       if (this.unmounted) return;
       this.setState({ error });
@@ -75,19 +75,19 @@ class ShowAddressScreen extends Component {
       <div className="ShowAddressScreen">
         {!address ? (
           <>
-            <p className="loading">Loading your Ethereum address...</p>
+            <p className="loading">Loading your AElf address...</p>
             {error ? (
               <p className="error">
-                A problem occurred, make sure to open the Ethereum application
+                A problem occurred, make sure to open the AElf application
                 on your Ledger. ({String((error && error.message) || error)})
               </p>
             ) : null}
           </>
         ) : (
           <>
-            <strong>Ledger Live Ethereum Account 1</strong>
+            <strong>Ledger Live AElf Account 1</strong>
             <QRCode data={address} size={300} />
-            <strong>{address}</strong>
+            <strong className="address">{address}</strong>
           </>
         )}
       </div>

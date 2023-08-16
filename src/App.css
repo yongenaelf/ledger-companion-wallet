@@ -27,3 +27,8 @@
 .App .ShowAddressScreen strong {
   margin: 1em;
 }
+
+.App .address {
+  word-break: break-all;
+  width: 300px;
+}
