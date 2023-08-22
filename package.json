@@ -5,8 +5,13 @@
   "dependencies": {
     "@ledgerhq/hw-app-eth": "^6.34.2",
     "@ledgerhq/hw-transport-webusb": "^6.27.18",
+    "@portkey/contracts": "^1.4.0-alpha.0",
+    "@portkey/did": "^1.3.0-alpha.3",
+    "@portkey/services": "^1.3.0-alpha.3",
     "aelf-sdk": "^3.2.44",
     "buffer": "^6.0.3",
+    "protobufjs": "^7.2.5",
+    "protobufjs-cli": "^1.1.2",
     "qrcode": "^1.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -14,7 +19,8 @@
     "stream": "^0.0.2"
   },
   "scripts": {
-    "start": "parcel src/index.html"
+    "start": "parcel src/index.html",
+    "generate": "pbjs -t static-module -w commonjs -o ./src/compiled.js ./src/message.proto"
   },
   "eslintConfig": {
     "extends": [
