@@ -65,8 +65,15 @@ export default class AppAelf extends AppEth {
       data,
     ]);
 
+    console.log(
+      exchangeData.toString("hex"),
+      "== data sent to ledger wallet device"
+    );
+
     return this.transport.exchange(exchangeData).then((response) => {
       const res = response.toString("hex");
+
+      console.log(res, "== data returned from ledger wallet device");
 
       return res;
     });

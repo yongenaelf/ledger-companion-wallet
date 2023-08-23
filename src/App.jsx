@@ -3,7 +3,7 @@ import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import AppAelf from "./AppAelf";
 import QRCode from "./QRCode";
 import "./App.css";
-import {transfer} from './transaction';
+import { transfer } from "./transaction";
 
 const delay = (ms) => new Promise((success) => setTimeout(success, ms));
 
@@ -11,7 +11,7 @@ class DeviceSelectionScreen extends Component {
   //Component that will display all the Ledger Nano X that is recognized by bluetooth
 
   state = {
-    devices: []
+    devices: [],
   };
 
   createUSB = async () => {
@@ -43,7 +43,11 @@ class ShowAddressScreen extends Component {
     error: null,
     address: null,
     publicKey: null,
-    chainCode: null
+    chainCode: null,
+    to: "cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US",
+    amount: 4200000000,
+    memo: "a test memo",
+    checkDevice: false,
   };
 
   async componentDidMount() {
@@ -81,10 +85,28 @@ class ShowAddressScreen extends Component {
       const aelf = new AppAelf(transport);
       const path = "44'/1616'/0'/0/0"; // HD derivation path
       const res = await aelf.signAElfTransaction(path, rawTx);
-      console.log(res);
+      const sig = res.slice(0, -4); // remove "9000"
+
+      const response = await fetch(
+        "https://aelf-test-node.aelf.io/api/blockChain/sendRawTransaction",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Transaction: rawTx,
+            Signature: sig,
+            ReturnTransaction: true,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      console.log(data);
 
       if (this.unmounted) return;
-
     } catch (error) {
       // in this case, user is likely not on AElf app
       console.warn("Failed: " + error.message);
@@ -92,10 +114,14 @@ class ShowAddressScreen extends Component {
       this.setState({ error });
       return null;
     }
-  }
+  };
 
   render() {
-    const { address, publicKey, chainCode, error } = this.state;
+    const { address, publicKey, chainCode, error, checkDevice } = this.state;
+
+    if (checkDevice) {
+      return <div>Check your Ledger device to continue...</div>;
+    }
 
     return (
       <div className="ShowAddressScreen">
@@ -104,8 +130,8 @@ class ShowAddressScreen extends Component {
             <p className="loading">Loading your AElf address...</p>
             {error ? (
               <p className="error">
-                A problem occurred, make sure to open the AElf application
-                on your Ledger. ({String((error && error.message) || error)})
+                A problem occurred, make sure to open the AElf application on
+                your Ledger. ({String((error && error.message) || error)})
               </p>
             ) : null}
           </>
@@ -129,9 +155,62 @@ class ShowAddressScreen extends Component {
                 </tr>
               </tbody>
             </table>
-            <button onClick={async () => {
-               await this.signTransaction(await transfer())
-            }}>sign transaction</button>
+            <table>
+              <tbody>
+                <tr>
+                  <td>To: </td>
+                  <td>
+                    <textarea
+                      rows={2}
+                      value={this.state.to}
+                      onChange={(e) => this.setState({ to: e.target.value })}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Amount: </td>
+                  <td>
+                    <input
+                      value={this.state.amount}
+                      onChange={(e) =>
+                        this.setState({ amount: Number(e.target.value) })
+                      }
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Memo: </td>
+                  <td>
+                    <input
+                      value={this.state.memo}
+                      onChange={(e) => this.setState({ memo: e.target.value })}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button
+              onClick={async () => {
+                this.setState({ checkDevice: true });
+                const res = await transfer(
+                  address,
+                  this.state.to,
+                  this.state.amount,
+                  this.state.memo
+                );
+
+                await this.signTransaction(res);
+                this.setState({ checkDevice: false });
+              }}
+            >
+              Transfer
+            </button>
+            <a
+              href={`https://explorer-test.aelf.io/address/ELF_${address}_AELF#txns`}
+              target="_blank"
+            >
+              View transactions on AElf Explorer
+            </a>
           </>
         )}
       </div>

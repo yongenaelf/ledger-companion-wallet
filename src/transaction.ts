@@ -16,13 +16,16 @@ did.setConfig({ connectUrl: rpcUrl });
 const { Transaction, TransferInput } = aelf;
 
 // testing
-const publicKey =
-  "0437051c075136bd5bef754750d6f419afebe1583e9bbcc19c3876ee352385efadba6c80c4b927e2c682e3e9961dbbc79c047530b61dbab425ae89d04c29520338";
 const aelfAddress = "2dnNRXYRumh18gAbfUnjygLLKQN1j8TTnKB6ryBKcyfdRjk7QX";
 const toAddress = "cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US";
 
 // https://github.com/protobufjs/protobuf.js/#using-proto-files
-export const transfer = async (address: string = toAddress) => {
+export const transfer = async (
+  from: string = aelfAddress,
+  to: string = toAddress,
+  amount = 4200000000,
+  memo = "a test memo"
+) => {
   const chainsInfo = await did.services.getChainsInfo();
   const chainInfo = chainsInfo.find((chain) => chain.chainId === CHAIN_ID);
   const height = await aelfInstance.chain.getBlockHeight();
@@ -38,17 +41,17 @@ export const transfer = async (address: string = toAddress) => {
 
   // Create a new message
   var message = Transaction.fromObject({
-    from: getAddressFromRep(aelfAddress),
+    from: getAddressFromRep(from),
     to: getAddressFromRep(contractAddress),
     refBlockNumber: height,
     refBlockPrefix: refBlockPrefix,
     methodName: "Transfer",
     params: TransferInput.encode(
       TransferInput.fromObject({
-        to: getAddressFromRep(address),
+        to: getAddressFromRep(to),
         symbol: "ELF",
-        amount: 4200000000,
-        memo: "a test memo",
+        amount,
+        memo,
       })
     ).finish(),
   });

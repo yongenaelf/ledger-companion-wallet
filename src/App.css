@@ -42,3 +42,11 @@
 .App td {
   padding: 10px;
 }
+
+.App textarea {
+  width: 100%;
+}
+
+.App input {
+  width: 100%;
+}
