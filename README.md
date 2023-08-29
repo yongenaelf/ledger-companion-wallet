@@ -25,6 +25,10 @@ Open [http://localhost:1234](http://localhost:1234) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
+### `npm cli`
+
+Run the cli to generate a sample transfer hex.
+
 ## References
 
 - [Ledger Web USB/HID walkthrough](https://developers.ledger.com/docs/transport/web-hid-usb/)

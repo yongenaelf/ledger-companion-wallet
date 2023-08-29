@@ -22,7 +22,8 @@
   "scripts": {
     "start": "parcel src/index.html",
     "test": "NODE_ENV=test parcel src/index.html",
-    "generate": "pbjs -t static-module -w commonjs -o ./src/compiled.js ./src/message.proto"
+    "generate": "pbjs -t static-module -w commonjs -o ./src/compiled.js ./src/message.proto",
+    "cli": "node cli.mjs"
   },
   "eslintConfig": {
     "extends": [
