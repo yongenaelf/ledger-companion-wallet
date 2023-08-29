@@ -2,6 +2,7 @@ import compiled from "./src/compiled.js";
 const { aelf } = compiled;
 import AElf from "aelf-sdk";
 import inquirer from "inquirer";
+import { splitPath } from "@ledgerhq/hw-app-eth";
 
 const aelfInstance = new AElf(
   new AElf.providers.HttpProvider("https://aelf-test-node.aelf.io")
@@ -10,6 +11,8 @@ const aelfInstance = new AElf(
 const { getAddressFromRep } = AElf.pbUtils;
 
 const { Transaction, TransferInput } = aelf;
+
+const path = "44'/1616'/0'/0/0"; // HD derivation path
 
 // testing
 const aelfAddress = "2dnNRXYRumh18gAbfUnjygLLKQN1j8TTnKB6ryBKcyfdRjk7QX";
@@ -54,6 +57,27 @@ export const transfer = async (
   return Buffer.from(buffer).toString("hex");
 };
 
+const wrapTransaction = (rawTxHex) => {
+  const paths = splitPath(path);
+  const buffer = Buffer.alloc(1 + paths.length * 4);
+  buffer[0] = paths.length;
+  paths.forEach((element, index) => {
+    buffer.writeUInt32BE(element, 1 + 4 * index);
+  });
+
+  const data = Buffer.from(
+    ["b101", buffer.toString("hex"), rawTxHex].join(""),
+    "hex"
+  );
+
+  const exchangeData = Buffer.concat([
+    Buffer.from([0xe0, 0x03, 0x01, 0x00]),
+    data,
+  ]);
+
+  return exchangeData.toString("hex");
+};
+
 inquirer
   .prompt([
     /* Pass your questions in here */
@@ -82,7 +106,7 @@ inquirer
     const { from, to, amount, memo } = answers;
 
     transfer(from, to, amount, memo).then((res) => {
-      console.info("hex: ", res);
+      console.info("hex: ", wrapTransaction(res));
     });
   })
   .catch((error) => {
