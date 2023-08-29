@@ -4,6 +4,14 @@ import AppAelf from "./AppAelf";
 import QRCode from "./QRCode";
 import "./App.css";
 import { transfer } from "./transaction";
+import AElf from "aelf-sdk";
+import { did } from "@portkey/did";
+import BigNumber from "bignumber.js";
+
+const aelf = new AElf(
+  new AElf.providers.HttpProvider(`https://${process.env.BLOCKCHAIN_URL}`)
+);
+const viewWallet = AElf.wallet.createNewWallet();
 
 const delay = (ms) => new Promise((success) => setTimeout(success, ms));
 
@@ -37,6 +45,7 @@ class ShowAddressScreen extends Component {
   constructor(props) {
     super(props);
     this.signTransaction = this.signTransaction.bind(this);
+    this.fetchBalance = this.fetchBalance.bind(this);
   }
 
   state = {
@@ -48,6 +57,10 @@ class ShowAddressScreen extends Component {
     amount: 4200000000,
     memo: "a test memo",
     checkDevice: false,
+    chainId: "AELF",
+    balance: null,
+    chainInfo: null,
+    multiTokenContract: null,
   };
 
   async componentDidMount() {
@@ -55,6 +68,13 @@ class ShowAddressScreen extends Component {
       if (this.unmounted) return;
       await this.fetchAddress();
       await delay(500);
+    }
+
+    if (this.state.address) {
+      await this.setup();
+      if (this.state.multiTokenContract) {
+        await this.fetchBalance();
+      }
     }
   }
 
@@ -88,7 +108,7 @@ class ShowAddressScreen extends Component {
       const sig = res.slice(0, -4); // remove "9000"
 
       const response = await fetch(
-        "https://aelf-test-node.aelf.io/api/blockChain/sendRawTransaction",
+        `https://${process.env.BLOCKCHAIN_URL}/api/blockChain/sendRawTransaction`,
         {
           method: "POST",
           headers: {
@@ -116,8 +136,36 @@ class ShowAddressScreen extends Component {
     }
   };
 
+  setup = async () => {
+    const CHAIN_ID = this.state.chainId;
+    const chainsInfo = await did.services.getChainsInfo();
+    const chainInfo = chainsInfo.find((chain) => chain.chainId === CHAIN_ID);
+    const multiTokenContract = await aelf.chain.contractAt(
+      chainInfo.defaultToken.address,
+      viewWallet
+    );
+
+    this.setState({ chainInfo, multiTokenContract });
+  };
+
+  fetchBalance = async () => {
+    const { multiTokenContract, chainInfo, address } = this.state;
+    this.setState({ balance: "Fetching balance..." });
+
+    const result = await multiTokenContract.GetBalance.call({
+      symbol: chainInfo.defaultToken.symbol,
+      owner: address,
+    });
+
+    const balance = new BigNumber(result?.balance)
+      .dividedBy(10 ** chainInfo.defaultToken.decimals)
+      .toFixed(2);
+
+    this.setState({ balance });
+  };
+
   render() {
-    const { address, publicKey, chainCode, error, checkDevice } = this.state;
+    const { address, publicKey, balance, error, checkDevice } = this.state;
 
     if (checkDevice) {
       return <div>Check your Ledger device to continue...</div>;
@@ -150,8 +198,24 @@ class ShowAddressScreen extends Component {
                   <td>{publicKey}</td>
                 </tr>
                 <tr>
-                  <td>Chain Code: </td>
-                  <td>{chainCode}</td>
+                  <td>Balance: </td>
+                  <td>
+                    {balance}{" "}
+                    <button
+                      onClick={async () => {
+                        try {
+                          await this.fetchBalance();
+                        } catch (err) {
+                          alert("an error occurred, please try again later.");
+                          console.error(err);
+                          this.setState({ balance: "-" });
+                        }
+                      }}
+                      disabled={this.state.balance === "Fetching balance..."}
+                    >
+                      refresh
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -206,7 +270,7 @@ class ShowAddressScreen extends Component {
               Transfer
             </button>
             <a
-              href={`https://explorer-test.aelf.io/address/ELF_${address}_AELF#txns`}
+              href={`https://${process.env.EXPLORER_URL}/address/ELF_${address}_AELF#txns`}
               target="_blank"
             >
               View transactions on AElf Explorer
