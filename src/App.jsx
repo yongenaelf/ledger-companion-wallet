@@ -82,12 +82,15 @@ class ShowAddressScreen extends Component {
     this.unmounted = true;
   }
 
-  fetchAddress = async () => {
+  fetchAddress = async (verify) => {
     const { transport } = this.props;
     try {
       const aelf = new AppAelf(transport);
       const path = "44'/1616'/0'/0/0"; // HD derivation path
-      const { publicKey, address, chainCode } = await aelf.getAddress(path);
+      const { publicKey, address, chainCode } = await aelf.getAddress(
+        path,
+        verify
+      );
       if (this.unmounted) return;
       this.setState({ publicKey, address, chainCode });
     } catch (error) {
@@ -195,7 +198,26 @@ class ShowAddressScreen extends Component {
                 </tr>
                 <tr>
                   <td>Public Key: </td>
-                  <td>{publicKey}</td>
+                  <td>
+                    {publicKey}{" "}
+                    <button
+                      onClick={async () => {
+                        try {
+                          await this.fetchAddress(true);
+                        } catch (err) {
+                          alert("an error occurred, please try again later.");
+                          console.error(err);
+                          this.setState({
+                            publicKey: "-",
+                            address: "-",
+                            chainCode: "-",
+                          });
+                        }
+                      }}
+                    >
+                      verify
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <td>Balance: </td>

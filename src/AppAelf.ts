@@ -13,12 +13,14 @@ export default class AppAelf extends AppEth {
    * get address for a given BIP 32 path.
    * @param path a path in BIP 32 format
    * @option boolDisplay optionally enable or not the display
-   * @option boolChaincode optionally enable or not the chaincode request
    * @return an object with a publicKey, address and (optionally) chainCode
    * @example
    * aelf.getAddress("44'/1616'/0'/0/0").then(o => o.address)
    */
-  getAddress(path: string): Promise<{
+  getAddress(
+    path: string,
+    boolDisplay?: boolean
+  ): Promise<{
     publicKey: string;
     address: string;
     chainCode?: string;
@@ -31,7 +33,7 @@ export default class AppAelf extends AppEth {
     });
 
     return this.transport
-      .send(0xe0, 0x02, 0x00, 0x00, buffer) // https://github.com/blooo-io/LedgerHQ-app-aelf/blob/main/doc/api.md#get-pubkey
+      .send(0xe0, 0x02, boolDisplay ? 0x01 : 0x00, 0x00, buffer) // https://github.com/blooo-io/LedgerHQ-app-aelf/blob/main/doc/api.md#get-pubkey
       .then((response) => {
         const publicKey = response.slice(0, 65).toString("hex");
         const address = AElf.wallet.getAddressFromPubKey(
