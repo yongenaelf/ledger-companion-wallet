@@ -51,16 +51,19 @@ export default class AppAelf extends AppEth {
 
   async signAElfTransaction(path: string, rawTxHex: string) {
     const paths = splitPath(path);
-    const buffer = Buffer.alloc(1 + paths.length * 4);
-    buffer[0] = paths.length;
+    const pathBuffer = Buffer.alloc(1 + paths.length * 4);
+    pathBuffer[0] = paths.length;
     paths.forEach((element, index) => {
-      buffer.writeUInt32BE(element, 1 + 4 * index);
+      pathBuffer.writeUInt32BE(element, 1 + 4 * index);
     });
 
-    const data = Buffer.from(
-      ["b101", buffer.toString("hex"), rawTxHex].join(""),
-      "hex"
-    );
+    const rawTxBuffer = Buffer.from(rawTxHex, "hex");
+    const data = Buffer.concat([
+      Buffer.from([1 + pathBuffer.length + rawTxBuffer.length]),
+      Buffer.from([1]),
+      pathBuffer,
+      rawTxBuffer,
+    ]);
 
     const exchangeData = Buffer.concat([
       Buffer.from([0xe0, 0x03, 0x01, 0x00]),
