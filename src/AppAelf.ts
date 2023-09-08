@@ -65,22 +65,12 @@ export default class AppAelf extends AppEth {
       rawTxBuffer,
     ]);
 
-    const exchangeData = Buffer.concat([
-      Buffer.from([0xe0, 0x03, 0x01, 0x00]),
-      data,
-    ]);
+    return this.transport
+      .send(0xe0, 0x03, 0x01, 0x00, data)
+      .then((response) => {
+        const res = response.toString("hex");
 
-    console.log(
-      exchangeData.toString("hex"),
-      "== data sent to ledger wallet device"
-    );
-
-    return this.transport.exchange(exchangeData).then((response) => {
-      const res = response.toString("hex");
-
-      console.log(res, "== data returned from ledger wallet device");
-
-      return res;
-    });
+        return res;
+      });
   }
 }
