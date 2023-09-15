@@ -86,7 +86,7 @@ class ShowAddressScreen extends Component {
     const { transport } = this.props;
     try {
       const aelf = new AppAelf(transport);
-      const path = "44'/1616'/0'/0/0"; // HD derivation path
+      const path = "m/44'/1616'/0'/0/0"; // HD derivation path
       const { publicKey, address, chainCode } = await aelf.getAddress(
         path,
         verify
@@ -106,7 +106,7 @@ class ShowAddressScreen extends Component {
     const { transport } = this.props;
     try {
       const aelf = new AppAelf(transport);
-      const path = "44'/1616'/0'/0/0"; // HD derivation path
+      const path = "m/44'/1616'/0'/0/0"; // HD derivation path
       const res = await aelf.signAElfTransaction(path, rawTx);
       const sig = res.slice(0, -4); // remove "9000"
 

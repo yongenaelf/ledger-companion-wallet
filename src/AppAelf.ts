@@ -15,7 +15,7 @@ export default class AppAelf extends AppEth {
    * @option boolDisplay optionally enable or not the display
    * @return an object with a publicKey, address and (optionally) chainCode
    * @example
-   * aelf.getAddress("44'/1616'/0'/0/0").then(o => o.address)
+   * aelf.getAddress("m/44'/1616'/0'/0/0").then(o => o.address)
    */
   getAddress(
     path: string,

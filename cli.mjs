@@ -12,7 +12,7 @@ const { getAddressFromRep } = AElf.pbUtils;
 
 const { Transaction, TransferInput } = aelf;
 
-const path = "44'/1616'/0'/0/0"; // HD derivation path
+const path = "m/44'/1616'/0'/0/0"; // HD derivation path
 
 // testing
 const aelfAddress = "2dnNRXYRumh18gAbfUnjygLLKQN1j8TTnKB6ryBKcyfdRjk7QX";
