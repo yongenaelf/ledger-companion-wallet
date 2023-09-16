@@ -2,7 +2,11 @@ import compiled from "./src/compiled.js";
 const { aelf } = compiled;
 import AElf from "aelf-sdk";
 import inquirer from "inquirer";
-import { splitPath } from "@ledgerhq/hw-app-eth";
+import bippath from "bip32-path";
+
+function splitPath(path) {
+  return bippath.fromString(path).toPathArray();
+}
 
 const aelfInstance = new AElf(
   new AElf.providers.HttpProvider("https://aelf-test-node.aelf.io")
@@ -58,6 +62,8 @@ export const transfer = async (
 };
 
 const wrapTransaction = (rawTxHex) => {
+  console.log(rawTxHex, "---rawTxHex");
+
   const paths = splitPath(path);
   const pathBuffer = Buffer.alloc(1 + paths.length * 4);
   pathBuffer[0] = paths.length;
