@@ -1,6 +1,0 @@
-{
-  "/api": {
-    "target": "https://did-portkey-test.portkey.finance",
-    "changeOrigin": true
-  }
-}

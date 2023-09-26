@@ -1,17 +1,7 @@
-import { did } from "@portkey/did";
 import { aelf } from "./compiled";
 import AElf from "aelf-sdk";
 
-const aelfInstance = new AElf(
-  new AElf.providers.HttpProvider("https://aelf-test-node.aelf.io")
-);
-
 const { getAddressFromRep } = AElf.pbUtils;
-
-const CHAIN_ID = "AELF";
-const rpcUrl = "https://aelf-test-node.aelf.io";
-
-did.setConfig({ connectUrl: rpcUrl });
 
 const { Transaction, TransferInput } = aelf;
 
@@ -24,10 +14,10 @@ export const transfer = async (
   from: string = aelfAddress,
   to: string = toAddress,
   amount = 4200000000,
-  memo = "a test memo"
+  memo = "a test memo",
+  contractAddress: string = "",
+  aelfInstance: any
 ) => {
-  const chainsInfo = await did.services.getChainsInfo();
-  const chainInfo = chainsInfo.find((chain) => chain.chainId === CHAIN_ID);
   const height = await aelfInstance.chain.getBlockHeight();
   const block = await aelfInstance.chain.getBlockByHeight(height, false);
   const blockHashInput = block.BlockHash;
@@ -36,8 +26,6 @@ export const transfer = async (
     ? blockHashInput.substring(2)
     : blockHashInput;
   const refBlockPrefix = Buffer.from(blockHash, "hex").slice(0, 4);
-
-  const contractAddress = chainInfo!.defaultToken.address;
 
   // Create a new message
   var message = Transaction.fromObject({
