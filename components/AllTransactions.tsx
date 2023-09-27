@@ -3,9 +3,10 @@ import useExplorerUrl from "./useExplorerUrl";
 import { Button, Table } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { useState } from "react";
-import { formatDistanceToNow, parseISO } from "date-fns";
+import { formatDistanceToNow, parseISO, format } from "date-fns";
 import { middleEllipsis } from "./utils";
 import { List } from "../app/transactions/route";
+import { SwapOutlined } from "@ant-design/icons";
 
 export const AllTransactions = ({ address }: { address: string }) => {
   const explorerUrl = useExplorerUrl();
@@ -13,6 +14,7 @@ export const AllTransactions = ({ address }: { address: string }) => {
     pageSize: 10,
     current: 1,
   });
+  const [showDate, setShowDate] = useState(false);
   const { data, isValidating, mutate } = useSWR(
     [explorerUrl, address, pagination, "all-tx"],
     async ([explorerUrl, address, pagination]) => {
@@ -50,14 +52,20 @@ export const AllTransactions = ({ address }: { address: string }) => {
       key: "method",
     },
     {
-      title: "Age",
+      title: () => (
+        <span onClick={() => setShowDate((show) => !show)}>
+          {showDate ? "Date Time" : "Age"} <SwapOutlined />
+        </span>
+      ),
       dataIndex: "time",
       key: "time",
       render: (timestamp) => (
         <span>
-          {formatDistanceToNow(parseISO(timestamp), {
-            addSuffix: true,
-          })}
+          {showDate
+            ? format(parseISO(timestamp), "yyyy-LL-dd kk:mm:ss")
+            : formatDistanceToNow(parseISO(timestamp), {
+                addSuffix: true,
+              })}
         </span>
       ),
     },
