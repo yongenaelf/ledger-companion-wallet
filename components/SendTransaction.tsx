@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AppAelf from "./Elf";
 import { transfer } from "./transaction";
 import { useMultiTokenContract } from "./useMultiTokenContract";
-import { Input, InputNumber, Button, Modal, Result, Space } from "antd";
+import { Input, InputNumber, Button, Modal, Result, Space, Form } from "antd";
 import Transport from "@ledgerhq/hw-transport";
 import { useAElf } from "./useAElf";
 import useRpcUrl from "./useRpcUrl";
@@ -17,12 +17,10 @@ interface ISendTransactionProps {
 export function SendTransaction({ address, transport }: ISendTransactionProps) {
   const { data } = useMultiTokenContract();
 
-  const [to, setTo] = useState(
-    "cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US"
-  );
-  const [amount, setAmount] = useState(4200000000);
-  const [memo, setMemo] = useState("a test memo");
   const [transactionId, setTransactionId] = useState("");
+
+  const [form] = Form.useForm();
+
   const [modalContent, setModalContent] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
@@ -80,84 +78,63 @@ export function SendTransaction({ address, transport }: ISendTransactionProps) {
 
   return (
     <div>
-      <table>
-        <tbody>
-          <tr>
-            <td>To: </td>
-            <td>
-              <TextArea
-                rows={4}
-                value={to}
-                onChange={(e) => setTo(e.target.value)}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Amount: </td>
-            <td>
-              <InputNumber value={amount} onChange={(e) => setAmount(e ?? 0)} />
-            </td>
-          </tr>
-          <tr>
-            <td>Memo: </td>
-            <td>
-              <Input value={memo} onChange={(e) => setMemo(e.target.value)} />
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <Space>
-                <Button
-                  loading={showTransferModal}
-                  type="primary"
-                  onClick={async () => {
-                    try {
-                      setTransactionId("");
-                      setShowTransferModal(true);
+      <Form
+        layout="inline"
+        form={form}
+        initialValues={{
+          to: "cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US",
+          amount: 4200000000,
+          memo: "a test memo",
+        }}
+        onFinish={async (e) => {
+          const { to, amount, memo } = e;
 
-                      if (!data) throw new Error("no contract");
+          try {
+            setTransactionId("");
+            setShowTransferModal(true);
 
-                      const { tokenContractAddress } = data;
+            if (!data) throw new Error("no contract");
 
-                      const res = await transfer(
-                        address,
-                        to,
-                        amount,
-                        memo,
-                        tokenContractAddress,
-                        aelfInstance
-                      );
+            const { tokenContractAddress } = data;
 
-                      const res2 = await signAndSendTransaction(res);
+            const res = await transfer(
+              address,
+              to,
+              amount,
+              memo,
+              tokenContractAddress,
+              aelfInstance
+            );
 
-                      setTransactionId(res2.TransactionId);
+            const res2 = await signAndSendTransaction(res);
 
-                      if (res2.TransactionId) {
-                        setShowSuccessModal(true);
-                      }
-                    } catch (err) {
-                      console.error(err);
-                    } finally {
-                      setShowTransferModal(false);
-                    }
-                  }}
-                >
-                  Transfer
-                </Button>
-                <Button
-                  type="primary"
-                  href={`${explorerUrl}/address/ELF_${address}_AELF#txns`}
-                  target="_blank"
-                >
-                  View all transactions on AElf Explorer
-                </Button>
-              </Space>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            setTransactionId(res2.TransactionId);
 
+            if (res2.TransactionId) {
+              setShowSuccessModal(true);
+            }
+          } catch (err) {
+            console.error(err);
+          } finally {
+            setShowTransferModal(false);
+          }
+        }}
+      >
+        <Form.Item label="To" name="to">
+          <TextArea rows={3} />
+        </Form.Item>
+        <Form.Item label="Amount" name="amount">
+          <InputNumber />
+        </Form.Item>
+        <Form.Item label="Memo" name="memo">
+          <Input />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
       <Modal open={!!showModal} onCancel={onClose} onOk={onClose}>
         {modalContent}
       </Modal>

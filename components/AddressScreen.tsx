@@ -5,6 +5,7 @@ import React from "react";
 import { Balance } from "./Balance";
 import { SendTransaction } from "./SendTransaction";
 import { Button, Modal, Tabs, Row, Col, Descriptions, Statistic } from "antd";
+import { AllTransactions } from "./AllTransactions";
 
 const delay = (ms: number) => new Promise((success) => setTimeout(success, ms));
 
@@ -121,6 +122,7 @@ export class AddressScreen extends Component<{ transport: Transport }> {
             />
           </Col>
         </Row>
+        <AllTransactions address={address} />
         <Modal
           title="Verifying..."
           open={verifying}

@@ -41,7 +41,6 @@ function NetworkSelection({ setNetwork, setChain }: INetworkSelectionProps) {
           setChain(e);
         }}
       />
-      <Tag color="#f50">{rpcUrl}</Tag>
       <Tag color="#2db7f5">
         <a href={explorerUrl} target="_blank">
           {explorerUrl}

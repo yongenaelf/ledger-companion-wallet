@@ -3,18 +3,16 @@ import BigNumber from "bignumber.js";
 import { useMultiTokenContract } from "./useMultiTokenContract";
 import { Button, Statistic, Col, Row } from "antd";
 import useSWR from "swr";
+import useExplorerUrl from "./useExplorerUrl";
 
 interface IBalanceProps {
   address?: string;
 }
 export function Balance({ address }: IBalanceProps) {
   const { data } = useMultiTokenContract();
+  const explorerUrl = useExplorerUrl();
 
-  const {
-    data: balance,
-    isValidating,
-    mutate,
-  } = useSWR(
+  const { data: balance } = useSWR(
     [data, "balance"],
     async () => {
       if (!address) throw new Error("No address!");
@@ -47,8 +45,12 @@ export function Balance({ address }: IBalanceProps) {
         />
       </Col>
       <Col>
-        <Button onClick={() => mutate()} loading={isValidating}>
-          refresh
+        <Button
+          type="primary"
+          href={`${explorerUrl}/address/ELF_${address}_AELF#txns`}
+          target="_blank"
+        >
+          View all transactions
         </Button>
       </Col>
     </Row>

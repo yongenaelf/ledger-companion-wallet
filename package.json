@@ -9,15 +9,16 @@
     "antd": "^5.9.3",
     "bip32-path": "^0.4.2",
     "buffer": "^6.0.3",
+    "date-fns": "^2.30.0",
+    "next": "latest",
     "protobufjs": "^7.2.5",
     "protobufjs-cli": "^1.1.2",
     "qrcode": "^1.5.3",
-    "react-scripts": "5.0.1",
-    "stream": "^0.0.2",
-    "swr": "^2.2.4",
     "react": "latest",
     "react-dom": "latest",
-    "next": "latest"
+    "react-scripts": "5.0.1",
+    "stream": "^0.0.2",
+    "swr": "^2.2.4"
   },
   "scripts": {
     "dev": "next dev",
@@ -27,7 +28,12 @@
     "generate": "pbjs -t static-module -w commonjs -o ./src/compiled.js ./src/message.proto"
   },
   "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
     "crypto-browserify": "^3.12.0",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
     "https-browserify": "^1.0.0",
     "parcel": "^2.9.3",
     "path-browserify": "^1.0.1",
@@ -35,12 +41,7 @@
     "punycode": "^1.4.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "url": "^0.11.1",
     "typescript": "latest",
-    "@types/react": "latest",
-    "@types/node": "latest",
-    "@types/react-dom": "latest",
-    "eslint": "latest",
-    "eslint-config-next": "latest"
+    "url": "^0.11.1"
   }
 }
