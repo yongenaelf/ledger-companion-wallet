@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, createContext } from "react";
 import { DeviceSelectionScreen } from "./DeviceSelectionScreen";
 import { AddressScreen } from "./AddressScreen";
