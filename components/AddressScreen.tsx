@@ -36,12 +36,10 @@ export class AddressScreen extends Component<{ transport: Transport }> {
       const aelf = new AppAelf(transport);
       const path = "m/44'/1616'/0'/0/0"; // HD derivation path
       const { publicKey, address } = await aelf.getAddress(path, verify);
-      if (this.unmounted) return;
       this.setState({ publicKey, address, error: null });
     } catch (error) {
       // in this case, user is likely not on AElf app
       console.warn("Failed: " + error.message);
-      if (this.unmounted) return;
       this.setState({ error });
       return null;
     } finally {
@@ -137,11 +135,11 @@ export class AddressScreen extends Component<{ transport: Transport }> {
           <Statistic title="Public Key (5/8)" value={publicKey.slice(69, 86)} />
           <Statistic
             title="Public Key (6/8)"
-            value={publicKey.slice(86, 103)}
+            value={publicKey.slice(86, 104)}
           />
           <Statistic
             title="Public Key (7/8)"
-            value={publicKey.slice(103, 120)}
+            value={publicKey.slice(104, 120)}
           />
           <Statistic title="Public Key (8/8)" value={publicKey.slice(120)} />
         </Modal>
