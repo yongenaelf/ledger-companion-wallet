@@ -24,6 +24,7 @@ function App() {
   const [chain, setChain] = useState<INetworkContext["chain"]>("aelf");
 
   const onSelectDevice = (transport: Transport) => {
+    // @ts-ignore
     window.ledgerTransport = transport;
     transport.on("disconnect", () => {
       setTransport(null);
