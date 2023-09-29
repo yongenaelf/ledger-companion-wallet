@@ -2,19 +2,29 @@ import React, { useState } from "react";
 import AppAelf from "./Elf";
 import { transfer } from "./transaction";
 import { useMultiTokenContract } from "./useMultiTokenContract";
-import { Input, InputNumber, Button, Modal, Result, Space, Form } from "antd";
+import { Input, InputNumber, Button, Modal, Result, Form } from "antd";
 import Transport from "@ledgerhq/hw-transport";
 import { useAElf } from "./useAElf";
-import useRpcUrl from "./useRpcUrl";
-import useExplorerUrl from "./useExplorerUrl";
-
-const { TextArea } = Input;
+import BigNumber from "bignumber.js";
+import { validateAddress } from "./validateAddress";
+import SubmitButton from "./SubmitButton";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  addressState,
+  chainState,
+  unconfirmedTransactionsState,
+} from "./state";
+import { explorerUrlState, rpcUrlState } from "./selector";
 
 interface ISendTransactionProps {
-  address: string;
   transport: Transport;
 }
-export function SendTransaction({ address, transport }: ISendTransactionProps) {
+export function SendTransaction({ transport }: ISendTransactionProps) {
+  const address = useRecoilValue(addressState);
+  const chain = useRecoilValue(chainState);
+  const [_, setUnconfirmedTransactions] = useRecoilState(
+    unconfirmedTransactionsState
+  );
   const { data } = useMultiTokenContract();
 
   const [transactionId, setTransactionId] = useState("");
@@ -26,8 +36,8 @@ export function SendTransaction({ address, transport }: ISendTransactionProps) {
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const aelfInstance = useAElf();
-  const rpcUrl = useRpcUrl();
-  const explorerUrl = useExplorerUrl();
+  const rpcUrl = useRecoilValue(rpcUrlState);
+  const explorerUrl = useRecoilValue(explorerUrlState);
 
   const signAndSendTransaction = async (rawTx: string) => {
     try {
@@ -58,6 +68,8 @@ export function SendTransaction({ address, transport }: ISendTransactionProps) {
 
       const data: { TransactionId: string } = await response.json();
 
+      setUnconfirmedTransactions((current) => [...current, data.TransactionId]);
+
       return data;
     } catch (error) {
       // in this case, user is likely not on AElf app
@@ -79,13 +91,16 @@ export function SendTransaction({ address, transport }: ISendTransactionProps) {
   return (
     <div>
       <Form
-        layout="inline"
         form={form}
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 20 }}
+        style={{ maxWidth: 900 }}
         initialValues={{
           to: "cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US",
-          amount: 4200000000,
+          amount: 42,
           memo: "a test memo",
         }}
+        autoComplete="off"
         onFinish={async (e) => {
           const { to, amount, memo } = e;
 
@@ -100,7 +115,7 @@ export function SendTransaction({ address, transport }: ISendTransactionProps) {
             const res = await transfer(
               address,
               to,
-              amount,
+              new BigNumber(amount).multipliedBy(10 ** 8).toNumber(),
               memo,
               tokenContractAddress,
               aelfInstance
@@ -120,19 +135,50 @@ export function SendTransaction({ address, transport }: ISendTransactionProps) {
           }
         }}
       >
-        <Form.Item label="To" name="to">
-          <TextArea rows={3} />
+        <Form.Item
+          label="To"
+          name="to"
+          rules={[
+            {
+              required: true,
+              message: "Please enter to address",
+            },
+            {
+              async validator(rule, value, callback) {
+                validateAddress(value);
+                return "";
+              },
+            },
+          ]}
+        >
+          <Input addonBefore="ELF_" addonAfter={`_${chain}`} />
         </Form.Item>
-        <Form.Item label="Amount" name="amount">
-          <InputNumber />
+        <Form.Item
+          label="Amount"
+          name="amount"
+          rules={[
+            { required: true, message: "Please enter amount" },
+            {
+              validator: async (_rule, value) => {
+                if (value <= 0) throw new Error("Amount must be more than 0");
+              },
+            },
+          ]}
+        >
+          <InputNumber addonAfter="ELF" />
         </Form.Item>
-        <Form.Item label="Memo" name="memo">
+        <Form.Item
+          label="Memo"
+          name="memo"
+          rules={[
+            { required: true, message: "Please enter memo" },
+            { max: 64, message: "Max length 64 characters." },
+          ]}
+        >
           <Input />
         </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
+        <Form.Item wrapperCol={{ offset: 4, span: 20 }}>
+          <SubmitButton form={form} />
         </Form.Item>
       </Form>
       <Modal open={!!showModal} onCancel={onClose} onOk={onClose}>

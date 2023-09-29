@@ -19,7 +19,10 @@
 import type Transport from "@ledgerhq/hw-transport";
 import { pathStringToArray } from "./utils";
 import elliptic from "elliptic";
-import AElf from "aelf-sdk";
+
+import { aelf } from "./compiled";
+
+const { Address } = aelf;
 
 export const ellipticEc = new elliptic.ec("secp256k1");
 
@@ -70,14 +73,17 @@ export default class Elf {
     return this.transport
       .send(0xe0, 0x02, boolDisplay ? 0x01 : 0x00, 0x00, buffer)
       .then((response) => {
-        const publicKey = response.slice(0, 65).toString("hex");
-        const address = AElf.wallet.getAddressFromPubKey(
-          ellipticEc.keyFromPublic(publicKey, "hex").getPublic()
-        );
+        const publicKeyLength = response[0];
+        const addressLength = response[1 + publicKeyLength];
 
         return {
-          publicKey,
-          address,
+          publicKey: response.slice(1, 1 + publicKeyLength).toString("hex"),
+          address: response
+            .slice(
+              1 + publicKeyLength + 1,
+              1 + publicKeyLength + 1 + addressLength
+            )
+            .toString("ascii"),
         };
       });
   }

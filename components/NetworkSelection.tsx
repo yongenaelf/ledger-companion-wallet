@@ -1,38 +1,46 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Select, Space, Tag } from "antd";
-import { INetworkContext, NetworkContext } from "./App";
-import useRpcUrl from "./useRpcUrl";
-import useExplorerUrl from "./useExplorerUrl";
+import {
+  ChainStateEnum,
+  NetworkStateEnum,
+  chainState,
+  networkState,
+} from "./state";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { explorerUrlState } from "./selector";
 
-const MAINNET_SIDECHAIN_OPTIONS = [{ value: "tdvv", label: "tDVV" }];
-const TESTNET_SIDECHAIN_OPTIONS = [{ value: "tdvw", label: "tDVW" }];
+type ChainOptions = Array<{ value: ChainStateEnum; label: string }>;
+const MAINNET_SIDECHAIN_OPTIONS: ChainOptions = [
+  { value: ChainStateEnum.tDVV, label: ChainStateEnum.tDVV },
+];
+const TESTNET_SIDECHAIN_OPTIONS: ChainOptions = [
+  { value: ChainStateEnum.tDVW, label: ChainStateEnum.tDVW },
+];
 
-interface INetworkSelectionProps {
-  setNetwork: (e: INetworkContext["network"]) => void;
-  setChain: (e: INetworkContext["chain"]) => void;
-}
-function NetworkSelection({ setNetwork, setChain }: INetworkSelectionProps) {
-  const { network, chain } = useContext(NetworkContext);
+type NetworkOptions = Array<{ value: NetworkStateEnum; label: string }>;
+const NETWORK_OPTIONS: NetworkOptions = [
+  { value: NetworkStateEnum.mainnet, label: "Mainnet" },
+  { value: NetworkStateEnum.testnet, label: "Testnet" },
+];
 
-  const rpcUrl = useRpcUrl();
-  const explorerUrl = useExplorerUrl();
+function NetworkSelection() {
+  const [network, setNetwork] = useRecoilState(networkState);
+  const [chain, setChain] = useRecoilState(chainState);
+  const explorerUrl = useRecoilValue(explorerUrlState);
 
   return (
     <Space>
       <Select
-        options={[
-          { value: "mainnet", label: "Mainnet" },
-          { value: "testnet", label: "Testnet" },
-        ]}
+        options={NETWORK_OPTIONS}
         value={network}
         onChange={(e) => {
           setNetwork(e);
-          setChain("aelf");
+          setChain(ChainStateEnum.AELF);
         }}
       />
       <Select
-        options={[{ value: "aelf", label: "AELF" }].concat(
-          network === "mainnet"
+        options={[{ value: ChainStateEnum.AELF, label: "AELF" }].concat(
+          network === NetworkStateEnum.mainnet
             ? MAINNET_SIDECHAIN_OPTIONS
             : TESTNET_SIDECHAIN_OPTIONS
         )}

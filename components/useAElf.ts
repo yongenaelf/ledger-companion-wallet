@@ -1,9 +1,10 @@
 import AElf from "aelf-sdk";
-import useRpcUrl from "./useRpcUrl";
 import { useMemo } from "react";
+import { useRecoilValue } from "recoil";
+import { rpcUrlState } from "./selector";
 
 export const useAElf = () => {
-  const rpcUrl = useRpcUrl();
+  const rpcUrl = useRecoilValue(rpcUrlState);
 
   return useMemo(
     () => new AElf(new AElf.providers.HttpProvider(rpcUrl)),

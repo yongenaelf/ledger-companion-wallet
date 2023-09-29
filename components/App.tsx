@@ -1,27 +1,19 @@
 "use client";
 
-import React, { useState, createContext } from "react";
+import React, { useState } from "react";
 import { DeviceSelectionScreen } from "./DeviceSelectionScreen";
 import { AddressScreen } from "./AddressScreen";
 import Transport from "@ledgerhq/hw-transport";
 import { ConfigProvider, Layout } from "antd";
 import NetworkSelection from "./NetworkSelection";
+import { useRecoilState, useRecoilValue, RecoilRoot } from "recoil";
+import { addressState, chainState } from "./state";
 const { Content, Header } = Layout;
-
-export interface INetworkContext {
-  network: "testnet" | "mainnet";
-  chain: "aelf" | "tdvv" | "tdvw";
-}
-
-export const NetworkContext = createContext<INetworkContext>({
-  network: "testnet",
-  chain: "aelf",
-});
 
 function App() {
   const [transport, setTransport] = useState<Transport | null>(null);
-  const [network, setNetwork] = useState<INetworkContext["network"]>("testnet");
-  const [chain, setChain] = useState<INetworkContext["chain"]>("aelf");
+  const chain = useRecoilValue(chainState);
+  const [address, setAddress] = useRecoilState(addressState);
 
   const onSelectDevice = (transport: Transport) => {
     // @ts-ignore
@@ -42,22 +34,33 @@ function App() {
         },
       }}
     >
-      <NetworkContext.Provider value={{ network, chain }}>
-        <Layout>
-          <Header style={{ display: "flex", alignItems: "center" }}>
-            <NetworkSelection setChain={setChain} setNetwork={setNetwork} />
-          </Header>
-          <Content style={{ padding: "20px 50px" }}>
-            {!transport ? (
-              <DeviceSelectionScreen onSelectDevice={onSelectDevice} />
-            ) : (
-              <AddressScreen transport={transport} />
-            )}
-          </Content>
-        </Layout>
-      </NetworkContext.Provider>
+      <Layout>
+        <Header style={{ display: "flex", alignItems: "center" }}>
+          <NetworkSelection />
+        </Header>
+        <Content style={{ padding: "20px 50px" }}>
+          {!transport ? (
+            <DeviceSelectionScreen onSelectDevice={onSelectDevice} />
+          ) : (
+            <AddressScreen
+              transport={transport}
+              chain={chain}
+              address={address}
+              setAddress={setAddress}
+            />
+          )}
+        </Content>
+      </Layout>
     </ConfigProvider>
   );
 }
 
-export default App;
+const WithRecoil = () => {
+  return (
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
+  );
+};
+
+export default WithRecoil;

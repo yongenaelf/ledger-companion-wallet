@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import useExplorerUrl from "./useExplorerUrl";
 import { Button, Table } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { useState } from "react";
@@ -7,9 +6,13 @@ import { formatDistanceToNow, parseISO, format } from "date-fns";
 import { middleEllipsis } from "./utils";
 import { List } from "../app/transactions/route";
 import { SwapOutlined } from "@ant-design/icons";
+import { useRecoilValue } from "recoil";
+import { explorerUrlState } from "./selector";
+import { addressState } from "./state";
 
-export const AllTransactions = ({ address }: { address: string }) => {
-  const explorerUrl = useExplorerUrl();
+export const AllTransactions = () => {
+  const address = useRecoilValue(addressState);
+  const explorerUrl = useRecoilValue(explorerUrlState);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     pageSize: 10,
     current: 1,
@@ -98,6 +101,7 @@ export const AllTransactions = ({ address }: { address: string }) => {
 
   return (
     <>
+      <h1>All Transactions</h1>
       <Button
         onClick={() => {
           setPagination((pagination) => ({ ...pagination, current: 1 }));
