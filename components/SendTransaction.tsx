@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import AppAelf from "./Elf";
-import { transfer } from "./transaction";
-import { useMultiTokenContract } from "./useMultiTokenContract";
+import AppAelf from "../utils/Elf";
+import { transfer } from "../utils/transaction";
+import { useMultiTokenContract } from "../hooks/useMultiTokenContract";
 import { Input, InputNumber, Button, Modal, Result, Form } from "antd";
 import Transport from "@ledgerhq/hw-transport";
-import { useAElf } from "./useAElf";
+import { useAElf } from "../hooks/useAElf";
 import BigNumber from "bignumber.js";
-import { validateAddress } from "./validateAddress";
+import { validateAddress } from "../utils/validateAddress";
 import SubmitButton from "./SubmitButton";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   addressState,
   chainState,
   unconfirmedTransactionsState,
-} from "./state";
-import { explorerUrlState, rpcUrlState } from "./selector";
+} from "../state";
+import { explorerUrlState, rpcUrlState } from "../state/selector";
+import { useBalance } from "../hooks/useBalance";
 
 interface ISendTransactionProps {
   transport: Transport;
@@ -38,6 +39,7 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
   const aelfInstance = useAElf();
   const rpcUrl = useRecoilValue(rpcUrlState);
   const explorerUrl = useRecoilValue(explorerUrlState);
+  const { data: balance } = useBalance();
 
   const signAndSendTransaction = async (rawTx: string) => {
     try {
@@ -112,7 +114,7 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
 
             const { tokenContractAddress } = data;
 
-            const res = await transfer(
+            const rawTx = await transfer(
               address,
               to,
               new BigNumber(amount).multipliedBy(10 ** 8).toNumber(),
@@ -121,7 +123,28 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
               aelfInstance
             );
 
-            const res2 = await signAndSendTransaction(res);
+            const feeResponse = await fetch(
+              `${rpcUrl}/api/blockChain/calculateTransactionFee`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  RawTransaction: rawTx,
+                }),
+              }
+            );
+
+            const { Success } = await feeResponse.json();
+
+            if (!Success) {
+              const msg = "Insufficient funds for transaction fee.";
+              setModalContent(msg);
+              throw new Error(msg);
+            }
+
+            const res2 = await signAndSendTransaction(rawTx);
 
             setTransactionId(res2.TransactionId);
 
@@ -160,12 +183,22 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
             { required: true, message: "Please enter amount" },
             {
               validator: async (_rule, value) => {
+                console.log(balance);
+
                 if (value <= 0) throw new Error("Amount must be more than 0");
+                else if (value > balance)
+                  throw new Error("Amount must be less than balance");
               },
             },
           ]}
         >
-          <InputNumber addonAfter="ELF" />
+          <InputNumber
+            addonAfter="ELF"
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value!.replace(/\$\s?|(,*)/g, "")}
+          />
         </Form.Item>
         <Form.Item
           label="Memo"

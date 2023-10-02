@@ -1,7 +1,7 @@
 import AElf from "aelf-sdk";
 import { useMemo } from "react";
 import { useRecoilValue } from "recoil";
-import { rpcUrlState } from "./selector";
+import { rpcUrlState } from "../state/selector";
 
 export const useAElf = () => {
   const rpcUrl = useRecoilValue(rpcUrlState);

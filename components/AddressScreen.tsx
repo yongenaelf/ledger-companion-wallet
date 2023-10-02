@@ -1,10 +1,10 @@
 import Transport from "@ledgerhq/hw-transport";
 import { Component } from "react";
-import AppAelf from "./Elf";
+import AppAelf from "../utils/Elf";
 import React from "react";
 import { Balance } from "./Balance";
 import { SendTransaction } from "./SendTransaction";
-import { Button, Tabs, Row, Col, Descriptions } from "antd";
+import { Button, Tabs, Descriptions } from "antd";
 import { AllTransactions } from "./AllTransactions";
 import AddressVerification from "./AddressVerification";
 
@@ -80,51 +80,47 @@ export class AddressScreen extends Component<{
     if (!address) return <p>Loading address...</p>;
 
     return (
-      <Row gutter={16}>
-        <Col span={3}>
-          <Balance />
-        </Col>
-        <Col span={21}>
-          <Tabs
-            defaultActiveKey="info"
-            onChange={(e) => {
-              if (e === "info") {
-                this.setState({ refresh: !this.state.refresh });
-              }
-            }}
-            items={[
-              {
-                key: "info",
-                label: "Info",
-                children: (
-                  <>
-                    <Descriptions
-                      title="Ledger Live AElf Account 1"
-                      items={[
-                        {
-                          key: "1",
-                          label: "Address",
-                          children: `ELF_${address}_${chain}`,
-                        },
-                      ]}
-                    />
-                    <AddressVerification
-                      verifying={this.state.verifying}
-                      triggerVerification={() => this.fetchAddress(true)}
-                    />
-                    <AllTransactions key={String(this.state.refresh)} />
-                  </>
-                ),
-              },
-              {
-                key: "transfer",
-                label: "Transfer",
-                children: <SendTransaction transport={transport} />,
-              },
-            ]}
-          />
-        </Col>
-      </Row>
+      <div>
+        <Balance />
+        <Tabs
+          defaultActiveKey="info"
+          onChange={(e) => {
+            if (e === "info") {
+              this.setState({ refresh: !this.state.refresh });
+            }
+          }}
+          items={[
+            {
+              key: "info",
+              label: "Info",
+              children: (
+                <>
+                  <Descriptions
+                    title="Ledger Live AElf Account 1"
+                    items={[
+                      {
+                        key: "1",
+                        label: "Address",
+                        children: `ELF_${address}_${chain}`,
+                      },
+                    ]}
+                  />
+                  <AddressVerification
+                    verifying={this.state.verifying}
+                    triggerVerification={() => this.fetchAddress(true)}
+                  />
+                  <AllTransactions key={String(this.state.refresh)} />
+                </>
+              ),
+            },
+            {
+              key: "transfer",
+              label: "Transfer",
+              children: <SendTransaction transport={transport} />,
+            },
+          ]}
+        />
+      </div>
     );
   }
 }

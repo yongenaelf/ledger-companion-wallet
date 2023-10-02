@@ -1,7 +1,11 @@
 import BigNumber from "bignumber.js";
 import { useMultiTokenContract } from "./useMultiTokenContract";
 import useSWR from "swr";
-export function useBalance(address?: string) {
+import { useRecoilValue } from "recoil";
+import { addressState } from "../state";
+
+export function useBalance() {
+  const address = useRecoilValue(addressState);
   const { data } = useMultiTokenContract();
 
   return useSWR(

@@ -7,7 +7,7 @@ import Transport from "@ledgerhq/hw-transport";
 import { ConfigProvider, Layout } from "antd";
 import NetworkSelection from "./NetworkSelection";
 import { useRecoilState, useRecoilValue, RecoilRoot } from "recoil";
-import { addressState, chainState } from "./state";
+import { addressState, chainState } from "../state";
 const { Content, Header } = Layout;
 
 function App() {

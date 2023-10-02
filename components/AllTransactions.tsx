@@ -3,12 +3,12 @@ import { Button, Table } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { useState } from "react";
 import { formatDistanceToNow, parseISO, format } from "date-fns";
-import { middleEllipsis } from "./utils";
+import { middleEllipsis } from "../utils/middleEllipsis";
 import { List } from "../app/transactions/route";
 import { SwapOutlined } from "@ant-design/icons";
 import { useRecoilValue } from "recoil";
-import { explorerUrlState } from "./selector";
-import { addressState } from "./state";
+import { explorerUrlState } from "../state/selector";
+import { addressState } from "../state";
 
 export const AllTransactions = () => {
   const address = useRecoilValue(addressState);

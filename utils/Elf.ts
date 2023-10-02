@@ -17,13 +17,13 @@
 
 // FIXME drop:
 import type Transport from "@ledgerhq/hw-transport";
-import { pathStringToArray } from "./utils";
+import { pathStringToArray } from "./pathStringToArray";
 import elliptic from "elliptic";
 import { Logger } from "./Logger";
 
 export const ellipticEc = new elliptic.ec("secp256k1");
 
-export * from "./utils";
+export * from "./middleEllipsis";
 
 /**
  * AElf API

@@ -27,7 +27,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "pbjs -t static-module -w commonjs -o ./src/compiled.js ./src/message.proto"
+    "generate": "pbjs -t static-module -w commonjs -o ./utils/compiled.js ./utils/message.proto"
   },
   "devDependencies": {
     "@types/node": "latest",

@@ -5,9 +5,9 @@ import {
   NetworkStateEnum,
   chainState,
   networkState,
-} from "./state";
+} from "../state";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { explorerUrlState } from "./selector";
+import { explorerUrlState } from "../state/selector";
 
 type ChainOptions = Array<{ value: ChainStateEnum; label: string }>;
 const MAINNET_SIDECHAIN_OPTIONS: ChainOptions = [
