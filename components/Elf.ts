@@ -19,10 +19,7 @@
 import type Transport from "@ledgerhq/hw-transport";
 import { pathStringToArray } from "./utils";
 import elliptic from "elliptic";
-
-import { aelf } from "./compiled";
-
-const { Address } = aelf;
+import { Logger } from "./Logger";
 
 export const ellipticEc = new elliptic.ec("secp256k1");
 
@@ -35,7 +32,6 @@ export * from "./utils";
  * import Elf from "@ledgerhq/hw-app-elf";
  * const elf = new Elf(transport)
  */
-
 export default class Elf {
   transport: Transport;
 
@@ -73,6 +69,16 @@ export default class Elf {
     return this.transport
       .send(0xe0, 0x02, boolDisplay ? 0x01 : 0x00, 0x00, buffer)
       .then((response) => {
+        Logger.logSend(
+          "getAddress",
+          0xe0,
+          0x02,
+          boolDisplay ? 0x01 : 0x00,
+          0x00,
+          buffer,
+          response
+        );
+
         const publicKeyLength = response[0];
         const addressLength = response[1 + publicKeyLength];
 
@@ -124,6 +130,8 @@ export default class Elf {
     ]);
 
     return this.transport.exchange(exchangeData).then((response) => {
+      Logger.logExchange("signTransaction", exchangeData, response);
+
       const res = response.toString("hex");
 
       const signature = res.slice(0, -4);
@@ -140,6 +148,16 @@ export default class Elf {
     version: string;
   }> {
     return this.transport.send(0xe0, 0x01, 0x00, 0x00).then((response) => {
+      Logger.logSend(
+        "getAppConfiguration",
+        0xe0,
+        0x01,
+        0x00,
+        0x00,
+        undefined,
+        response
+      );
+
       return {
         version: "" + response[2] + "." + response[3] + "." + response[4],
       };
