@@ -1,16 +1,18 @@
-import useSWR from "swr";
-import { Button, Table } from "antd";
-import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { useState } from "react";
-import { formatDistanceToNow, parseISO, format } from "date-fns";
-import { middleEllipsis } from "../utils/middleEllipsis";
-import { List } from "../app/transactions/route";
-import { SwapOutlined } from "@ant-design/icons";
+import useSWR from "swr";
 import { useRecoilValue } from "recoil";
-import { explorerUrlState } from "../state/selector";
-import { addressState } from "../state";
+import { Button, Table, Row, Col, Typography, Descriptions } from "antd";
+import { SwapOutlined } from "@ant-design/icons";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
+import { formatDistanceToNow, parseISO, format } from "date-fns";
+import { middleEllipsis } from "../../../utils/middleEllipsis";
+import { List } from "../../../app/transactions/route";
+import { explorerUrlState } from "../../../state/selector";
+import { addressState } from "../../../state";
+import useStyles from "../style";
 
-export const AllTransactions = () => {
+const AllTransactions = () => {
+  const classes = useStyles;
   const address = useRecoilValue(addressState);
   const explorerUrl = useRecoilValue(explorerUrlState);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
@@ -31,9 +33,7 @@ export const AllTransactions = () => {
           list: List[];
         };
       };
-
       setPagination((pagination) => ({ ...pagination, total: data.total }));
-
       return data;
     }
   );
@@ -96,20 +96,27 @@ export const AllTransactions = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
+      align: 'right'
     },
   ];
 
   return (
     <>
-      <h1>All Transactions</h1>
-      <Button
-        onClick={() => {
-          setPagination((pagination) => ({ ...pagination, current: 1 }));
-          mutate();
-        }}
-      >
-        Refresh
-      </Button>
+      <Row align='middle' style={{margin: '24px 0 8px 0'}}>
+        <Col span={12}>
+          <Typography.Text style={classes.title}>All Transactions</Typography.Text>
+        </Col>
+        <Col span={12} style={{textAlign: 'right'}}>
+          <Button
+            onClick={() => {
+              setPagination((pagination) => ({ ...pagination, current: 1 }));
+              mutate();
+            }}
+          >
+            Refresh
+          </Button>
+        </Col>
+      </Row>
       <Table
         columns={columns}
         dataSource={data?.list}
@@ -118,7 +125,10 @@ export const AllTransactions = () => {
         loading={isValidating}
         onChange={(pagination) => setPagination(pagination)}
         size="middle"
+        bordered
       />
     </>
   );
 };
+
+export default AllTransactions;

@@ -1,15 +1,15 @@
-import React, { PureComponent } from "react";
+import { PureComponent } from "react";
 import qrcode, { QRCodeErrorCorrectionLevel } from "qrcode";
 
-type Props = {
+type QRCodeProps = {
   data: string;
   errorCorrectionLevel: QRCodeErrorCorrectionLevel;
   size: number;
   style?: any;
 };
 
-export default class QRCode extends PureComponent<Props> {
-  static defaultProps: Partial<Props> = {
+class QRCode extends PureComponent<QRCodeProps> {
+  static defaultProps: Partial<QRCodeProps> = {
     size: 200,
     errorCorrectionLevel: "H",
   };
@@ -40,3 +40,5 @@ export default class QRCode extends PureComponent<Props> {
     return <canvas style={this.props.style} ref={(n) => (this._canvas = n)} />;
   }
 }
+
+export default QRCode;
