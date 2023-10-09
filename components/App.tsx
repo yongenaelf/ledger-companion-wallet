@@ -11,7 +11,7 @@ import Footer from './common/footer';
 import Loader from './common/loader';
 import Snackbar from './common/snackbar';
 import {SnackbarContext, SnackbarContextType, SnackbarType} from '../context/snackbarContext';
-import './app.css';
+import './App1.css';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
