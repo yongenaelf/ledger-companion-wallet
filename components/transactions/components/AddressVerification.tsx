@@ -1,18 +1,17 @@
-import React from "react";
 import { Button, Modal } from "antd";
 
-interface IAddressVerification {
+interface AddressVerification {
   verifying: boolean;
   triggerVerification: () => void;
 }
 const AddressVerification = ({
   verifying,
   triggerVerification,
-}: IAddressVerification) => {
+}: AddressVerification) => {
   return (
     <>
       <Button
-        type="primary"
+        type="link"
         disabled={verifying}
         onClick={() => {
           triggerVerification();

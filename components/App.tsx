@@ -1,19 +1,29 @@
 "use client";
-
-import React, { useState } from "react";
-import { DeviceSelectionScreen } from "./DeviceSelectionScreen";
-import { AddressScreen } from "./AddressScreen";
-import Transport from "@ledgerhq/hw-transport";
-import { ConfigProvider, Layout } from "antd";
-import NetworkSelection from "./NetworkSelection";
+import { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue, RecoilRoot } from "recoil";
+import { ConfigProvider, Layout } from "antd";
+import Transport from "@ledgerhq/hw-transport";
+import ConnectDevice from "./connectDevice";
+import Transactions from "./transactions";
 import { addressState, chainState } from "../state";
-const { Content, Header } = Layout;
+import Header from './common/header';
+import Footer from './common/footer';
+import Loader from './common/loader';
+import Snackbar from './common/snackbar';
+import {SnackbarContext, SnackbarContextType, SnackbarType} from '../context/snackbarContext';
+import './app.css';
 
 function App() {
+  const [loading, setLoading] = useState<boolean>(true);
   const [transport, setTransport] = useState<Transport | null>(null);
   const chain = useRecoilValue(chainState);
   const [address, setAddress] = useRecoilState(addressState);
+  const [snackbar, setSnackbar] = useState<SnackbarContextType>({
+    type: SnackbarType.SUCCESS,
+    message: '',
+  });
+  const value = { snackbar, setSnackbar };
+  const {Content} = Layout;
 
   const onSelectDevice = (transport: Transport) => {
     // @ts-ignore
@@ -23,6 +33,10 @@ function App() {
     });
     setTransport(transport);
   };
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
 
   return (
     <ConfigProvider
@@ -34,23 +48,27 @@ function App() {
         },
       }}
     >
-      <Layout>
-        <Header style={{ display: "flex", alignItems: "center" }}>
-          <NetworkSelection />
-        </Header>
-        <Content style={{ padding: "20px 50px" }}>
-          {!transport ? (
-            <DeviceSelectionScreen onSelectDevice={onSelectDevice} />
-          ) : (
-            <AddressScreen
-              transport={transport}
-              chain={chain}
-              address={address}
-              setAddress={setAddress}
-            />
-          )}
-        </Content>
-      </Layout>
+      <SnackbarContext.Provider value={value}>
+        <Snackbar {...value.snackbar}/>
+        {loading ? <Loader /> : 
+          <Layout className="layout-container">
+            <Header/>
+            <Content className={['layout-content', !transport && 'layout-content-center'].join(' ').trim()}>
+              {!transport ? (
+                <ConnectDevice onSelectDevice={onSelectDevice} />
+              ) : (
+                <Transactions
+                  transport={transport}
+                  chain={chain}
+                  address={address}
+                  setAddress={setAddress}
+                />
+              )}
+            </Content>
+            <Footer/>
+          </Layout>
+        }
+      </SnackbarContext.Provider>
     </ConfigProvider>
   );
 }

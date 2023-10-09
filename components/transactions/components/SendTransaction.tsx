@@ -1,27 +1,31 @@
-import React, { useState } from "react";
-import AppAelf from "../utils/Elf";
-import { transfer } from "../utils/transaction";
-import { useMultiTokenContract } from "../hooks/useMultiTokenContract";
-import { Input, InputNumber, Button, Modal, Result, Form } from "antd";
-import Transport from "@ledgerhq/hw-transport";
-import { useAElf } from "../hooks/useAElf";
-import BigNumber from "bignumber.js";
-import { validateAddress } from "../utils/validateAddress";
-import SubmitButton from "./SubmitButton";
+import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { Input, InputNumber, Button, Modal, Result, Form, Row, Col } from "antd";
+import BigNumber from "bignumber.js";
+import AppAelf from "../../../utils/Elf";
+import { transfer } from "../../../utils/transaction";
+import { useMultiTokenContract } from "../../../hooks/useMultiTokenContract";
+import Transport from "@ledgerhq/hw-transport";
+import { useAElf } from "../../../hooks/useAElf";
+import { validateAddress } from "../../../utils/validateAddress";
+import SubmitButton from "./SubmitButton";
+import useSnackbar from '../../../utils/snackbar';
 import {
   addressState,
   chainState,
   unconfirmedTransactionsState,
-} from "../state";
-import { explorerUrlState, rpcUrlState } from "../state/selector";
-import { useBalance } from "../hooks/useBalance";
+} from "../../../state";
+import { explorerUrlState, rpcUrlState } from "../../../state/selector";
+import { useBalance } from "../../../hooks/useBalance";
 
-interface ISendTransactionProps {
+interface SendTransactionProps {
   transport: Transport;
 }
-export function SendTransaction({ transport }: ISendTransactionProps) {
+function SendTransaction({ 
+  transport 
+}: SendTransactionProps) {
   const address = useRecoilValue(addressState);
+  const setSnackbar = useSnackbar();
   const chain = useRecoilValue(chainState);
   const [_, setUnconfirmedTransactions] = useRecoilState(
     unconfirmedTransactionsState
@@ -32,8 +36,6 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
 
   const [form] = Form.useForm();
 
-  const [modalContent, setModalContent] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const aelfInstance = useAElf();
@@ -48,8 +50,7 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
       const { signature } = await aelf.signTransaction(path, rawTx);
 
       if (signature.length === 0) {
-        setModalContent("User rejected the transaction.");
-        setShowModal(true);
+        setSnackbar.error("User rejected the transaction");
         throw new Error("User rejected the transaction.");
       }
 
@@ -76,8 +77,7 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
     } catch (error) {
       // in this case, user is likely not on AElf app
       console.warn("Failed: " + error.message);
-      setModalContent(error.message);
-      setShowModal(true);
+      setSnackbar.error(error.message);
       return { TransactionId: "" };
     } finally {
       setShowTransferModal(false);
@@ -85,18 +85,15 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
   };
 
   const onClose = () => {
-    setShowModal(false);
-    setModalContent("");
     setShowSuccessModal(false);
   };
 
   return (
-    <div>
+    <>
       <Form
         form={form}
-        labelCol={{ span: 4 }}
-        wrapperCol={{ span: 20 }}
-        style={{ maxWidth: 900 }}
+        labelCol={{ span: 3 }}
+        style={{ maxWidth: 'none' }}
         initialValues={{
           to: "cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US",
           amount: 42,
@@ -140,7 +137,7 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
 
             if (!Success) {
               const msg = "Insufficient funds for transaction fee.";
-              setModalContent(msg);
+              setSnackbar.error(msg);
               throw new Error(msg);
             }
 
@@ -158,69 +155,79 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
           }
         }}
       >
-        <Form.Item
-          label="To"
-          name="to"
-          rules={[
-            {
-              required: true,
-              message: "Please enter to address",
-            },
-            {
-              async validator(rule, value, callback) {
-                validateAddress(value);
-                return "";
-              },
-            },
-          ]}
-        >
-          <Input addonBefore="ELF_" addonAfter={`_${chain}`} />
-        </Form.Item>
-        <Form.Item
-          label="Amount"
-          name="amount"
-          rules={[
-            { required: true, message: "Please enter amount" },
-            {
-              validator: async (_rule, value) => {
-                console.log(balance);
-
-                if (value <= 0) throw new Error("Amount must be more than 0");
-                else if (value > balance)
-                  throw new Error("Amount must be less than balance");
-              },
-            },
-          ]}
-        >
-          <InputNumber
-            addonAfter="ELF"
-            formatter={(value) =>
-              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-            parser={(value) => value!.replace(/\$\s?|(,*)/g, "")}
-          />
-        </Form.Item>
-        <Form.Item
-          label="Memo"
-          name="memo"
-          rules={[
-            { required: true, message: "Please enter memo" },
-            { max: 64, message: "Max length 64 characters." },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 4, span: 20 }}>
-          <SubmitButton form={form} />
-        </Form.Item>
+        <Row>
+          <Col span={12}>
+            <Form.Item
+              label="To"
+              name="to"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter to address",
+                },
+                {
+                  async validator(rule, value, callback) {
+                    validateAddress(value);
+                    return "";
+                  },
+                },
+              ]}
+            >
+              <Input addonBefore="ELF_" addonAfter={`_${chain}`} />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Amount"
+              name="amount"
+              rules={[
+                { required: true, message: "Please enter amount" },
+                {
+                  validator: async (_rule, value) => {
+                    if (value <= 0) throw new Error("Amount must be more than 0");
+                    else if (value > balance)
+                      throw new Error("Amount must be less than balance");
+                  },
+                },
+              ]}
+            >
+              <InputNumber
+                addonAfter="ELF"
+                formatter={(value) =>
+                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+                parser={(value) => value!.replace(/\$\s?|(,*)/g, "")}
+                style={{display: 'block'}}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={12}>
+            <Form.Item
+              label="Memo"
+              name="memo"
+              rules={[
+                { required: true, message: "Please enter memo" },
+                { max: 64, message: "Max length 64 characters." },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item style={{textAlign: 'right'}}>
+              <SubmitButton form={form} />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
-      <Modal open={!!showModal} onCancel={onClose} onOk={onClose}>
-        {modalContent}
-      </Modal>
       <Modal open={!!showTransferModal} footer={null} closeIcon={null}>
         Transfer in progress, check your Ledger device to continue...
       </Modal>
-      <Modal open={showSuccessModal} onCancel={onClose} onOk={onClose}>
+      <Modal 
+        open={showSuccessModal} 
+        footer={() => <Button onClick={onClose}>Close</Button>}>
         <Result
           status="success"
           title="Successful transaction"
@@ -237,6 +244,8 @@ export function SendTransaction({ transport }: ISendTransactionProps) {
           ]}
         />
       </Modal>
-    </div>
+    </>
   );
 }
+
+export default SendTransaction;

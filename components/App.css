@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
+}
+.layout-container {
+    min-height: 100vh;
+}
+.layout-content {
+    padding: 20px 20px 0 20px;
+}
+.layout-content-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@keyframes spinner-loader {
+    to {
+       transform: rotate(360deg);
+    }
+}
