@@ -29,4 +29,4 @@ You may also see any lint errors in the console.
 
 - [Ledger Web USB/HID walkthrough](https://developers.ledger.com/docs/transport/web-hid-usb/)
 - [Ledger Web Bluetooth walkthrough](https://developers.ledger.com/docs/transport/web-bluetooth/)
-- [How to use your Ledger Device with the AElf Companion Wallet](https://docs.google.com/document/d/1xxl_DRUNoqfWF__nO_rhUBPDA6-yNf0Y3nfTie0OQwA/edit#heading=h.d5trj1me3jz9)
+- [How to use your Ledger Device with the AElf Companion Wallet](https://docs.google.com/document/d/1xxl_DRUNoqfWF__nO_rhUBPDA6-yNf0Y3nfTie0OQwA/edit?usp=sharing)
