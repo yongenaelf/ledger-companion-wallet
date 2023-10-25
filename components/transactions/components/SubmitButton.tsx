@@ -20,7 +20,7 @@ const SubmitButton = ({ form }: { form: FormInstance }) => {
 
   return (
     <Button type="primary" htmlType="submit" disabled={!submittable}>
-      Submit
+      Transfer now
     </Button>
   );
 };

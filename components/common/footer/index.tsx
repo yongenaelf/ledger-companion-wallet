@@ -1,11 +1,11 @@
 import { Layout } from "antd";
 import useStyles from "./style";
 
-function Footer() {
+const Footer = () => {
   const classes = useStyles;
   return (
     <Layout.Footer style={classes.footer}>
-      Aelf Design &copy;{(new Date()).getFullYear()} Created by Aelf
+      AELF &copy;{(new Date()).getFullYear()}
     </Layout.Footer>
   );
 }

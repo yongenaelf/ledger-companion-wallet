@@ -1,15 +1,12 @@
 import { Component } from "react";
-import Image from 'next/image';
-import { Button, Tabs, Descriptions, Card, Typography } from "antd";
+import { Row, Col } from "antd";
 import Transport from "@ledgerhq/hw-transport";
-import logoImage from '../../assets/icon/logo.png';
 import AppAelf from "../../utils/Elf";
-import Balance from "../balance";
+import Overview from "../overview";
 import SendTransaction from "./components/SendTransaction";
 import AllTransactions from "./components/AllTransactions";
-import AddressVerification from "./components/AddressVerification";
 import Loader from '../common/loader';
-import useStyles from "../connectDevice/style";
+import Card from '../common/card';
 
 const delay = (ms: number) => new Promise((success) => setTimeout(success, ms));
 
@@ -71,63 +68,29 @@ class Transactions extends Component<{
   render() {
     const { error } = this.state;
     const { address, transport, chain } = this.props;
-    const cardClasses = useStyles;
 
     if (error)
       return (
-        <Card style={{...cardClasses.card, ...cardClasses.cardCenter}}>
-          <Image src={logoImage} alt="Aelf logo" width={60} />
-          <Typography.Title style={cardClasses.cardTitle}>Connect with USB</Typography.Title>
-          <Typography.Text style={cardClasses.cardContent}>{String((error as Error)?.message ?? error)}{" "}</Typography.Text>
-          <Button onClick={() => this.fetchAddress()} block>Retry</Button>
-        </Card>
+        <Card 
+          title='Connect with Device' 
+          content='Please unlock your device.' 
+          isError
+          buttonLabel='Retry' 
+          isCentered
+          onClickButton={() => this.fetchAddress()}
+        />
       );
 
     if (!address) return <Loader message="Loading address..."/>;
 
     return (
-      <>  
-        <Balance /><br/>
-        <Card>
-          <Tabs
-            defaultActiveKey="info"
-            onChange={(e) => {
-              if (e === "info") {
-                this.setState({ refresh: !this.state.refresh });
-              }
-            }}
-            items={[
-              {
-                key: "info",
-                label: "Info",
-                children: (
-                  <>
-                    <Descriptions title="Ledger Live AElf Account 1" layout="vertical" >
-                      <Descriptions.Item 
-                        key={1} 
-                        label="Address"
-                        style={{ paddingBottom: 0 }}
-                        >
-                          ELF_${address}_${chain}
-                          <AddressVerification
-                            verifying={this.state.verifying}
-                            triggerVerification={() => this.fetchAddress(true)}
-                          />
-                      </Descriptions.Item>
-                    </Descriptions>
-                    <AllTransactions key={String(this.state.refresh)} />
-                  </>
-                ),
-              },
-              {
-                key: "transfer",
-                label: "Transfer",
-                children: <SendTransaction transport={transport} />,
-              },
-            ]}
-          />
-        </Card>
-      </>
+      <div className="container">  
+        <Row gutter={16}>
+          <Col span={12}><Overview chain={chain} address={address} transport={transport}/></Col>
+          <Col span={12}><SendTransaction transport={transport} /></Col>
+        </Row><br/>
+        <AllTransactions key={String(this.state.refresh)} />
+      </div>
     );
   }
 }

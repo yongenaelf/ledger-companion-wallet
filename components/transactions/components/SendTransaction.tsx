@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Input, InputNumber, Button, Modal, Result, Form, Row, Col } from "antd";
+import { InfoCircleOutlined } from "@ant-design/icons";
+import { Input, InputNumber, Button, Modal, Result, Form, Row, Col, Typography, Tooltip } from "antd";
 import BigNumber from "bignumber.js";
 import AppAelf from "../../../utils/Elf";
 import { transfer } from "../../../utils/transaction";
@@ -10,13 +11,15 @@ import { useAElf } from "../../../hooks/useAElf";
 import { validateAddress } from "../../../utils/validateAddress";
 import SubmitButton from "./SubmitButton";
 import useSnackbar from '../../../utils/snackbar';
+import TransferVerification from './TransferVerification';
 import {
   addressState,
-  chainState,
   unconfirmedTransactionsState,
 } from "../../../state";
 import { explorerUrlState, rpcUrlState } from "../../../state/selector";
 import { useBalance } from "../../../hooks/useBalance";
+import PaperLayout from '../../common/paperLayout';
+import useStyles from "../style";
 
 interface SendTransactionProps {
   transport: Transport;
@@ -24,9 +27,14 @@ interface SendTransactionProps {
 function SendTransaction({ 
   transport 
 }: SendTransactionProps) {
+  const classes = useStyles;
   const address = useRecoilValue(addressState);
   const setSnackbar = useSnackbar();
-  const chain = useRecoilValue(chainState);
+  const [formData, setFormData] = useState({
+    to: '',
+    amount: '',
+    memo: ''
+  })
   const [_, setUnconfirmedTransactions] = useRecoilState(
     unconfirmedTransactionsState
   );
@@ -36,6 +44,7 @@ function SendTransaction({
 
   const [form] = Form.useForm();
 
+  const [showTransferVerifyModal, setShowTransferVerifyModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const aelfInstance = useAElf();
@@ -88,8 +97,62 @@ function SendTransaction({
     setShowSuccessModal(false);
   };
 
+  const onConfirm = async () => {
+    const { to, amount, memo } = formData;
+    try {
+      setTransactionId("");
+      setShowTransferModal(true);
+
+      if (!data) throw new Error("no contract");
+
+      const { tokenContractAddress } = data;
+
+      const rawTx = await transfer(
+        address,
+        to,
+        new BigNumber(amount).multipliedBy(10 ** 8).toNumber(),
+        memo,
+        tokenContractAddress,
+        aelfInstance
+      );
+
+      const feeResponse = await fetch(
+        `${rpcUrl}/api/blockChain/calculateTransactionFee`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            RawTransaction: rawTx,
+          }),
+        }
+      );
+
+      const { Success } = await feeResponse.json();
+
+      if (!Success) {
+        const msg = "Insufficient funds for transaction fee.";
+        setSnackbar.error(msg);
+        throw new Error(msg);
+      }
+
+      const res2 = await signAndSendTransaction(rawTx);
+
+      setTransactionId(res2.TransactionId);
+
+      if (res2.TransactionId) {
+        setShowSuccessModal(true);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setShowTransferModal(false);
+    }
+  }
+
   return (
-    <>
+    <PaperLayout title='Transfer'>
       <Form
         form={form}
         labelCol={{ span: 3 }}
@@ -100,64 +163,16 @@ function SendTransaction({
           memo: "a test memo",
         }}
         autoComplete="off"
-        onFinish={async (e) => {
+        onFinish={(e) => {
           const { to, amount, memo } = e;
-
-          try {
-            setTransactionId("");
-            setShowTransferModal(true);
-
-            if (!data) throw new Error("no contract");
-
-            const { tokenContractAddress } = data;
-
-            const rawTx = await transfer(
-              address,
-              to,
-              new BigNumber(amount).multipliedBy(10 ** 8).toNumber(),
-              memo,
-              tokenContractAddress,
-              aelfInstance
-            );
-
-            const feeResponse = await fetch(
-              `${rpcUrl}/api/blockChain/calculateTransactionFee`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  RawTransaction: rawTx,
-                }),
-              }
-            );
-
-            const { Success } = await feeResponse.json();
-
-            if (!Success) {
-              const msg = "Insufficient funds for transaction fee.";
-              setSnackbar.error(msg);
-              throw new Error(msg);
-            }
-
-            const res2 = await signAndSendTransaction(rawTx);
-
-            setTransactionId(res2.TransactionId);
-
-            if (res2.TransactionId) {
-              setShowSuccessModal(true);
-            }
-          } catch (err) {
-            console.error(err);
-          } finally {
-            setShowTransferModal(false);
-          }
+          setFormData({to, amount, memo});
+          setShowTransferVerifyModal(true);
         }}
       >
         <Row>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
+              labelAlign='left'
               label="To"
               name="to"
               rules={[
@@ -173,11 +188,25 @@ function SendTransaction({
                 },
               ]}
             >
-              <Input addonBefore="ELF_" addonAfter={`_${chain}`} />
+              <Input 
+              style={classes.inputfield}
+              allowClear
+              suffix={
+                <Tooltip color='#014795' title="An aelf address contains an 'ELF_' prefix and a suffix according to the chain you intend to interact with - '_AELF' for the main chain">
+                  <InfoCircleOutlined
+                    style={{
+                      color: 'rgba(0,0,0,.45)',
+                    }}
+                  />
+                </Tooltip>
+              } />
             </Form.Item>
           </Col>
-          <Col span={12}>
+        </Row>
+        <Row>
+          <Col span={24}>
             <Form.Item
+              labelAlign='left'
               label="Amount"
               name="amount"
               rules={[
@@ -186,65 +215,74 @@ function SendTransaction({
                   validator: async (_rule, value) => {
                     if (value <= 0) throw new Error("Amount must be more than 0");
                     else if (value > balance)
-                      throw new Error("Amount must be less than balance");
+                      throw new Error("Insufficient amount in account balance");
                   },
                 },
               ]}
             >
               <InputNumber
-                addonAfter="ELF"
+                style={classes.inputfield}
                 formatter={(value) =>
                   `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 }
                 parser={(value) => value!.replace(/\$\s?|(,*)/g, "")}
-                style={{display: 'block'}}
               />
             </Form.Item>
           </Col>
         </Row>
         <Row>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
+              labelAlign='left'
               label="Memo"
               name="memo"
               rules={[
-                { required: true, message: "Please enter memo" },
                 { max: 64, message: "Max length 64 characters." },
+                {
+                  async validator(rule, value) {
+                    const alphanumericPattern = /^[a-zA-Z0-9 ]+$/;
+                    console.log(alphanumericPattern.test(value))
+                    if (!alphanumericPattern.test(value)) {
+                      throw new Error('Oops! Only alphanumeric characters and standard punctuation are allowed!');
+                    }
+                  },
+                }
+
               ]}
             >
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item style={{textAlign: 'right'}}>
-              <SubmitButton form={form} />
+              <Input style={classes.inputfield} showCount maxLength={64} allowClear/>
             </Form.Item>
           </Col>
         </Row>
+        <Form.Item style={{textAlign: 'right', marginBottom: 0}}>
+          <SubmitButton form={form} />
+        </Form.Item>
       </Form>
-      <Modal open={!!showTransferModal} footer={null} closeIcon={null}>
-        Transfer in progress, check your Ledger device to continue...
+      <Modal open={!!showTransferModal} footer={null} closeIcon={null} centered width={442} style={{textAlign: 'center'}}>
+        Please verify your transaction details on your<br/>Ledger device to continue....
       </Modal>
       <Modal 
+        onCancel={onClose}
         open={showSuccessModal} 
-        footer={() => <Button onClick={onClose}>Close</Button>}>
+        centered width={442} 
+        footer={() => <Button type="primary" onClick={onClose} block>Close</Button>}>
         <Result
           status="success"
           title="Successful transaction"
-          subTitle={`TransactionId: ${transactionId}`}
-          extra={[
-            <Button
-              key="explorer"
-              type="primary"
-              href={`${explorerUrl}/tx/${transactionId}`}
-              target="_blank"
-            >
-              View transaction on AElf Explorer
-            </Button>,
-          ]}
+          subTitle={<>TransactionId: <a href={`${explorerUrl}/tx/${transactionId}`} target="_blank">{transactionId}</a></>}
         />
       </Modal>
-    </>
+      <TransferVerification 
+        isOpen={showTransferVerifyModal} 
+        onConfirm={() => {
+          setShowTransferVerifyModal(false);
+          onConfirm();
+        }}
+        onCancel={() => {
+          setShowTransferVerifyModal(false);
+        }}
+        data={formData}/>
+    </PaperLayout>
   );
 }
 

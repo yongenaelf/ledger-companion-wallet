@@ -4,10 +4,16 @@ html, body {
 body {
     margin: 0;
     padding: 0;
+    font-size: 14px;
+    color: #1A1A1A;
     font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
+}
+a {
+    color: #3EABFD
 }
 .layout-container {
     min-height: 100vh;
+    width: 100%
 }
 .layout-content {
     padding: 20px 20px 0 20px;
@@ -17,8 +23,72 @@ body {
     justify-content: center;
     align-items: center;
 }
+.container {
+    width: 1360px;
+    margin-left: auto;
+    margin-right: auto;
+}
 @keyframes spinner-loader {
     to {
        transform: rotate(360deg);
     }
 }
+/* Style override for select field ant design - starts */
+.ant-select .ant-select-selector {
+    color: #0275F5;
+    border-color: #0275F5 !important;
+    border-radius: 6px
+}
+.ant-select-arrow svg path {
+    fill: #266CD3
+}
+.hidden-selected-value .ant-select-selector, .hidden-selected-value .ant-select-arrow  svg path {
+    color: #fff;
+    fill: #fff;
+}
+/* Style override for select field ant design - ends */
+
+/* Style override for table ant design - starts */
+.ant-table-thead .ant-table-cell {
+    font-size: 14px;
+    font-weight: 500 !important;
+    background: none !important;
+}
+.ant-table-thead .ant-table-cell::before {
+    display: none;
+}
+.ant-table-tbody .ant-table-cell {
+    font-size: 14px;
+    font-weight: 300 !important;
+}
+/* Style override for table ant design - ends */
+
+/* Style override for links ant design - starts */
+.ant-btn-link {
+    color: #3EABFD
+}
+.ant-btn-primary, .ant-btn-default {
+    font-weight: 500;
+    padding: 4px 12px;
+    font-size: 14px;
+    height: 40px
+}
+/* Style override for links ant design - ends */
+
+/* Style override for message ant design - starts */
+.ant-message-notice-content {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+}
+.ant-message-notice-error .ant-message-notice-content {
+    color: #fff;
+    background: #FF4D4F !important;
+}
+.ant-message-notice-success .ant-message-notice-content {
+    color: #1A1A1A;
+    background: #FFFFFF !important;
+}
+.ant-message-notice-content  .anticon-close-circle {
+    display: none;
+}
+/* Style override for message ant design - ends */

@@ -1,20 +1,25 @@
+import Image from 'next/image';
 import { useState } from "react";
 import useSWR from "swr";
 import { useRecoilValue } from "recoil";
-import { Button, Table, Row, Col, Typography, Descriptions } from "antd";
-import { SwapOutlined } from "@ant-design/icons";
+import { Table, Tooltip, Flex, Space, Tag } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { formatDistanceToNow, parseISO, format } from "date-fns";
-import { middleEllipsis } from "../../../utils/middleEllipsis";
+import { endEllipsis, middleEllipsis } from "../../../utils/utils";
 import { List } from "../../../app/transactions/route";
 import { explorerUrlState } from "../../../state/selector";
 import { addressState } from "../../../state";
+import PaperLayout from '../../common/paperLayout'
+import CopyToClipboard from '../../common/copyToClipboard'
+import rightArrowImage from '../../../assets/icon/right-arrow.svg';
+import rightArrowSuccessImage from '../../../assets/icon/right-arrow-success.svg';
 import useStyles from "../style";
 
 const AllTransactions = () => {
   const classes = useStyles;
   const address = useRecoilValue(addressState);
   const explorerUrl = useRecoilValue(explorerUrlState);
+  
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     pageSize: 10,
     current: 1,
@@ -45,19 +50,24 @@ const AllTransactions = () => {
       key: "txId",
       render: (text) => (
         <a href={`${explorerUrl}/tx/${text}`} target="_blank">
-          {middleEllipsis(text)}
+          {endEllipsis(text)}
         </a>
       ),
+      width: 190
     },
     {
       title: "Method",
       dataIndex: "method",
       key: "method",
+      render: (text) => (
+        <Tag style={classes.blockTag}>{text}</Tag>
+      ),
+      width: 190
     },
     {
       title: () => (
         <span onClick={() => setShowDate((show) => !show)}>
-          {showDate ? "Date Time" : "Age"} <SwapOutlined />
+          {showDate ? "Date Time" : "Age"}
         </span>
       ),
       dataIndex: "time",
@@ -77,9 +87,19 @@ const AllTransactions = () => {
       dataIndex: "addressFrom",
       key: "addressFrom",
       render: (text, record) => (
-        <span>
-          {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
-        </span>
+        <Flex flex={1}>
+          <Flex flex={1}>
+            <Space align='center'>
+              <Tooltip color='#014795' title={`${record.symbol}_${text}_${record.relatedChainId}`}>
+              <a href={`${explorerUrl}/address/${record.symbol}_${text}_${record.relatedChainId}`} target="_blank">
+                {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
+              </a>
+              </Tooltip>
+            <CopyToClipboard message={`${record.symbol}_${text}_${record.relatedChainId}`}/>
+            </Space>
+          </Flex>
+          <Flex flex={1} justify='center'><Image src={rightArrowSuccessImage} alt="Copy to the clipboard"/></Flex>
+        </Flex>
       ),
     },
     {
@@ -87,47 +107,39 @@ const AllTransactions = () => {
       dataIndex: "addressTo",
       key: "addressTo",
       render: (text, record) => (
-        <span>
-          {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
-        </span>
+        <Space align='center'><Tooltip color='#014795' title={`${record.symbol}_${text}_${record.relatedChainId}`}>
+          <a href={`${explorerUrl}/address/${record.symbol}_${text}_${record.relatedChainId}`} target="_blank">
+            {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
+          </a>
+        </Tooltip>
+        <CopyToClipboard message={`${record.symbol}_${text}_${record.relatedChainId}`}/>
+        </Space>
       ),
     },
     {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      align: 'right'
     },
   ];
 
   return (
-    <>
-      <Row align='middle' style={{margin: '24px 0 8px 0'}}>
-        <Col span={12}>
-          <Typography.Text style={classes.title}>All Transactions</Typography.Text>
-        </Col>
-        <Col span={12} style={{textAlign: 'right'}}>
-          <Button
-            onClick={() => {
-              setPagination((pagination) => ({ ...pagination, current: 1 }));
-              mutate();
-            }}
-          >
-            Refresh
-          </Button>
-        </Col>
-      </Row>
+    <PaperLayout title="All Transactions" externalClasses={classes.paperlayoutContainer}>
       <Table
         columns={columns}
-        dataSource={data?.list}
+        dataSource={data?.list.slice(0, 8)}
         rowKey={(record) => record.txId}
-        pagination={pagination}
+        pagination={false}
         loading={isValidating}
         onChange={(pagination) => setPagination(pagination)}
         size="middle"
-        bordered
       />
-    </>
+      <Flex justify='center' align='center' style={classes.btnContainer}>
+        <a style={classes.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank">
+          View all transactions on AELF Explorer
+          </a>&nbsp;<Image src={rightArrowImage} alt="Copy to the clipboard"/>
+      </Flex>
+    </PaperLayout>
   );
 };
 

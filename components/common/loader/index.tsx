@@ -4,9 +4,9 @@ interface LoaderProps {
   message?: string;
 }
 
-function Loader({
+const Loader = ({
   message
-}: LoaderProps) {
+}: LoaderProps) => {
   const classes = useStyles;
 
   return (

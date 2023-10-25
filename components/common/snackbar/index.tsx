@@ -17,7 +17,7 @@ const Snackbar = ({
                     messageApi.error(message, 7);
                     break;
                 case SnackbarType.SUCCESS:
-                    messageApi.success(message, 7);
+                    messageApi.success(message, 700);
                     break;
                 case SnackbarType.INFO:
                     messageApi.info(message, 7);
