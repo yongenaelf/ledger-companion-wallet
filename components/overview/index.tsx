@@ -71,10 +71,11 @@ function Overview({
           verifying={state.verifying}
           triggerVerification={() => fetchAddress(true)}
         />
-        <Details label='Account' value='Account 1'/>
-        <Details label='Address' value={<>ELF_{address}_{chain}&nbsp;&nbsp;
-        <CopyToClipboard message={`ELF_${address}_${chain}`}/>
-        </>}/>
+        <div style={classes.detailsContainer}>
+          <Details label='Address' value={<>ELF_{address}_{chain}&nbsp;&nbsp;
+            <CopyToClipboard message={`ELF_${address}_${chain}`}/>
+          </>}/>
+        </div>
       </div>
     </PaperLayout>
   );

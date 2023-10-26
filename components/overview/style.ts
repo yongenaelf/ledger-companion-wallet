@@ -55,9 +55,13 @@ const useStyles = {
   },
   accountLayout: {
     background: '#F8F8F8',
-    padding: '16px 24px 14px 24px',
+    padding: '16px 24px 2px 24px',
     borderRadius: '4px',
     position: 'relative' as const,
+  },
+  detailsContainer: {
+    width: '70%',
+    wordWrap: 'break-word' as const
   }
 }
 

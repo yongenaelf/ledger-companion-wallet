@@ -20,7 +20,6 @@ const DashboardPage = ({
     const [address, setAddress] = useRecoilState(addressState);
     const chain = useRecoilValue(chainState);
     const {Content} = Layout;
-    console.log("address outside: ", address);
     return (
         <Layout className="layout-container">
             {!isDeviceLocked && <Header showNetwork={Boolean(transport)} externalClasses={{container: classes.stickyHeader}}/>}

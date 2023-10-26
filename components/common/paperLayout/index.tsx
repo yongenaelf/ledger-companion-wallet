@@ -17,7 +17,7 @@ const PaperLayout = ({
     const classes = useStyles;
 
     return (
-        <Card bodyStyle={classes.widgetLayout} style={externalClasses}>
+        <Card bodyStyle={classes.widgetLayout} style={{...externalClasses, minHeight: '325px'}}>
             <Typography.Text style={classes.title}>{title}</Typography.Text>
             {subtitle && <div style={classes.subtitle}>{subtitle}</div>}
             <div style={classes.content}>{children}</div>

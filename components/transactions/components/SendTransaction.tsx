@@ -48,6 +48,7 @@ function SendTransaction({
   const [showTransferVerifyModal, setShowTransferVerifyModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showFailureModal, setShowFailureModal] = useState(false);
   const aelfInstance = useAElf();
   const rpcUrl = useRecoilValue(rpcUrlState);
   const explorerUrl = useRecoilValue(explorerUrlState);
@@ -94,6 +95,7 @@ function SendTransaction({
 
   const onClose = () => {
     setShowSuccessModal(false);
+    setShowFailureModal(false);
   };
 
   const onConfirm = async () => {
@@ -132,7 +134,7 @@ function SendTransaction({
 
       if (!Success) {
         const msg = "Insufficient funds for transaction fee.";
-        setSnackbar.error(msg);
+        setShowFailureModal(true)
         throw new Error(msg);
       }
 
@@ -223,10 +225,11 @@ function SendTransaction({
             >
               <InputNumber
                 style={classes.inputfield}
+                min={1e-8 as any}
                 formatter={(value) =>
                   `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 }
-                parser={(value) => value!.replace(/\$\s?|(,*)/g, "")}
+                parser={(value) => value.replace(/[\s$,]/g, "")}
               />
             </Form.Item>
           </Col>
@@ -243,7 +246,6 @@ function SendTransaction({
                 {
                   async validator(rule, value) {
                     const alphanumericPattern = /^[a-zA-Z0-9 ]+$/;
-                    console.log(alphanumericPattern.test(value))
                     if (!alphanumericPattern.test(value)) {
                       throw new Error('Oops! Only alphanumeric characters and standard punctuation are allowed!');
                     }
@@ -272,6 +274,17 @@ function SendTransaction({
           status="success"
           title="Successful transaction"
           subTitle={<div style={{marginTop: '20px'}}>TransactionId: <a href={`${explorerUrl}/tx/${transactionId}`} target="_blank">{transactionId}</a></div>}
+        />
+      </Modal>
+      <Modal 
+        onCancel={onClose}
+        open={showFailureModal} 
+        centered width={442} 
+        footer={() => <Button type="primary" onClick={onClose} block>Close</Button>}>
+        <Result
+          status="error"
+          title="Transaction Failure"
+          subTitle={<div style={{marginTop: '20px', color: '#FC493A'}}>Transaction fee is insufficient.</div>}
         />
       </Modal>
       <TransferVerification 
