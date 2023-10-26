@@ -6,6 +6,6 @@ export const validateAddress = (addr: string) => {
   try {
     decodeAddressRep(addr);
   } catch (err) {
-    throw new Error("Invalid address.");
+    throw new Error("Oops! Please input a valid AELF network address!");
   }
 };

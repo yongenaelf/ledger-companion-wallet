@@ -28,6 +28,18 @@ a {
     margin-left: auto;
     margin-right: auto;
 }
+.p0 {
+  padding: 0
+}
+.mainnetwork-header {
+    background: #1d2a51 !important;
+}
+.mainnetwork-header .header-title {
+    color: #fff;
+}
+.testnetwork-header {
+    background: #ffffff !important;
+}
 @keyframes spinner-loader {
     to {
        transform: rotate(360deg);
@@ -45,6 +57,14 @@ a {
 .hidden-selected-value .ant-select-selector, .hidden-selected-value .ant-select-arrow  svg path {
     color: #fff;
     fill: #fff;
+}
+.select-field-icon-wrapper .ant-select-selector {
+    background: transparent !important;
+}
+.select-field-icon-wrapper .ant-select-selection-search, 
+.select-field-icon-wrapper .ant-select-selection-item,
+.select-field-icon-wrapper .ant-select-arrow {
+    opacity: 0;
 }
 /* Style override for select field ant design - ends */
 
@@ -71,22 +91,29 @@ a {
     font-weight: 500;
     padding: 4px 12px;
     font-size: 14px;
-    height: 40px
+    height: 40px;
+    cursor: pointer;
 }
 /* Style override for links ant design - ends */
 
 /* Style override for message ant design - starts */
 .ant-message-notice-content {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+}
+.ant-message-custom-content {
+    display: flex;
 }
 .ant-message-notice-error .ant-message-notice-content {
     color: #fff;
     background: #FF4D4F !important;
+    font-weight: 400;
+    display: flex;
 }
 .ant-message-notice-success .ant-message-notice-content {
     color: #1A1A1A;
     background: #FFFFFF !important;
+    font-weight: 400;
 }
 .ant-message-notice-content  .anticon-close-circle {
     display: none;

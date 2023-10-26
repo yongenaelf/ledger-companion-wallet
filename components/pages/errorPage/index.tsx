@@ -1,17 +1,15 @@
 import { Flex, Layout } from 'antd';
-import Transport from "@ledgerhq/hw-transport";
 import Header from '../../common/header';
 import Footer from '../../common/footer';
-import ConnectDevice from "../../connectDevice";
 import useStyles from "./style";
 
-interface HomePageProps {
-    onSelectDevice: (transport: Transport) => void;
+interface ErrorPageProps {
+    children: React.ReactNode;
 }
 
-const HomePage = ({
-    onSelectDevice,
-}: HomePageProps) => {
+const ErrorPage = ({
+    children,
+}: ErrorPageProps) => {
     const classes = useStyles;
     const {Content} = Layout;
     return (
@@ -25,7 +23,7 @@ const HomePage = ({
                             header: classes.headerContainer
                         }}/>
                         <Content style={classes.contentContainer}>
-                            <ConnectDevice {...{onSelectDevice}}/>
+                            {children}
                         </Content>
                         <Footer/>
                     </Layout>
@@ -37,6 +35,4 @@ const HomePage = ({
     )
 };
 
-export default HomePage;
-
-// 
+export default ErrorPage;

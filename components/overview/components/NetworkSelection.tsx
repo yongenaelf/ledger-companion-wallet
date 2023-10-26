@@ -31,8 +31,10 @@ function NetworkSelection() {
             setChain(e);
           }}
         />
-        <div style={classes.selectFieldIconWrapper}>
-          <Image src={globeImage} alt="Wallet" style={classes.selectFieldIcon}/>
+        <div style={classes.selectFieldIconWrapper} className='select-field-icon-wrapper'>
+          <div style={classes.selectFieldIconCover}>
+            <Image src={globeImage} alt="Wallet" style={classes.selectFieldIcon}/>
+          </div>
           <Select
             style={{...classes.selectField, ...classes.SelectFieldWithIcon}}
             className='hidden-selected-value'

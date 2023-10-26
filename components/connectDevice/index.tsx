@@ -9,6 +9,7 @@ interface ConnectDeviceProps {
 function ConnectDevice({
   onSelectDevice,
 }: ConnectDeviceProps) {
+
   const connectUSBDevice = async () => {
     const transport = await TransportWebUSB.create();
     onSelectDevice(transport);
@@ -26,3 +27,7 @@ function ConnectDevice({
 }
 
 export default ConnectDevice;
+
+/**
+ * 
+ */

@@ -11,7 +11,7 @@ const useStyles = {
   btn: {
     color: '#3EABFD',
     fontSize: 16,
-    fontWeight: 500
+    fontWeight: 400
   },
   floatLink: {
     position: 'absolute' as const,
@@ -36,6 +36,17 @@ const useStyles = {
     margin: 0,
     fontSize: 20,
     fontWeight: 500
+  },
+  errorBlock: {
+    display: 'block' as const,
+    marginTop: '24px'
+  },
+  modalInfo: {
+    color: '#BFBFBF',
+    fontSize: '12px',
+    fontWeight: 400,
+    marginTop: '-8px',
+    display: 'block',
   }
 }
 export default useStyles;

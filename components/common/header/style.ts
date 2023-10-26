@@ -1,6 +1,5 @@
 const useStyles = {
   headerContainer: {
-    background: '#fff',
     height: 64,
     width: '100%',
   },
@@ -8,7 +7,7 @@ const useStyles = {
     display: 'flex',
     alignItems: 'center',
     background: '#fff',
-    padding: '0 20px',
+    padding: '0 24px',
     height: 64,
     width: '1360px',
     margin: '0 auto',
@@ -20,8 +19,9 @@ const useStyles = {
     display: 'flex',
   },
   title: {
-    fontSize: 24,
-    marginLeft: '24px'
+    fontSize: 22,
+    marginLeft: '12px',
+    marginTop: '4px'
   },
 }
 export default useStyles;

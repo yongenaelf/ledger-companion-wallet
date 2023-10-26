@@ -9,7 +9,6 @@ interface CardProps {
   buttonLabel: string;
   onClickButton: () => void;
   enablePrimaryBtn?: boolean;
-  isCentered?: boolean;
   isError?: boolean;
 }
 const Card = ({
@@ -18,13 +17,12 @@ const Card = ({
   enablePrimaryBtn,
   buttonLabel,
   onClickButton,
-  isCentered,
   isError,
 }: CardProps) => {
   const classes = useStyles;
 
   return (
-    <AntCard style={isCentered ? {...classes.card, ...classes.cardCenter} : classes.card}>
+    <AntCard style={classes.card}>
       <div style={classes.cardContentContainer}>
         <Image src={walletImage} alt="Wallet"/>
         <Typography.Title style={classes.cardTitle}>{title}</Typography.Title>

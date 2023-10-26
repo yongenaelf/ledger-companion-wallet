@@ -20,12 +20,20 @@ const useStyles = {
     position: 'relative' as const
   },
   selectFieldIcon: {
-    position: 'absolute' as const,
-    top: '21px',
-    left: '12px',
-    zIndex: 1,
     fontSize: 22,
+  },
+  selectFieldIconCover: {
+    position: 'absolute' as const,
+    top: '12px',
+    left: 0,
+    height: '40px',
+    width: '45px',
     cursor: 'pointer',
+    display: 'inline-flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: '8px',
+    background: '#fff',
   },
   title: {
     fontWeight: 600,

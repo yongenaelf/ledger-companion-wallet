@@ -1,11 +1,12 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import { message as messagePopper } from "antd";
+import { CloseOutlined } from '@ant-design/icons';
 import {SnackbarContextType, SnackbarType} from '../../../context/snackbarContext';
 
 export type SnackbarProps = SnackbarContextType;
 
 const Snackbar = ({
-    message,
+    message = '',
     type,
 }: SnackbarProps) => {
     const [messageApi, contextHolder] = messagePopper.useMessage();
@@ -14,22 +15,43 @@ const Snackbar = ({
         if (message) {
             switch(type) {
                 case SnackbarType.ERROR:
-                    messageApi.error(message, 7);
+                    showMessageWithCloseIcon(message, 'error');
                     break;
                 case SnackbarType.SUCCESS:
-                    messageApi.success(message, 700);
+                    showMessageWithCloseIcon(message, 'success');
                     break;
                 case SnackbarType.INFO:
-                    messageApi.info(message, 7);
+                    showMessageWithCloseIcon(message, 'info');
                     break;
                 case SnackbarType.WARNING:
-                    messageApi.warning(message, 7);
+                    showMessageWithCloseIcon(message, 'warning');
                     break;
               }
         }
-    }, [message])
-    
-    return (<>{contextHolder}</>)
-}
+    });
+
+    const showMessageWithCloseIcon = (message, messageType) => {
+        const closeIcon = (
+            <CloseOutlined
+                onClick={() => {
+                    messageApi.destroy();
+                }}
+                style={{marginLeft: '8px', fontSize: 13}}
+            />
+        );
+
+        messageApi.open({
+            content: (
+                <div>
+                    {message}{ messageType !== 'success' && closeIcon}
+                </div>
+            ),
+            type: messageType,
+            duration: 700,
+        });
+    };
+
+    return contextHolder;
+};
 
 export default Snackbar;

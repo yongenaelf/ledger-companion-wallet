@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import { Component } from "react";
 import { Row, Col } from "antd";
 import Transport from "@ledgerhq/hw-transport";
@@ -6,6 +7,8 @@ import Overview from "../overview";
 import SendTransaction from "./components/SendTransaction";
 import AllTransactions from "./components/AllTransactions";
 import Loader from '../common/loader';
+import ErrorPage from '../pages/errorPage';
+import {HD_DERIVATION_PATH} from '../../utils/constants';
 import Card from '../common/card';
 
 const delay = (ms: number) => new Promise((success) => setTimeout(success, ms));
@@ -15,6 +18,7 @@ class Transactions extends Component<{
   chain: string;
   address: string;
   setAddress: (addr: string) => void;
+  setDeviceLocked: Dispatch<SetStateAction<boolean>>;
 }> {
   unmounted: boolean;
 
@@ -42,22 +46,11 @@ class Transactions extends Component<{
     this.setState({ verifying: !!verify });
     try {
       const aelf = new AppAelf(transport);
-      const path = "m/44'/1616'/0'/0/0"; // HD derivation path
+      const path = HD_DERIVATION_PATH; // HD derivation path
       const { publicKey, address } = await aelf.getAddress(path, verify);
       this.props.setAddress(address);
       this.setState({ publicKey, error: null });
     } catch (error) {
-      if (verify) {
-        // in this case, user has rejected the verification
-
-        this.setState({ error: "Rejected the address verification." });
-        return;
-      }
-
-      // in this case, user is likely not on AElf app
-      console.warn(
-        `A problem occurred, make sure to open the AElf application on your Ledger. Failed: ${error.message}`
-      );
       this.setState({ error });
       return null;
     } finally {
@@ -69,17 +62,20 @@ class Transactions extends Component<{
     const { error } = this.state;
     const { address, transport, chain } = this.props;
 
-    if (error)
-      return (
-        <Card 
-          title='Connect with Device' 
-          content='Please unlock your device.' 
-          isError
-          buttonLabel='Retry' 
-          isCentered
-          onClickButton={() => this.fetchAddress()}
-        />
-      );
+    if (error) {
+      this.props.setDeviceLocked(true);
+        return (
+          <ErrorPage><Card 
+            title='Connect with Device' 
+            content='Please unlock your device.' 
+            isError
+            buttonLabel='Retry' 
+            onClickButton={() => this.fetchAddress()}
+          /></ErrorPage>)
+      } else {
+        this.props.setDeviceLocked(false);
+      }
+    
 
     if (!address) return <Loader message="Loading address..."/>;
 

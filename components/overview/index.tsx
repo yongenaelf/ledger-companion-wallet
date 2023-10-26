@@ -9,6 +9,8 @@ import PaperLayout from '../common/paperLayout';
 import CopyToClipboard from '../common/copyToClipboard';
 import AddressVerification from '../transactions/components/AddressVerification';
 import Details from '../common/details';
+import useSnackbar from '../../utils/snackbar';
+import {HD_DERIVATION_PATH} from '../../utils/constants';
 import useStyles from './style';
 
 interface OverviewProps {
@@ -23,11 +25,12 @@ function Overview({
   transport,
 }: OverviewProps) {
   const classes = useStyles;
+  
   const [state, setState] = useState({
-    error: null,
     publicKey: "",
     verifying: false
   });
+  const setSnackbar = useSnackbar();
   const explorerUrl = useRecoilValue(explorerUrlState);
   const { data: balance } = useBalance();
 
@@ -35,23 +38,20 @@ function Overview({
     setState({...state, verifying: !!verify});
     try {
       const aelf = new AppAelf(transport);
-      const path = "m/44'/1616'/0'/0/0"; // HD derivation path
-      const { publicKey, address } = await aelf.getAddress(path, verify);
-      this.props.setAddress(address);
-      setState({ ...state, publicKey, error: null });
+      const path = HD_DERIVATION_PATH; // HD derivation path
+      const { publicKey } = await aelf.getAddress(path, verify);
+      setState({ ...state, publicKey });
+      if (verify) {
+        // in this case, user has verfied the address successfully
+        setSnackbar.success("Address verified successfully.");
+      }
     } catch (error) {
       if (verify) {
         // in this case, user has rejected the verification
-
-        setState({...state, error: "Rejected the address verification." });
+        setSnackbar.error("Rejected the address verification.");
         return;
       }
-
-      // in this case, user is likely not on AElf app
-      console.warn(
-        `A problem occurred, make sure to open the AElf application on your Ledger. Failed: ${error.message}`
-      );
-      setState({...state, error });
+      setSnackbar.error("Something went wrong. Please try again later.");
       return null;
     } finally {
       setState({...state, verifying: false });
@@ -72,7 +72,7 @@ function Overview({
           triggerVerification={() => fetchAddress(true)}
         />
         <Details label='Account' value='Account 1'/>
-        <Details label='Address' value={<>ELF_${address}_${chain}&nbsp;&nbsp;
+        <Details label='Address' value={<>ELF_{address}_{chain}&nbsp;&nbsp;
         <CopyToClipboard message={`ELF_${address}_${chain}`}/>
         </>}/>
       </div>

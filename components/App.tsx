@@ -46,8 +46,8 @@ function App() {
     >
       <SnackbarContext.Provider value={value}>
         <Snackbar {...value.snackbar}/>
-        {!transport ? 
-            <HomePage onSelectDevice={onSelectDevice} transport={transport}/> : 
+        {(!transport) ? 
+            <HomePage onSelectDevice={onSelectDevice}/> : 
             <DashboardPage transport={transport}/>
         }
       </SnackbarContext.Provider>

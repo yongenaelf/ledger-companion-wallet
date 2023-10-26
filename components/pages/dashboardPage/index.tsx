@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import { Layout } from 'antd';
 import { useRecoilState, useRecoilValue } from "recoil";
 import Transport from "@ledgerhq/hw-transport";
@@ -14,19 +15,22 @@ interface DashboardPageProps {
 const DashboardPage = ({
     transport,
 }: DashboardPageProps) => {
+    const [isDeviceLocked, setDeviceLocked] = useState(false);
     const classes = useStyles;
     const [address, setAddress] = useRecoilState(addressState);
     const chain = useRecoilValue(chainState);
     const {Content} = Layout;
+    console.log("address outside: ", address);
     return (
         <Layout className="layout-container">
-            <Header transport={transport} externalClasses={classes.stickyHeader}/>
-            <Content className={['layout-content'].join(' ').trim()}>
+            {!isDeviceLocked && <Header showNetwork={Boolean(transport)} externalClasses={{container: classes.stickyHeader}}/>}
+            <Content className={['layout-content', isDeviceLocked && 'p0'].join(' ').trim()}>
                 <Transactions
                     transport={transport}
                     chain={chain}
                     address={address}
                     setAddress={setAddress}
+                    setDeviceLocked={setDeviceLocked}
                 />
             </Content>
             <Footer/>

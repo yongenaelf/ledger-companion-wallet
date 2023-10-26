@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Input, InputNumber, Button, Modal, Result, Form, Row, Col, Typography, Tooltip } from "antd";
+import { Input, InputNumber, Button, Modal, Result, Form, Row, Col, Tooltip } from "antd";
 import BigNumber from "bignumber.js";
 import AppAelf from "../../../utils/Elf";
 import { transfer } from "../../../utils/transaction";
@@ -19,6 +19,7 @@ import {
 import { explorerUrlState, rpcUrlState } from "../../../state/selector";
 import { useBalance } from "../../../hooks/useBalance";
 import PaperLayout from '../../common/paperLayout';
+import {HD_DERIVATION_PATH} from '../../../utils/constants';
 import useStyles from "../style";
 
 interface SendTransactionProps {
@@ -55,9 +56,8 @@ function SendTransaction({
   const signAndSendTransaction = async (rawTx: string) => {
     try {
       const aelf = new AppAelf(transport);
-      const path = "m/44'/1616'/0'/0/0"; // HD derivation path
+      const path = HD_DERIVATION_PATH; // HD derivation path
       const { signature } = await aelf.signTransaction(path, rawTx);
-
       if (signature.length === 0) {
         setSnackbar.error("User rejected the transaction");
         throw new Error("User rejected the transaction.");
@@ -85,7 +85,6 @@ function SendTransaction({
       return data;
     } catch (error) {
       // in this case, user is likely not on AElf app
-      console.warn("Failed: " + error.message);
       setSnackbar.error(error.message);
       return { TransactionId: "" };
     } finally {
@@ -172,8 +171,17 @@ function SendTransaction({
         <Row>
           <Col span={24}>
             <Form.Item
+              colon={false}
               labelAlign='left'
-              label="To"
+              label={
+                <>To:&nbsp;&nbsp;&nbsp;<Tooltip color='#014795' title="An aelf address contains an 'ELF_' prefix and a suffix according to the chain you intend to interact with - '_AELF' for the main chain">
+                  <InfoCircleOutlined
+                    style={{
+                      color: '#5C6876',
+                    }}
+                  />
+                </Tooltip></>
+              }
               name="to"
               rules={[
                 {
@@ -187,19 +195,11 @@ function SendTransaction({
                   },
                 },
               ]}
+              labelCol={{span: 3}}
             >
               <Input 
               style={classes.inputfield}
-              allowClear
-              suffix={
-                <Tooltip color='#014795' title="An aelf address contains an 'ELF_' prefix and a suffix according to the chain you intend to interact with - '_AELF' for the main chain">
-                  <InfoCircleOutlined
-                    style={{
-                      color: 'rgba(0,0,0,.45)',
-                    }}
-                  />
-                </Tooltip>
-              } />
+              allowClear/>
             </Form.Item>
           </Col>
         </Row>
@@ -215,10 +215,11 @@ function SendTransaction({
                   validator: async (_rule, value) => {
                     if (value <= 0) throw new Error("Amount must be more than 0");
                     else if (value > balance)
-                      throw new Error("Insufficient amount in account balance");
+                      throw new Error("Insufficient Balance.");
                   },
                 },
               ]}
+              labelCol={{span: 3}}
             >
               <InputNumber
                 style={classes.inputfield}
@@ -234,8 +235,9 @@ function SendTransaction({
           <Col span={24}>
             <Form.Item
               labelAlign='left'
-              label="Memo"
+              label={<>&nbsp;&nbsp;&nbsp;Memo</>}
               name="memo"
+              labelCol={{span: 3}}
               rules={[
                 { max: 64, message: "Max length 64 characters." },
                 {
@@ -269,7 +271,7 @@ function SendTransaction({
         <Result
           status="success"
           title="Successful transaction"
-          subTitle={<>TransactionId: <a href={`${explorerUrl}/tx/${transactionId}`} target="_blank">{transactionId}</a></>}
+          subTitle={<div style={{marginTop: '20px'}}>TransactionId: <a href={`${explorerUrl}/tx/${transactionId}`} target="_blank">{transactionId}</a></div>}
         />
       </Modal>
       <TransferVerification 

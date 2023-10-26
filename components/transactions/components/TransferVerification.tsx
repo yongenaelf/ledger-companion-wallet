@@ -1,5 +1,7 @@
 import { Button, Modal, Typography, Flex } from "antd";
+import { useState, useEffect } from "react";
 import FormField from '../../common/formField';
+import { useBalance } from "../../../hooks/useBalance";
 import useStyles from '../style';
 
 interface TransferFormData {
@@ -21,7 +23,15 @@ const TransferVerification = ({
   data,
 }: TransferVerificationProps) => {
   const classes = useStyles;
+  const { data: balance } = useBalance();
+  const [isInsufficient, setInsufficient] = useState<boolean>(false);
+  const fees = 4.44444444;
   
+  useEffect(() => {
+    if (balance) {
+      setInsufficient((4.44444444 + Number(data.amount)) > Number(balance))
+    }
+  }, [balance]);
   return (
     <Modal
       open={isOpen}
@@ -32,13 +42,15 @@ const TransferVerification = ({
       width={672}
       footer={() => (<Flex flex={1} gap={12}>
         <Flex flex={1}><Button onClick={onCancel} block>Cancel</Button></Flex>
-        <Flex flex={1}><Button type="primary" onClick={onConfirm} block>Confirm</Button></Flex>
+        <Flex flex={1}><Button type="primary" onClick={onConfirm} block disabled={isInsufficient}>Confirm</Button></Flex>
       </Flex>)}
       >
-        <Typography.Text type="secondary">Please verify the below transfer details before clicking confirm?</Typography.Text>
+        <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from $chain_name to $chain_name. Double-check to ensure it is correct!</Typography.Text>
+        {isInsufficient && <Typography.Text style={classes.errorBlock} type='danger'>Your balance might be insufficient to cover the transaction fee.</Typography.Text>}
         <FormField label="To">{data.to}</FormField>
-        <FormField label="Amount">{data.amount}</FormField>
+        <FormField label="Amount">{data.amount} ELF</FormField>
         <FormField label="Memo">{data.memo}</FormField>
+        <FormField label="Transaction Fee">{fees} ELF</FormField>
     </Modal>
   );
 };
