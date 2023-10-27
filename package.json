@@ -29,6 +29,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest",
     "generate": "pbjs -t static-module -w commonjs -o ./utils/compiled.js ./utils/message.proto"
   },
   "devDependencies": {
@@ -46,6 +47,7 @@
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
     "typescript": "latest",
-    "url": "^0.11.1"
+    "url": "^0.11.1",
+    "vitest": "^0.34.6"
   }
 }
