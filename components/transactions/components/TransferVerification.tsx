@@ -1,9 +1,10 @@
 import { Button, Modal, Typography, Flex } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import FormField from '../../common/formField';
-import { chainState } from "../../../state";
+import { chainState, ChainStateEnum } from "../../../state";
 import { useBalance } from "../../../hooks/useBalance";
+import {CHAIN_OPTIONS} from '../constants';
 import useStyles from '../style';
 
 interface TransferFormData {
@@ -30,14 +31,23 @@ const TransferVerification = ({
   const chain = useRecoilValue(chainState);
   const fees = 4.44444444;
   const getFormattedAddress = (address: string) => {
-    if (!address.startsWith("ELF")) {
+    if (!address.startsWith("ELF_")) {
       address = "ELF_".concat(address);
     }
-    if (!address.endsWith(chain)) {
-      address = address.concat("_", chain);
+
+    if (!address.endsWith(`_${ChainStateEnum.AELF}`) && !address.endsWith(`_${ChainStateEnum.tDVW}`)) {
+      address = address.concat(`_${chain}`);
     }
     return address;
   };
+
+  const getToChain = (formattedAddress: string) => {
+    if (formattedAddress.endsWith(`_${ChainStateEnum.AELF}`)) {
+      return CHAIN_OPTIONS[ChainStateEnum.AELF];
+    } else if (formattedAddress.endsWith(`_${ChainStateEnum.tDVW}`)) {
+      return CHAIN_OPTIONS[ChainStateEnum.tDVW];
+    } 
+  }
 
   /* useEffect(() => {
     if (balance) {
@@ -57,7 +67,7 @@ const TransferVerification = ({
         <Flex flex={1}><Button type="primary" onClick={onConfirm} block disabled={isInsufficient}>Confirm</Button></Flex>
       </Flex>)}
       >
-        <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from $chain_name to $chain_name. Double-check to ensure it is correct!</Typography.Text>
+        {!getFormattedAddress(data.to).endsWith(chain) && <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from {CHAIN_OPTIONS[chain]} to {getToChain(getFormattedAddress(data.to))}. Double-check to ensure it is correct!</Typography.Text>}
         {isInsufficient && <Typography.Text style={classes.errorBlock} type='danger'>Your balance might be insufficient to cover the transaction fee.</Typography.Text>}
         <FormField label="To">{getFormattedAddress(data.to)}</FormField>
         <FormField label="Amount">{data.amount} ELF</FormField>
