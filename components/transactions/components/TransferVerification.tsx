@@ -1,6 +1,8 @@
 import { Button, Modal, Typography, Flex } from "antd";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import FormField from '../../common/formField';
+import { chainState } from "../../../state";
 import { useBalance } from "../../../hooks/useBalance";
 import useStyles from '../style';
 
@@ -25,14 +27,14 @@ const TransferVerification = ({
   const classes = useStyles;
   const { data: balance } = useBalance();
   const [isInsufficient, setInsufficient] = useState<boolean>(false);
+  const chain = useRecoilValue(chainState);
   const fees = 4.44444444;
-  
   const getFormattedAddress = (address: string) => {
     if (!address.startsWith("ELF")) {
       address = "ELF_".concat(address);
     }
-    if (!address.endsWith("AELF")) {
-      address = address.concat("_AELF");
+    if (!address.endsWith(chain)) {
+      address = address.concat("_", chain);
     }
     return address;
   };
