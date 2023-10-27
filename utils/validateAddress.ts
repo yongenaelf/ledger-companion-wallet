@@ -1,5 +1,6 @@
 import AElf from "aelf-sdk";
 import {ChainStateEnum} from "../state";
+import {replaceAll} from "../utils/utils";
 
 const { decodeAddressRep } = AElf.utils;
 
@@ -17,8 +18,3 @@ export const validateAddress = (addr: string) => {
     throw new Error("Oops! Please input a valid AELF network address!");
   }
 };
-
-const replaceAll = (str: string, find: string, replace: string) => {
-  const regex = new RegExp(find, 'g');
-  return str.replace(regex, replace);
-}

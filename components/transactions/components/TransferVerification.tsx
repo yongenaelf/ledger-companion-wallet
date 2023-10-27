@@ -1,9 +1,14 @@
 import { Button, Modal, Typography, Flex } from "antd";
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
+import BigNumber from "bignumber.js";
 import FormField from '../../common/formField';
-import { chainState, ChainStateEnum } from "../../../state";
+import { transfer } from "../../../utils/transaction";
+import { useAElf } from "../../../hooks/useAElf";
+import { chainState, addressState } from "../../../state";
+import { fetchMainAddress, getChainFromAddress, getFormattedAddress } from "../../../utils/utils";
 import { useBalance } from "../../../hooks/useBalance";
+import { rpcUrlState } from "../../../state/selector";
 import {CHAIN_OPTIONS} from '../constants';
 import useStyles from '../style';
 
@@ -18,42 +23,73 @@ interface TransferVerificationProps {
   onConfirm: () => void;
   onCancel: () => void;
   data: TransferFormData;
+  tokenContract: {
+    multiTokenContract: any;
+    tokenContractAddress: any;
+  };
 }
 const TransferVerification = ({
   isOpen,
   onConfirm,
   onCancel,
   data,
+  tokenContract,
 }: TransferVerificationProps) => {
   const classes = useStyles;
   const { data: balance } = useBalance();
+  const address = useRecoilValue(addressState);
+  const rpcUrl = useRecoilValue(rpcUrlState);
   const [isInsufficient, setInsufficient] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [fees, setFees] = useState<number>(0);
   const chain = useRecoilValue(chainState);
-  const fees = 4.44444444;
-  const getFormattedAddress = (address: string) => {
-    if (!address.startsWith("ELF_")) {
-      address = "ELF_".concat(address);
-    }
+  const aelfInstance = useAElf();
 
-    if (!address.endsWith(`_${ChainStateEnum.AELF}`) && !address.endsWith(`_${ChainStateEnum.tDVW}`)) {
-      address = address.concat(`_${chain}`);
-    }
-    return address;
-  };
+  const calculateFees = async () => {
+    const { to, amount, memo } = data;
+    try {
+      if (!tokenContract) throw new Error("no contract");
+      const { tokenContractAddress } = tokenContract;
 
-  const getToChain = (formattedAddress: string) => {
-    if (formattedAddress.endsWith(`_${ChainStateEnum.AELF}`)) {
-      return CHAIN_OPTIONS[ChainStateEnum.AELF];
-    } else if (formattedAddress.endsWith(`_${ChainStateEnum.tDVW}`)) {
-      return CHAIN_OPTIONS[ChainStateEnum.tDVW];
-    } 
+      const rawTx = await transfer(
+        address,
+        fetchMainAddress(to),
+        new BigNumber(amount).multipliedBy(10 ** 8).toNumber(),
+        memo,
+        tokenContractAddress,
+        aelfInstance
+      );
+      const feeResponse = await fetch(
+        `${rpcUrl}/api/blockChain/calculateTransactionFee`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            RawTransaction: rawTx,
+          }),
+        }
+      );
+      const {Success, TransactionFee } = await feeResponse.json();
+      if (Success) {
+        const calculatedFees = Number(new BigNumber(TransactionFee.ELF).dividedBy(10 ** 8).toNumber());
+        setFees(calculatedFees);
+        setInsufficient(false);
+        setError('');
+      } else {
+        setInsufficient(true);
+        setError('Your balance might be insufficient to cover the transaction fee.');
+      }
+      
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  /* useEffect(() => {
-    if (balance) {
-      setInsufficient((4.44444444 + Number(data.amount)) > Number(balance))
-    }
-  }, [balance]); */
+  useEffect(() => {
+    calculateFees();
+  }, []);
   return (
     <Modal
       open={isOpen}
@@ -67,12 +103,12 @@ const TransferVerification = ({
         <Flex flex={1}><Button type="primary" onClick={onConfirm} block disabled={isInsufficient}>Confirm</Button></Flex>
       </Flex>)}
       >
-        {!getFormattedAddress(data.to).endsWith(chain) && <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from {CHAIN_OPTIONS[chain]} to {getToChain(getFormattedAddress(data.to))}. Double-check to ensure it is correct!</Typography.Text>}
-        {isInsufficient && <Typography.Text style={classes.errorBlock} type='danger'>Your balance might be insufficient to cover the transaction fee.</Typography.Text>}
-        <FormField label="To">{getFormattedAddress(data.to)}</FormField>
+        {!getFormattedAddress(data.to, chain).endsWith(chain) && <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from {CHAIN_OPTIONS[chain]} to {getChainFromAddress(getFormattedAddress(data.to, chain))}. Double-check to ensure it is correct!</Typography.Text>}
+        {error && <Typography.Text style={classes.errorBlock} type='danger'>{error}</Typography.Text>}
+        <FormField label="To">{getFormattedAddress(data.to, chain)}</FormField>
         <FormField label="Amount">{data.amount} ELF</FormField>
         <FormField label="Memo">{data.memo}</FormField>
-        <FormField label="Transaction Fee">{fees} ELF</FormField>
+        {!isInsufficient && <FormField label="Transaction Fee">{fees} ELF</FormField>}
     </Modal>
   );
 };

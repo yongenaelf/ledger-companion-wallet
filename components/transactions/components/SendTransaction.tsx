@@ -286,7 +286,7 @@ function SendTransaction({
           subTitle={<div style={{marginTop: '20px', color: '#FC493A'}}>Transaction fee is insufficient.</div>}
         />
       </Modal>
-      <TransferVerification 
+      {showTransferVerifyModal && <TransferVerification 
         isOpen={showTransferVerifyModal} 
         onConfirm={() => {
           setShowTransferVerifyModal(false);
@@ -295,7 +295,8 @@ function SendTransaction({
         onCancel={() => {
           setShowTransferVerifyModal(false);
         }}
-        data={formData}/>
+        tokenContract={data}
+        data={formData}/>}
     </PaperLayout>
   );
 }
