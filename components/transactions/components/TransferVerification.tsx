@@ -27,11 +27,21 @@ const TransferVerification = ({
   const [isInsufficient, setInsufficient] = useState<boolean>(false);
   const fees = 4.44444444;
   
-  useEffect(() => {
+  const getFormattedAddress = (address: string) => {
+    if (!address.startsWith("ELF")) {
+      address = "ELF_".concat(address);
+    }
+    if (!address.endsWith("AELF")) {
+      address = address.concat("_AELF");
+    }
+    return address;
+  };
+
+  /* useEffect(() => {
     if (balance) {
       setInsufficient((4.44444444 + Number(data.amount)) > Number(balance))
     }
-  }, [balance]);
+  }, [balance]); */
   return (
     <Modal
       open={isOpen}
@@ -47,7 +57,7 @@ const TransferVerification = ({
       >
         <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from $chain_name to $chain_name. Double-check to ensure it is correct!</Typography.Text>
         {isInsufficient && <Typography.Text style={classes.errorBlock} type='danger'>Your balance might be insufficient to cover the transaction fee.</Typography.Text>}
-        <FormField label="To">{data.to}</FormField>
+        <FormField label="To">{getFormattedAddress(data.to)}</FormField>
         <FormField label="Amount">{data.amount} ELF</FormField>
         <FormField label="Memo">{data.memo}</FormField>
         <FormField label="Transaction Fee">{fees} ELF</FormField>
