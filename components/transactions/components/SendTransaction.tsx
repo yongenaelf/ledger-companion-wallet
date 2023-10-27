@@ -9,7 +9,6 @@ import { useMultiTokenContract } from "../../../hooks/useMultiTokenContract";
 import Transport from "@ledgerhq/hw-transport";
 import { useAElf } from "../../../hooks/useAElf";
 import { validateAddress } from "../../../utils/validateAddress";
-import SubmitButton from "./SubmitButton";
 import useSnackbar from '../../../utils/snackbar';
 import TransferVerification from './TransferVerification';
 import {
@@ -245,7 +244,7 @@ function SendTransaction({
                 { max: 64, message: "Max length 64 characters." },
                 {
                   async validator(rule, value) {
-                    const alphanumericPattern = /^[a-zA-Z0-9 ]+$/;
+                    const alphanumericPattern = /^[a-zA-Z0-9 \[\.,'"\?!(){}\-_;&:\]]+$/;
                     if (!alphanumericPattern.test(value)) {
                       throw new Error('Oops! Only alphanumeric characters and standard punctuation are allowed!');
                     }
@@ -259,7 +258,7 @@ function SendTransaction({
           </Col>
         </Row>
         <Form.Item style={{textAlign: 'right', marginBottom: 0}}>
-          <SubmitButton form={form} />
+        <Button type="primary" htmlType="submit">Transfer now</Button>
         </Form.Item>
       </Form>
       <Modal open={!!showTransferModal} footer={null} closeIcon={null} centered width={442} style={{textAlign: 'center'}}>
