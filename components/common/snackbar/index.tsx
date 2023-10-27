@@ -47,7 +47,7 @@ const Snackbar = ({
                 </div>
             ),
             type: messageType,
-            duration: 700,
+            duration: 7,
         });
     };
 
