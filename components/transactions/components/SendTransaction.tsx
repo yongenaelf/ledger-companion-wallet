@@ -11,9 +11,11 @@ import { useAElf } from "../../../hooks/useAElf";
 import { validateAddress } from "../../../utils/validateAddress";
 import useSnackbar from '../../../utils/snackbar';
 import TransferVerification from './TransferVerification';
+import SubmitButton from "./SubmitButton";
 import {
   addressState,
   unconfirmedTransactionsState,
+  networkState,
 } from "../../../state";
 import { explorerUrlState, rpcUrlState } from "../../../state/selector";
 import { useBalance } from "../../../hooks/useBalance";
@@ -29,6 +31,7 @@ function SendTransaction({
 }: SendTransactionProps) {
   const classes = useStyles;
   const address = useRecoilValue(addressState);
+  const network = useRecoilValue(networkState);
   const setSnackbar = useSnackbar();
   const [formData, setFormData] = useState({
     to: '',
@@ -59,7 +62,7 @@ function SendTransaction({
       const path = HD_DERIVATION_PATH; // HD derivation path
       const { signature } = await aelf.signTransaction(path, rawTx);
       if (signature.length === 0) {
-        setSnackbar.error("User rejected the transaction");
+        setSnackbar.error("User rejected the transaction.");
         throw new Error("User rejected the transaction.");
       }
 
@@ -159,8 +162,8 @@ function SendTransaction({
         style={{ maxWidth: 'none' }}
         initialValues={{
           to: "cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US",
-          amount: 42,
-          memo: "a test memo",
+          amount: 0.001,
+          memo: "",
         }}
         autoComplete="off"
         onFinish={(e) => {
@@ -191,7 +194,7 @@ function SendTransaction({
                 },
                 {
                   async validator(rule, value, callback) {
-                    validateAddress(value);
+                    validateAddress(value, network);
                     return "";
                   },
                 },
@@ -245,7 +248,7 @@ function SendTransaction({
                 {
                   async validator(rule, value) {
                     const alphanumericPattern = /^[a-zA-Z0-9 \[\.,'"\?!(){}\-_;&:\]]+$/;
-                    if (!alphanumericPattern.test(value)) {
+                    if (value && !alphanumericPattern.test(value)) {
                       throw new Error('Oops! Only alphanumeric characters and standard punctuation are allowed!');
                     }
                   },
@@ -258,7 +261,7 @@ function SendTransaction({
           </Col>
         </Row>
         <Form.Item style={{textAlign: 'right', marginBottom: 0}}>
-        <Button type="primary" htmlType="submit">Transfer now</Button>
+        <SubmitButton form={form} />
         </Form.Item>
       </Form>
       <Modal open={!!showTransferModal} footer={null} closeIcon={null} centered width={442} style={{textAlign: 'center'}}>

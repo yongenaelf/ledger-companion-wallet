@@ -3,6 +3,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { useRecoilValue } from "recoil";
 import { Table, Tooltip, Flex, Space, Tag } from "antd";
+import { SwapOutlined } from "@ant-design/icons";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { formatDistanceToNow, parseISO, format } from "date-fns";
 import { endEllipsis, middleEllipsis } from "../../../utils/utils";
@@ -67,7 +68,7 @@ const AllTransactions = () => {
     {
       title: () => (
         <span onClick={() => setShowDate((show) => !show)}>
-          {showDate ? "Date Time" : "Age"}
+          {showDate ? "Date Time" : "Age"}  <SwapOutlined style={{cursor: 'pointer'}}/>
         </span>
       ),
       dataIndex: "time",

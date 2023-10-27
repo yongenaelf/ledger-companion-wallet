@@ -22,7 +22,7 @@ function App() {
   const onSelectDevice = (transport: Transport) => {
     // @ts-ignore
     window.ledgerTransport = transport;
-    transport.on("disconnect", () => {
+    transport.on("disconnect", async () => {
       setTransport(null);
     });
     setTransport(transport);
@@ -46,7 +46,7 @@ function App() {
     >
       <SnackbarContext.Provider value={value}>
         <Snackbar {...value.snackbar}/>
-        {(!transport) ? 
+        {!transport ? 
             <HomePage onSelectDevice={onSelectDevice}/> : 
             <DashboardPage transport={transport}/>
         }

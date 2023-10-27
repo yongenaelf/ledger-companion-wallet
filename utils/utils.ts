@@ -28,6 +28,8 @@ export const getChainFromAddress = (address: string) => {
     return CHAIN_OPTIONS[ChainStateEnum.AELF];
   } else if (address.endsWith(`_${ChainStateEnum.tDVW}`)) {
     return CHAIN_OPTIONS[ChainStateEnum.tDVW];
+  } else if (address.endsWith(`_${ChainStateEnum.tDVV}`)) {
+    return CHAIN_OPTIONS[ChainStateEnum.tDVV];
   } 
   return "";
 }
@@ -37,8 +39,9 @@ export const getFormattedAddress = (address: string, chain: ChainStateEnum) => {
     address = "ELF_".concat(address);
   }
 
-  if (!address.endsWith(`_${ChainStateEnum.AELF}`) && !address.endsWith(`_${ChainStateEnum.tDVW}`)) {
+  if (!address.endsWith(`_${ChainStateEnum.AELF}`) && !address.endsWith(`_${ChainStateEnum.tDVW}`) && !address.endsWith(`_${ChainStateEnum.tDVV}`)) {
     address = address.concat(`_${chain}`);
   }
   return address;
 };
+

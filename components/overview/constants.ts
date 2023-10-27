@@ -5,7 +5,7 @@ type ChainOptions = Array<{ value: ChainStateEnum; label: string }>;
 type NetworkOptions = Array<{ value: NetworkStateEnum; label: string }>;
 
 export const MAINNET_SIDECHAIN_OPTIONS: ChainOptions = [
-  { value: ChainStateEnum.tDVV, label: 'SideChain '.concat(ChainStateEnum.tDVW) },
+  { value: ChainStateEnum.tDVV, label: 'SideChain '.concat(ChainStateEnum.tDVV) },
 ];
 
 export const TESTNET_SIDECHAIN_OPTIONS: ChainOptions = [

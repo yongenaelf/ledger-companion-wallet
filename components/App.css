@@ -68,6 +68,12 @@ a {
 }
 /* Style override for select field ant design - ends */
 
+/* Style override for input number field ant design - starts */
+.ant-input-number-input-wrap {
+    margin-top: 4px;
+}
+/* Style override for input number field ant design - ends */
+
 /* Style override for table ant design - starts */
 .ant-table-thead .ant-table-cell {
     font-size: 14px;
