@@ -1,5 +1,5 @@
 import { useRecoilValue } from "recoil";
-import { useState } from 'react';
+import { useState} from 'react';
 import { Button, Typography, Space } from "antd";
 import Transport from "@ledgerhq/hw-transport";
 import { useBalance } from "../../hooks/useBalance";
@@ -10,19 +10,21 @@ import CopyToClipboard from '../common/copyToClipboard';
 import AddressVerification from '../transactions/components/AddressVerification';
 import Details from '../common/details';
 import useSnackbar from '../../utils/snackbar';
-import {HD_DERIVATION_PATH} from '../../utils/constants';
+import {HD_DERIVATION_PATH, ERROR_CODE} from '../../utils/constants';
 import useStyles from './style';
 
 interface OverviewProps {
   chain: string;
   address: string;
   transport: Transport;
+  setError: () => void;
 };
 
 function Overview({
   chain,
   address,
   transport,
+  setError,
 }: OverviewProps) {
   const classes = useStyles;
   
@@ -46,6 +48,10 @@ function Overview({
         setSnackbar.success("Address verified successfully.");
       }
     } catch (error) {
+      if (error instanceof Error && error.name == ERROR_CODE.DEVICE_LOCKED) {
+        setError();
+        return;
+      }
       if (verify) {
         // in this case, user has rejected the verification
         setSnackbar.error("Rejected the address verification.");

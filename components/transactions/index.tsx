@@ -8,7 +8,7 @@ import SendTransaction from "./components/SendTransaction";
 import AllTransactions from "./components/AllTransactions";
 import Loader from '../common/loader';
 import ErrorPage from '../pages/errorPage';
-import {HD_DERIVATION_PATH} from '../../utils/constants';
+import {HD_DERIVATION_PATH, ERROR_CODE} from '../../utils/constants';
 import Card from '../common/card';
 
 const delay = (ms: number) => new Promise((success) => setTimeout(success, ms));
@@ -82,8 +82,8 @@ class Transactions extends Component<{
     return (
       <div className="container">  
         <Row gutter={16}>
-          <Col span={12}><Overview chain={chain} address={address} transport={transport}/></Col>
-          <Col span={12}><SendTransaction transport={transport} /></Col>
+          <Col span={12}><Overview setError={() => this.setState({ error: ERROR_CODE.DEVICE_LOCKED })} chain={chain} address={address} transport={transport}/></Col>
+          <Col span={12}><SendTransaction setError={() => this.setState({ error: ERROR_CODE.DEVICE_LOCKED })}  transport={transport} /></Col>
         </Row><br/>
         <AllTransactions key={String(this.state.refresh)} />
       </div>

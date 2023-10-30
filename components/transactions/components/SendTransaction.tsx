@@ -25,9 +25,11 @@ import useStyles from "../style";
 
 interface SendTransactionProps {
   transport: Transport;
+  setError: () => void;
 }
 function SendTransaction({ 
-  transport 
+  transport,
+  setError,
 }: SendTransactionProps) {
   const classes = useStyles;
   const address = useRecoilValue(addressState);
@@ -61,10 +63,14 @@ function SendTransaction({
       const aelf = new AppAelf(transport);
       const path = HD_DERIVATION_PATH; // HD derivation path
       const { signature, errorCode } = await aelf.signTransaction(path, rawTx);
-      console.log("errorCode: ", errorCode);
       if (errorCode == '6985') {
         setSnackbar.error("User rejected the transaction.");
         throw new Error("User rejected the transaction.");
+      }
+      // Device locked
+      if (errorCode == '5515') {
+        setError();
+        return;
       }
 
       const response = await fetch(

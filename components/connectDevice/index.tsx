@@ -27,7 +27,3 @@ function ConnectDevice({
 }
 
 export default ConnectDevice;
-
-/**
- * 
- */
