@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { InfoCircleOutlined } from "@ant-design/icons";
-import { Flex, Tooltip } from "antd";
+import { Flex, Tooltip, Typography } from "antd";
 import useStyles from "./style";
 
 interface FromFieldProps {
@@ -29,7 +29,7 @@ const FromField = ({
           />
         </Tooltip>}
       </Flex>
-      <Flex style={classes.valueContainer}>{children}</Flex>
+      <Flex style={classes.valueContainer}>{children || <Typography.Text disabled style={classes.noValue}>Empty</Typography.Text>}</Flex>
     </Flex>
   );
 }

@@ -14,6 +14,10 @@ const useStyles = {
     flex: 1,
     fontSize: 14,
     fontWeight: 400
+  },
+  noValue: {
+    fontSize: 14,
+    fontWeight: 500
   }
 }
 export default useStyles;

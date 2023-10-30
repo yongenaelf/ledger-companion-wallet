@@ -228,10 +228,11 @@ function SendTransaction({
             >
               <InputNumber
                 style={classes.inputfield}
-                min={1e-8 as any}
+                min={0.00000001 as any}
                 formatter={(value) =>
                   `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 }
+                stringMode
                 parser={(value) => value.replace(/[\s$,]/g, "")}
               />
             </Form.Item>

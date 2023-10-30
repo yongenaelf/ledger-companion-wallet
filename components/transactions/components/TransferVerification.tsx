@@ -44,6 +44,7 @@ const TransferVerification = ({
   const [fees, setFees] = useState<number>(0);
   const chain = useRecoilValue(chainState);
   const aelfInstance = useAElf();
+  const amount = new BigNumber(data.amount);
 
   const calculateFees = async () => {
     const { to, amount, memo } = data;
@@ -106,7 +107,7 @@ const TransferVerification = ({
         {!getFormattedAddress(data.to, chain).endsWith(chain) && <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from {CHAIN_OPTIONS[chain]} to {getChainFromAddress(getFormattedAddress(data.to, chain))}. Double-check to ensure it is correct!</Typography.Text>}
         {error && <Typography.Text style={classes.errorBlock} type='danger'>{error}</Typography.Text>}
         <FormField label="To">{getFormattedAddress(data.to, chain)}</FormField>
-        <FormField label="Amount">{data.amount} ELF</FormField>
+        <FormField label="Amount">{amount.toNumber().toFixed(amount.dp()).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ELF</FormField>
         <FormField label="Memo">{data.memo}</FormField>
         {!isInsufficient && <FormField label="Transaction Fee">{fees} ELF</FormField>}
     </Modal>
