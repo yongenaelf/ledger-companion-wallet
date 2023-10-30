@@ -72,15 +72,21 @@ const AllTransactions = () => {
       ),
       dataIndex: "time",
       key: "time",
-      render: (timestamp) => (
-        <span>
-          {showDate
-            ? format(parseISO(timestamp), "yyyy-LL-dd kk:mm:ss")
-            : formatDistanceToNow(parseISO(timestamp), {
-                addSuffix: true,
-              })}
-        </span>
-      ),
+      render: (timestamp) => {
+        try {
+          return (
+            <span>
+              {showDate
+                ? format(parseISO(timestamp), "yyyy-LL-dd kk:mm:ss")
+                : formatDistanceToNow(parseISO(timestamp), {
+                    addSuffix: true,
+                  })}
+            </span>
+          );
+        } catch (err) {
+          return "";
+        }
+      },
     },
     {
       title: "From",
