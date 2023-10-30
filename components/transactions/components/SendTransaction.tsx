@@ -197,7 +197,7 @@ function SendTransaction({
               rules={[
                 {
                   required: true,
-                  message: "Please enter to address",
+                  message: "Please enter recipient (to) address",
                 },
                 {
                   async validator(rule, value, callback) {
