@@ -60,8 +60,9 @@ function SendTransaction({
     try {
       const aelf = new AppAelf(transport);
       const path = HD_DERIVATION_PATH; // HD derivation path
-      const { signature } = await aelf.signTransaction(path, rawTx);
-      if (signature.length === 0) {
+      const { signature, errorCode } = await aelf.signTransaction(path, rawTx);
+      console.log("errorCode: ", errorCode);
+      if (errorCode == '6985') {
         setSnackbar.error("User rejected the transaction.");
         throw new Error("User rejected the transaction.");
       }
