@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { InfoCircleOutlined } from "@ant-design/icons";
+import { InfoCircleOutlined, CloseCircleFilled } from "@ant-design/icons";
 import { Input, InputNumber, Button, Modal, Result, Form, Row, Col, Tooltip } from "antd";
 import BigNumber from "bignumber.js";
 import AppAelf from "../../../utils/Elf";
@@ -34,6 +34,7 @@ function SendTransaction({
   const classes = useStyles;
   const address = useRecoilValue(addressState);
   const network = useRecoilValue(networkState);
+  const [amountValue, setAmountValue] = useState(null);
   const setSnackbar = useSnackbar();
   const [formData, setFormData] = useState({
     to: '',
@@ -160,7 +161,7 @@ function SendTransaction({
       setShowTransferModal(false);
     }
   }
-
+  // cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US
   return (
     <PaperLayout title='Transfer'>
       <Form
@@ -168,8 +169,8 @@ function SendTransaction({
         labelCol={{ span: 3 }}
         style={{ maxWidth: 'none' }}
         initialValues={{
-          to: "cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US",
-          amount: 0.001,
+          to: "",
+          amount: '',
           memo: "",
         }}
         autoComplete="off"
@@ -232,15 +233,25 @@ function SendTransaction({
               ]}
               labelCol={{span: 3}}
             >
+              <div style={{position: 'relative'}}>
               <InputNumber
                 style={classes.inputfield}
                 min={0.00000001 as any}
+                value={amountValue}
                 formatter={(value) =>
                   `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 }
                 stringMode
                 parser={(value) => value.replace(/[\s$,]/g, "")}
+                onChange={setAmountValue}
               />
+              {amountValue !== null && (
+                <CloseCircleFilled style={classes.clearIcon} onClick={() => {
+                  form.setFieldsValue({ amount: '' });
+                  setAmountValue(null)
+                }} />
+              )}
+              </div>
             </Form.Item>
           </Col>
         </Row>

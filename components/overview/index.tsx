@@ -54,7 +54,7 @@ function Overview({
       }
       if (verify) {
         // in this case, user has rejected the verification
-        setSnackbar.error("Rejected the address verification.");
+        setSnackbar.error("Rejected the address verification."); 
         return;
       }
       setSnackbar.error("Something went wrong. Please try again later.");

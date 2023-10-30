@@ -47,6 +47,14 @@ const useStyles = {
     fontWeight: 400,
     marginTop: '-8px',
     display: 'block',
+  },
+  clearIcon: {
+    position: 'absolute' as const,
+    top: '50%',
+    right: '32px',
+    transform: 'translateY(-50%)',
+    cursor: 'pointer',
+    color: '#ccc'
   }
 }
 export default useStyles;

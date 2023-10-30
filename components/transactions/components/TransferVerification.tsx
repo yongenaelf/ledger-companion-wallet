@@ -44,7 +44,7 @@ const TransferVerification = ({
   const [fees, setFees] = useState<number>(0);
   const chain = useRecoilValue(chainState);
   const aelfInstance = useAElf();
-  const amount = new BigNumber(data.amount);
+  const amount = new BigNumber(data.amount.replaceAll(",", ""));
 
   const calculateFees = async () => {
     const { to, amount, memo } = data;
@@ -104,7 +104,7 @@ const TransferVerification = ({
         <Flex flex={1}><Button type="primary" onClick={onConfirm} block disabled={isInsufficient}>Confirm</Button></Flex>
       </Flex>)}
       >
-        {!getFormattedAddress(data.to, chain).endsWith(chain) && <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from {CHAIN_OPTIONS[chain]} to {getChainFromAddress(getFormattedAddress(data.to, chain))}. Double-check to ensure it is correct!</Typography.Text>}
+        <Typography.Text type="secondary" style={classes.modalInfo}>Please verify the below transfer details before clicking confirm.</Typography.Text>
         {error && <Typography.Text style={classes.errorBlock} type='danger'>{error}</Typography.Text>}
         <FormField label="To">{getFormattedAddress(data.to, chain)}</FormField>
         <FormField label="Amount">{amount.toNumber().toFixed(amount.dp()).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ELF</FormField>
@@ -115,3 +115,5 @@ const TransferVerification = ({
 };
 
 export default TransferVerification;
+
+//{!getFormattedAddress(data.to, chain).endsWith(chain) && <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from {CHAIN_OPTIONS[chain]} to {getChainFromAddress(getFormattedAddress(data.to, chain))}. Double-check to ensure it is correct!</Typography.Text>}

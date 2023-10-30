@@ -1,6 +1,9 @@
 import bs58 from "bs58";
+import AElf from "aelf-sdk";
 import {ChainStateEnum, NetworkStateEnum} from "../state";
 import {replaceAll} from "../utils/utils";
+
+const { decodeAddressRep } = AElf.utils;
 
 export const validateAddress = (addr: string, network: NetworkStateEnum) => {
   try {
@@ -16,6 +19,7 @@ export const validateAddress = (addr: string, network: NetworkStateEnum) => {
       addr = replaceAll(addr, `_${ChainStateEnum.tDVW}`, "");
     }
     bs58.decode(addr);
+    decodeAddressRep(addr);
   } catch (err) {
     throw new Error("Oops! Please input a valid AELF network address!");
   }

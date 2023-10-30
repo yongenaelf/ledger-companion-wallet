@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { validateAddress } from "./validateAddress";
+import {NetworkStateEnum} from "../state";
 
 describe("test validateAddress", () => {
   test.each([
@@ -15,7 +16,7 @@ describe("test validateAddress", () => {
     "_cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US",
     "ELF_cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US",
   ])("should throw: %s", (a) => {
-    expect(() => validateAddress(a)).toThrowError();
+    expect(() => validateAddress(a, NetworkStateEnum.mainnet)).toThrowError();
   });
 
   test.each([
@@ -23,6 +24,6 @@ describe("test validateAddress", () => {
     "cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US",
     "ELF_cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US_AELF",
   ])("should not throw: %s", (a) => {
-    expect(() => validateAddress(a)).not.toThrowError();
+    expect(() => validateAddress(a, NetworkStateEnum.mainnet)).not.toThrowError();
   });
 });
