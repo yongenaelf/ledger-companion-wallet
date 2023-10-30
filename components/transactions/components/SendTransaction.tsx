@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { InfoCircleOutlined, CloseCircleFilled } from "@ant-design/icons";
 import { Input, InputNumber, Button, Modal, Result, Form, Row, Col, Tooltip } from "antd";
@@ -16,6 +16,7 @@ import {
   addressState,
   unconfirmedTransactionsState,
   networkState,
+  chainState,
 } from "../../../state";
 import { explorerUrlState, rpcUrlState } from "../../../state/selector";
 import { useBalance } from "../../../hooks/useBalance";
@@ -34,6 +35,7 @@ function SendTransaction({
   const classes = useStyles;
   const address = useRecoilValue(addressState);
   const network = useRecoilValue(networkState);
+  const chain = useRecoilValue(chainState);
   const [amountValue, setAmountValue] = useState(null);
   const setSnackbar = useSnackbar();
   const [formData, setFormData] = useState({
@@ -161,6 +163,13 @@ function SendTransaction({
       setShowTransferModal(false);
     }
   }
+
+  useEffect(() => {
+    setFormData({to: '', amount: '', memo: ''});
+    form.setFieldsValue({to: '', amount: '', memo: ''});
+    setAmountValue(null);
+  }, [chain, network]);
+
   // cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US
   return (
     <PaperLayout title='Transfer'>
@@ -202,7 +211,7 @@ function SendTransaction({
                 },
                 {
                   async validator(rule, value, callback) {
-                    validateAddress(value, network);
+                    validateAddress(value, network, chain);
                     return "";
                   },
                 },
@@ -248,7 +257,8 @@ function SendTransaction({
               {amountValue !== null && (
                 <CloseCircleFilled style={classes.clearIcon} onClick={() => {
                   form.setFieldsValue({ amount: '' });
-                  setAmountValue(null)
+                  setAmountValue(null);
+                  setFormData({...formData, amount: ''});
                 }} />
               )}
               </div>
