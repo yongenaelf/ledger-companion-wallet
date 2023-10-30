@@ -58,8 +58,8 @@ const AllTransactions = () => {
     },
     {
       title: "Method",
-      dataIndex: "method",
-      key: "method",
+      dataIndex: "action",
+      key: "action",
       render: (text) => (
         <Tag style={classes.blockTag}>{text}</Tag>
       ),
@@ -91,8 +91,8 @@ const AllTransactions = () => {
     },
     {
       title: "From",
-      dataIndex: "addressFrom",
-      key: "addressFrom",
+      dataIndex: "from",
+      key: "from",
       render: (text, record) => (
         <Flex flex={1}>
           <Flex flex={1}>
@@ -111,8 +111,8 @@ const AllTransactions = () => {
     },
     {
       title: "Sent to",
-      dataIndex: "addressTo",
-      key: "addressTo",
+      dataIndex: "to",
+      key: "to",
       render: (text, record) => (
         <Space align='center'><Tooltip color='#014795' title={`${record.symbol}_${text}_${record.relatedChainId}`}>
           <a href={`${explorerUrl}/address/${record.symbol}_${text}_${record.relatedChainId}`} target="_blank">
