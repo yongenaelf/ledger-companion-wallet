@@ -235,12 +235,13 @@ function SendTransaction({
                 {
                   validator: async (_rule, value) => {
                     const onlyNumberPattern = /^-?\d*\.?\d+$/;
+                    value = value.replace(/,/g, '');
                     if (value) {
                       if (!onlyNumberPattern.test(value)) {
                         throw new Error("Only number allowed");
                       }
                       value = Number(value);
-                      if (value <= 0) throw new Error("Amount must be more than 0");
+                      if (value < 0.00000001) throw new Error("The amount should not be smaller than 0.00000001");
                       else if (value > balance)
                         throw new Error("Insufficient Balance.");
                     }
