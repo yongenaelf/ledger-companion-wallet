@@ -234,9 +234,16 @@ function SendTransaction({
                 { required: true, message: "Please enter amount" },
                 {
                   validator: async (_rule, value) => {
-                    if (value <= 0) throw new Error("Amount must be more than 0");
-                    else if (value > balance)
-                      throw new Error("Insufficient Balance.");
+                    const onlyNumberPattern = /^-?\d*\.?\d+$/;
+                    if (value) {
+                      if (!onlyNumberPattern.test(value)) {
+                        throw new Error("Only number allowed");
+                      }
+                      value = Number(value);
+                      if (value <= 0) throw new Error("Amount must be more than 0");
+                      else if (value > balance)
+                        throw new Error("Insufficient Balance.");
+                    }
                   },
                 },
               ]}
