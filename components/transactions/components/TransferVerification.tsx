@@ -6,10 +6,8 @@ import FormField from '../../common/formField';
 import { transfer } from "../../../utils/transaction";
 import { useAElf } from "../../../hooks/useAElf";
 import { chainState, addressState } from "../../../state";
-import { fetchMainAddress, getChainFromAddress, getFormattedAddress } from "../../../utils/utils";
-import { useBalance } from "../../../hooks/useBalance";
+import { fetchMainAddress, getFormattedAddress } from "../../../utils/utils";
 import { rpcUrlState } from "../../../state/selector";
-import {CHAIN_OPTIONS} from '../constants';
 import useStyles from '../style';
 
 interface TransferFormData {
@@ -36,7 +34,6 @@ const TransferVerification = ({
   tokenContract,
 }: TransferVerificationProps) => {
   const classes = useStyles;
-  const { data: balance } = useBalance();
   const address = useRecoilValue(addressState);
   const rpcUrl = useRecoilValue(rpcUrlState);
   const [isInsufficient, setInsufficient] = useState<boolean>(false);
@@ -90,6 +87,7 @@ const TransferVerification = ({
 
   useEffect(() => {
     calculateFees();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Modal
@@ -103,13 +101,13 @@ const TransferVerification = ({
         <Flex flex={1}><Button onClick={onCancel} block>Cancel</Button></Flex>
         <Flex flex={1}><Button type="primary" onClick={onConfirm} block disabled={isInsufficient}>Confirm</Button></Flex>
       </Flex>)}
-      >
-        <Typography.Text type="secondary" style={classes.modalInfo}>Please verify the below transfer details before clicking confirm.</Typography.Text>
-        {error && <Typography.Text style={classes.errorBlock} type='danger'>{error}</Typography.Text>}
-        <FormField label="To">{getFormattedAddress(data.to, chain)}</FormField>
-        <FormField label="Amount">{amount.toNumber().toFixed(amount.dp()).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ELF</FormField>
-        <FormField label="Memo">{data.memo}</FormField>
-        {!isInsufficient && <FormField label="Transaction Fee">{fees} ELF</FormField>}
+    >
+      <Typography.Text type="secondary" style={classes.modalInfo}>Please verify the below transfer details before clicking confirm.</Typography.Text>
+      {error && <Typography.Text style={classes.errorBlock} type='danger'>{error}</Typography.Text>}
+      <FormField label="To">{getFormattedAddress(data.to, chain)}</FormField>
+      <FormField label="Amount">{amount.toNumber().toFixed(amount.dp()).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ELF</FormField>
+      <FormField label="Memo">{data.memo}</FormField>
+      {!isInsufficient && <FormField label="Transaction Fee">{fees} ELF</FormField>}
     </Modal>
   );
 };

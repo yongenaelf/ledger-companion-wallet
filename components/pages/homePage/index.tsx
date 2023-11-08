@@ -6,37 +6,34 @@ import ConnectDevice from "../../connectDevice";
 import useStyles from "./style";
 
 interface HomePageProps {
-    onSelectDevice: (transport: Transport) => void;
+  // eslint-disable-next-line no-unused-vars
+  onSelectDevice: (transport: Transport) => void;
 }
 
 const HomePage = ({
-    onSelectDevice,
+  onSelectDevice,
 }: HomePageProps) => {
-    const classes = useStyles;
-    const {Content} = Layout;
-    return (
-        <>
-            
-            <Flex flex={1}>
-                <Flex flex={1} justify='flex-start' align='flex-start' vertical>
-                    <Layout style={classes.layoutContainer}>
-                        <Header externalClasses={{
-                            container: classes.stickyHeader,
-                            header: classes.headerContainer
-                        }}/>
-                        <Content style={classes.contentContainer}>
-                            <ConnectDevice {...{onSelectDevice}}/>
-                        </Content>
-                        <Footer/>
-                    </Layout>
-                </Flex>
-                <div style={classes.rightContainer}/>
-            </Flex>
-            
-        </>
-    )
+  const classes = useStyles;
+  const {Content} = Layout;
+  return (
+    <>  
+      <Flex flex={1}>
+        <Flex flex={1} justify='flex-start' align='flex-start' vertical>
+          <Layout style={classes.layoutContainer}>
+            <Header externalClasses={{
+              container: classes.stickyHeader,
+              header: classes.headerContainer
+            }}/>
+            <Content style={classes.contentContainer}>
+              <ConnectDevice {...{onSelectDevice}}/>
+            </Content>
+            <Footer/>
+          </Layout>
+        </Flex>
+        <div style={classes.rightContainer}/>
+      </Flex>    
+    </>
+  )
 };
 
 export default HomePage;
-
-// 

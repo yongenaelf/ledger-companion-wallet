@@ -17,6 +17,7 @@ class Transactions extends Component<{
   transport: Transport;
   chain: string;
   address: string;
+  // eslint-disable-next-line no-unused-vars
   setAddress: (addr: string) => void;
   setDeviceLocked: Dispatch<SetStateAction<boolean>>;
 }> {
@@ -64,17 +65,17 @@ class Transactions extends Component<{
 
     if (error) {
       this.props.setDeviceLocked(true);
-        return (
-          <ErrorPage><Card 
-            title='Connect with Device' 
-            content='Please unlock your device.' 
-            isError
-            buttonLabel='Retry' 
-            onClickButton={() => this.fetchAddress()}
-          /></ErrorPage>)
-      } else {
-        this.props.setDeviceLocked(false);
-      }
+      return (
+        <ErrorPage><Card 
+          title='Connect with Device' 
+          content='Please unlock your device.' 
+          isError
+          buttonLabel='Retry' 
+          onClickButton={() => this.fetchAddress()}
+        /></ErrorPage>)
+    } else {
+      this.props.setDeviceLocked(false);
+    }
     
 
     if (!address) return <Loader message="Loading address..."/>;

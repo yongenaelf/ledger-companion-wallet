@@ -17,9 +17,9 @@ const useStyles = {
     borderRadius: '11.2px',
     boxShadow: '28px 0px 0 0 rgba(50,99,189,0.2), 22.7px 16.5px 0 0 rgba(50,99,189,0.4), 8.68px 26.6px 0 0 rgba(50,99,189,0.6), -8.68px 26.6px 0 0 rgba(50,99,189,0.8), -22.7px 16.5px 0 0 #3263bd',
     animation: 'spinner-loader 1s infinite linear'
- },
- loadingInfo: {
+  },
+  loadingInfo: {
     paddingTop: '60px',
- }
+  }
 }
 export default useStyles;

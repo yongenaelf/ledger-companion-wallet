@@ -26,7 +26,7 @@ const AllTransactions = () => {
     current: 1,
   });
   const [showDate, setShowDate] = useState(false);
-  const { data, isValidating, mutate } = useSWR(
+  const { data, isValidating } = useSWR(
     [explorerUrl, address, pagination, "all-tx"],
     async ([explorerUrl, address, pagination]) => {
       const res = await fetch(
@@ -80,8 +80,8 @@ const AllTransactions = () => {
               {showDate
                 ? format(parseISO(timestamp), "yyyy-LL-dd kk:mm:ss")
                 : formatDistanceToNow(parseISO(timestamp), {
-                    addSuffix: true,
-                  })}
+                  addSuffix: true,
+                })}
             </span>
           );
         } catch (err) {
@@ -98,11 +98,11 @@ const AllTransactions = () => {
           <Flex flex={1}>
             <Space align='center'>
               <Tooltip color='#014795' title={`${record.symbol}_${text}_${record.relatedChainId}`}>
-              <a href={`${explorerUrl}/address/${record.symbol}_${text}_${record.relatedChainId}`} target="_blank">
-                {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
-              </a>
+                <a href={`${explorerUrl}/address/${record.symbol}_${text}_${record.relatedChainId}`} target="_blank">
+                  {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
+                </a>
               </Tooltip>
-            <CopyToClipboard message={`${record.symbol}_${text}_${record.relatedChainId}`}/>
+              <CopyToClipboard message={`${record.symbol}_${text}_${record.relatedChainId}`}/>
             </Space>
           </Flex>
           <Flex flex={1} justify='center'><Image src={rightArrowSuccessImage} alt="Copy to the clipboard"/></Flex>
@@ -144,7 +144,7 @@ const AllTransactions = () => {
       <Flex justify='center' align='center' style={classes.btnContainer}>
         <a style={classes.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank">
           View all transactions on AELF Explorer
-          </a>&nbsp;<Image src={rightArrowImage} alt="Copy to the clipboard"/>
+        </a>&nbsp;<Image src={rightArrowImage} alt="Copy to the clipboard"/>
       </Flex>
     </PaperLayout>
   );

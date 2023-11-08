@@ -3,6 +3,7 @@ import Transport from "@ledgerhq/hw-transport";
 import Card from '../common/card';
 
 interface ConnectDeviceProps {
+  // eslint-disable-next-line no-unused-vars
   onSelectDevice: (transport: Transport) => void;
 }
 

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { InfoCircleOutlined, CloseCircleFilled } from "@ant-design/icons";
+import Transport from "@ledgerhq/hw-transport";
 import { Input, InputNumber, Button, Modal, Result, Form, Row, Col, Tooltip } from "antd";
 import BigNumber from "bignumber.js";
 import AppAelf from "../../../utils/Elf";
 import { transfer } from "../../../utils/transaction";
 import { useMultiTokenContract } from "../../../hooks/useMultiTokenContract";
-import Transport from "@ledgerhq/hw-transport";
 import { useAElf } from "../../../hooks/useAElf";
 import { validateAddress } from "../../../utils/validateAddress";
 import useSnackbar from '../../../utils/snackbar';
@@ -42,7 +42,8 @@ function SendTransaction({
     to: '',
     amount: '',
     memo: ''
-  })
+  });
+  // eslint-disable-next-line no-unused-vars
   const [_, setUnconfirmedTransactions] = useRecoilState(
     unconfirmedTransactionsState
   );
@@ -168,6 +169,7 @@ function SendTransaction({
     setFormData({to: '', amount: '', memo: ''});
     form.setFieldsValue({to: '', amount: '', memo: ''});
     setAmountValue(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chain, network]);
 
   // cDPLA9axUVeujnTTk4Cyr3aqRby3cHHAB6Rh28o7BRTTxi8US
@@ -210,7 +212,8 @@ function SendTransaction({
                   message: "Please enter recipient (to) address",
                 },
                 {
-                  async validator(rule, value, callback) {
+                  // eslint-disable-next-line no-unused-vars
+                  async validator(rule, value) {
                     validateAddress(value, network, chain);
                     return "";
                   },
@@ -219,8 +222,8 @@ function SendTransaction({
               labelCol={{span: 3}}
             >
               <Input 
-              style={classes.inputfield}
-              allowClear/>
+                style={classes.inputfield}
+                allowClear/>
             </Form.Item>
           </Col>
         </Row>
@@ -251,24 +254,24 @@ function SendTransaction({
               labelCol={{span: 3}}
             >
               <div style={{position: 'relative'}}>
-              <InputNumber
-                style={classes.inputfield}
-                min={0.00000001 as any}
-                value={amountValue}
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-                stringMode
-                parser={(value) => value.replace(/[\s$,]/g, "")}
-                onChange={setAmountValue}
-              />
-              {amountValue !== null && (
-                <CloseCircleFilled style={classes.clearIcon} onClick={() => {
-                  form.setFieldsValue({ amount: '' });
-                  setAmountValue(null);
-                  setFormData({...formData, amount: ''});
-                }} />
-              )}
+                <InputNumber
+                  style={classes.inputfield}
+                  min={0.00000001 as any}
+                  value={amountValue}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  stringMode
+                  parser={(value) => value.replace(/[\s$,]/g, "")}
+                  onChange={setAmountValue}
+                />
+                {amountValue !== null && (
+                  <CloseCircleFilled style={classes.clearIcon} onClick={() => {
+                    form.setFieldsValue({ amount: '' });
+                    setAmountValue(null);
+                    setFormData({...formData, amount: ''});
+                  }} />
+                )}
               </div>
             </Form.Item>
           </Col>
@@ -298,7 +301,7 @@ function SendTransaction({
           </Col>
         </Row>
         <Form.Item style={{textAlign: 'right', marginBottom: 0}}>
-        <SubmitButton form={form} />
+          <SubmitButton form={form} />
         </Form.Item>
       </Form>
       <Modal open={!!showTransferModal} footer={null} closeIcon={null} centered width={442} style={{textAlign: 'center'}}>
