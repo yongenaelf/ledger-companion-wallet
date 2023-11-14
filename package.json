@@ -40,6 +40,8 @@
     "lint:styles": "stylelint '**/*.{css,scss}'"
   },
   "devDependencies": {
+    "@commitlint/cli": "^18.4.1",
+    "@commitlint/config-conventional": "^18.4.0",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
@@ -48,6 +50,8 @@
     "eslint-config-next": "latest",
     "eslint-plugin-import": "^2.29.0",
     "https-browserify": "^1.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
     "parcel": "^2.9.3",
     "path-browserify": "^1.0.1",
     "pre-commit": "^1.2.2",
