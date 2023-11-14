@@ -1,5 +1,5 @@
 import { Button, Modal, Typography } from "antd";
-import useStyles from '../style';
+import styles from '../style';
 
 interface AddressVerificationProps {
   verifying: boolean;
@@ -9,7 +9,6 @@ const AddressVerification = ({
   verifying,
   triggerVerification,
 }: AddressVerificationProps) => {
-  const classes = useStyles;
   
   return (
     <>
@@ -19,7 +18,7 @@ const AddressVerification = ({
         onClick={() => {
           triggerVerification();
         }}
-        style={classes.floatLink}
+        style={styles.floatLink}
       >
         Verify address
       </Button>
@@ -30,7 +29,7 @@ const AddressVerification = ({
         centered
         width={442}
       >
-        <Typography.Title style={classes.modalTitle}>Verifying...</Typography.Title>
+        <Typography.Title style={styles.modalTitle}>Verifying...</Typography.Title>
         <Typography.Text>Please check device and verify your address.</Typography.Text>
       </Modal>
     </>

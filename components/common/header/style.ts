@@ -1,4 +1,4 @@
-const useStyles = {
+const styles = {
   headerContainer: {
     height: 64,
     width: '100%',
@@ -24,4 +24,4 @@ const useStyles = {
     marginTop: '4px'
   },
 }
-export default useStyles;
+export default styles;

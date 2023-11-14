@@ -1,6 +1,6 @@
 import connectBgImage from '../../../assets/icon/connect-bg.svg';
 
-const useStyles = {
+const styles = {
   layoutContainer: {
     minHeight: '100vh',
     width: '100%'
@@ -26,4 +26,4 @@ const useStyles = {
     justifyContent: 'center',
   }
 }
-export default useStyles;
+export default styles;

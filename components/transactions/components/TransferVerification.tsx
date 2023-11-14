@@ -8,7 +8,7 @@ import { useAElf } from "../../../hooks/useAElf";
 import { chainState, addressState } from "../../../state";
 import { fetchMainAddress, getFormattedAddress } from "../../../utils/utils";
 import { rpcUrlState } from "../../../state/selector";
-import useStyles from '../style';
+import styles from '../style';
 
 interface TransferFormData {
   to: string;
@@ -33,7 +33,6 @@ const TransferVerification = ({
   data,
   tokenContract,
 }: TransferVerificationProps) => {
-  const classes = useStyles;
   const address = useRecoilValue(addressState);
   const rpcUrl = useRecoilValue(rpcUrlState);
   const [isInsufficient, setInsufficient] = useState<boolean>(false);
@@ -102,8 +101,8 @@ const TransferVerification = ({
         <Flex flex={1}><Button type="primary" onClick={onConfirm} block disabled={isInsufficient}>Confirm</Button></Flex>
       </Flex>)}
     >
-      <Typography.Text type="secondary" style={classes.modalInfo}>Please verify the below transfer details before clicking confirm.</Typography.Text>
-      {error && <Typography.Text style={classes.errorBlock} type='danger'>{error}</Typography.Text>}
+      <Typography.Text type="secondary" style={styles.modalInfo}>Please verify the below transfer details before clicking confirm.</Typography.Text>
+      {error && <Typography.Text style={styles.errorBlock} type='danger'>{error}</Typography.Text>}
       <FormField label="To">{getFormattedAddress(data.to, chain)}</FormField>
       <FormField label="Amount">{amount.toNumber().toFixed(amount.dp()).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ELF</FormField>
       <FormField label="Memo">{data.memo}</FormField>
@@ -114,4 +113,4 @@ const TransferVerification = ({
 
 export default TransferVerification;
 
-//{!getFormattedAddress(data.to, chain).endsWith(chain) && <Typography.Text type="secondary" style={classes.modalInfo}>You are about to transfer from {CHAIN_OPTIONS[chain]} to {getChainFromAddress(getFormattedAddress(data.to, chain))}. Double-check to ensure it is correct!</Typography.Text>}
+//{!getFormattedAddress(data.to, chain).endsWith(chain) && <Typography.Text type="secondary" style={styles.modalInfo}>You are about to transfer from {CHAIN_OPTIONS[chain]} to {getChainFromAddress(getFormattedAddress(data.to, chain))}. Double-check to ensure it is correct!</Typography.Text>}

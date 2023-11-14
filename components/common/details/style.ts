@@ -1,4 +1,4 @@
-const useStyles = {
+const styles = {
   fieldLayout: {
     marginBottom: '16px',
   },
@@ -12,4 +12,4 @@ const useStyles = {
     fontSize: 14,
   },
 }
-export default useStyles;
+export default styles;

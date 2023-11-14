@@ -1,4 +1,4 @@
-const useStyles = {
+const styles = {
   card: {
     width: 425,
     border: 'none',
@@ -25,4 +25,4 @@ const useStyles = {
 
   },
 }
-export default useStyles;
+export default styles;

@@ -9,18 +9,17 @@ import {
   networkState,
 } from "../../../state";
 import {NETWORK_OPTIONS, MAINNET_SIDECHAIN_OPTIONS, TESTNET_SIDECHAIN_OPTIONS} from '../constants';
-import useStyles from '../style';
+import styles from '../style';
 
 function NetworkSelection() {
-  const classes = useStyles;
   const [network, setNetwork] = useRecoilState(networkState);
   const [chain, setChain] = useRecoilState(chainState);
 
   return (
-    <div style={classes.networkLayout}>
+    <div style={styles.networkLayout}>
       <Space>
         <Select
-          style={classes.selectField}
+          style={styles.selectField}
           options={[{ value: ChainStateEnum.AELF, label: "MainChain AELF" }].concat(
             network === NetworkStateEnum.mainnet
               ? MAINNET_SIDECHAIN_OPTIONS
@@ -31,12 +30,12 @@ function NetworkSelection() {
             setChain(e);
           }}
         />
-        <div style={classes.selectFieldIconWrapper} className='select-field-icon-wrapper'>
-          <div style={classes.selectFieldIconCover}>
-            <Image src={globeImage} alt="Wallet" style={classes.selectFieldIcon}/>
+        <div style={styles.selectFieldIconWrapper} className='select-field-icon-wrapper'>
+          <div style={styles.selectFieldIconCover}>
+            <Image src={globeImage} alt="Wallet" style={styles.selectFieldIcon}/>
           </div>
           <Select
-            style={{...classes.selectField, ...classes.SelectFieldWithIcon}}
+            style={{...styles.selectField, ...styles.SelectFieldWithIcon}}
             className='hidden-selected-value'
             options={NETWORK_OPTIONS}
             value={network}

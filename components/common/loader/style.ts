@@ -1,4 +1,4 @@
-const useStyles = {
+const styles = {
   loaderContainer: {
     display: 'flex' as const,
     position: 'fixed' as const,
@@ -22,4 +22,4 @@ const useStyles = {
     paddingTop: '60px',
   }
 }
-export default useStyles;
+export default styles;

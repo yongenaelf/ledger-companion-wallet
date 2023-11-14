@@ -1,4 +1,4 @@
-const useStyles = {
+const styles = {
   btnContainer: {
     background: '#ECF7FF',
     height: '56px',
@@ -57,4 +57,4 @@ const useStyles = {
     color: '#ccc'
   }
 }
-export default useStyles;
+export default styles;

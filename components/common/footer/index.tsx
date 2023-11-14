@@ -1,10 +1,9 @@
 import { Layout } from "antd";
-import useStyles from "./style";
+import styles from "./style";
 
 const Footer = () => {
-  const classes = useStyles;
   return (
-    <Layout.Footer style={classes.footer}>
+    <Layout.Footer style={styles.footer}>
       AELF &copy;{(new Date()).getFullYear()}
     </Layout.Footer>
   );

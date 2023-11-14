@@ -1,4 +1,4 @@
-const useStyles = {
+const styles = {
   footer: {
     textAlign: 'center' as const,
     color: '#808080',
@@ -7,4 +7,4 @@ const useStyles = {
     width: '100%'
   },
 }
-export default useStyles;
+export default styles;

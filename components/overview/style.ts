@@ -1,4 +1,4 @@
-const useStyles = {
+const styles = {
   networkLayout: {
     display: 'flex',
     justifyContent: 'center' as const,
@@ -65,4 +65,4 @@ const useStyles = {
   }
 }
 
-export default useStyles;
+export default styles;

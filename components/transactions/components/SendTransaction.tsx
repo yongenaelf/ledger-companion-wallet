@@ -22,7 +22,7 @@ import { explorerUrlState, rpcUrlState } from "../../../state/selector";
 import { useBalance } from "../../../hooks/useBalance";
 import PaperLayout from '../../common/paperLayout';
 import {HD_DERIVATION_PATH} from '../../../utils/constants';
-import useStyles from "../style";
+import styles from "../style";
 
 interface SendTransactionProps {
   transport: Transport;
@@ -32,7 +32,6 @@ function SendTransaction({
   transport,
   setError,
 }: SendTransactionProps) {
-  const classes = useStyles;
   const address = useRecoilValue(addressState);
   const network = useRecoilValue(networkState);
   const chain = useRecoilValue(chainState);
@@ -222,7 +221,7 @@ function SendTransaction({
               labelCol={{span: 3}}
             >
               <Input 
-                style={classes.inputfield}
+                style={styles.inputfield}
                 allowClear/>
             </Form.Item>
           </Col>
@@ -255,7 +254,7 @@ function SendTransaction({
             >
               <div style={{position: 'relative'}}>
                 <InputNumber
-                  style={classes.inputfield}
+                  style={styles.inputfield}
                   min={0.00000001 as any}
                   value={amountValue}
                   formatter={(value) =>
@@ -266,7 +265,7 @@ function SendTransaction({
                   onChange={setAmountValue}
                 />
                 {amountValue !== null && (
-                  <CloseCircleFilled style={classes.clearIcon} onClick={() => {
+                  <CloseCircleFilled style={styles.clearIcon} onClick={() => {
                     form.setFieldsValue({ amount: '' });
                     setAmountValue(null);
                     setFormData({...formData, amount: ''});
@@ -296,7 +295,7 @@ function SendTransaction({
 
               ]}
             >
-              <Input style={classes.inputfield} showCount maxLength={64} allowClear/>
+              <Input style={styles.inputfield} showCount maxLength={64} allowClear/>
             </Form.Item>
           </Col>
         </Row>

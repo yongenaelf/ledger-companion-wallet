@@ -1,7 +1,7 @@
-const useStyles = {
+const styles = {
   copyTag: {
     cursor: 'pointer',
     marginBottom: '-2px',
   }
 }
-export default useStyles;
+export default styles;

@@ -1,6 +1,6 @@
 import { ReactNode, CSSProperties } from 'react';
 import { Card, Typography } from "antd";
-import useStyles from "./style";
+import styles from "./style";
 
 interface PaperLayoutProps {
   children: ReactNode;
@@ -14,13 +14,12 @@ const PaperLayout = ({
   subtitle,
   externalClasses,
 }: PaperLayoutProps) => {
-  const classes = useStyles;
 
   return (
-    <Card bodyStyle={classes.widgetLayout} style={{...externalClasses, minHeight: '325px'}}>
-      <Typography.Text style={classes.title}>{title}</Typography.Text>
-      {subtitle && <div style={classes.subtitle}>{subtitle}</div>}
-      <div style={classes.content}>{children}</div>
+    <Card bodyStyle={styles.widgetLayout} style={{...externalClasses, minHeight: '325px'}}>
+      <Typography.Text style={styles.title}>{title}</Typography.Text>
+      {subtitle && <div style={styles.subtitle}>{subtitle}</div>}
+      <div style={styles.content}>{children}</div>
     </Card>
   )
 }

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { Flex, Tooltip, Typography } from "antd";
-import useStyles from "./style";
+import styles from "./style";
 
 interface FromFieldProps {
   children: ReactNode;
@@ -16,10 +16,9 @@ const FromField = ({
   labelWidth = 120,
   tooltipMessage,
 }: FromFieldProps) => {
-  const classes = useStyles;
   return (
-    <Flex style={classes.fieldContainer}>
-      <Flex style={{...classes.labelContainer, width: `${labelWidth}px`}}>
+    <Flex style={styles.fieldContainer}>
+      <Flex style={{...styles.labelContainer, width: `${labelWidth}px`}}>
         {label}
         {tooltipMessage && <Tooltip color='#014795' title={tooltipMessage}>
           <InfoCircleOutlined
@@ -29,7 +28,7 @@ const FromField = ({
           />
         </Tooltip>}
       </Flex>
-      <Flex style={classes.valueContainer}>{children || <Typography.Text disabled style={classes.noValue}>Empty</Typography.Text>}</Flex>
+      <Flex style={styles.valueContainer}>{children || <Typography.Text disabled style={styles.noValue}>Empty</Typography.Text>}</Flex>
     </Flex>
   );
 }

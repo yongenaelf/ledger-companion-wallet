@@ -14,10 +14,9 @@ import PaperLayout from '../../common/paperLayout'
 import CopyToClipboard from '../../common/copyToClipboard'
 import rightArrowImage from '../../../assets/icon/right-arrow.svg';
 import rightArrowSuccessImage from '../../../assets/icon/right-arrow-success.svg';
-import useStyles from "../style";
+import styles from "../style";
 
 const AllTransactions = () => {
-  const classes = useStyles;
   const address = useRecoilValue(addressState);
   const explorerUrl = useRecoilValue(explorerUrlState);
   
@@ -61,7 +60,7 @@ const AllTransactions = () => {
       dataIndex: "action",
       key: "action",
       render: (text) => (
-        <Tag style={classes.blockTag}>{text}</Tag>
+        <Tag style={styles.blockTag}>{text}</Tag>
       ),
       width: 190
     },
@@ -131,7 +130,7 @@ const AllTransactions = () => {
   ];
 
   return (
-    <PaperLayout title="All Transactions" externalClasses={classes.paperlayoutContainer}>
+    <PaperLayout title="All Transactions" externalClasses={styles.paperlayoutContainer}>
       <Table
         columns={columns}
         dataSource={data?.list.slice(0, 8)}
@@ -141,8 +140,8 @@ const AllTransactions = () => {
         onChange={(pagination) => setPagination(pagination)}
         size="middle"
       />
-      <Flex justify='center' align='center' style={classes.btnContainer}>
-        <a style={classes.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank">
+      <Flex justify='center' align='center' style={styles.btnContainer}>
+        <a style={styles.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank">
           View all transactions on AELF Explorer
         </a>&nbsp;<Image src={rightArrowImage} alt="Copy to the clipboard"/>
       </Flex>

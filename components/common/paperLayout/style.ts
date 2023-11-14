@@ -1,4 +1,4 @@
-const useStyles = {
+const styles = {
   widgetLayout: {
     background: '#fff',
     padding: '24px',
@@ -16,4 +16,4 @@ const useStyles = {
     paddingTop: '16px'
   }
 }
-export default useStyles;
+export default styles;

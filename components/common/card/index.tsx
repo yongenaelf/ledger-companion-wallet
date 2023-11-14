@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Button, Card as AntCard, Typography } from "antd";
 import walletImage from '../../../assets/icon/wallet.svg';
-import useStyles from "./style";
+import styles from "./style";
 
 interface CardProps {
   title: string;
@@ -19,14 +19,13 @@ const Card = ({
   onClickButton,
   isError,
 }: CardProps) => {
-  const classes = useStyles;
 
   return (
-    <AntCard style={classes.card}>
-      <div style={classes.cardContentContainer}>
+    <AntCard style={styles.card}>
+      <div style={styles.cardContentContainer}>
         <Image src={walletImage} alt="Wallet"/>
-        <Typography.Title style={classes.cardTitle}>{title}</Typography.Title>
-        <Typography.Text style={classes.cardContent} {...(isError ? {type: 'danger'} : {})}>{content}</Typography.Text>
+        <Typography.Title style={styles.cardTitle}>{title}</Typography.Title>
+        <Typography.Text style={styles.cardContent} {...(isError ? {type: 'danger'} : {})}>{content}</Typography.Text>
       </div>
       <Button type={enablePrimaryBtn ? 'primary' : 'default'} onClick={onClickButton} block>{buttonLabel}</Button>
     </AntCard>

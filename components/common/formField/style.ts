@@ -1,4 +1,4 @@
-const useStyles = {
+const styles = {
   fieldContainer: {
     flex: 1,
     marginBottom: '20px',
@@ -20,4 +20,4 @@ const useStyles = {
     fontWeight: 500
   }
 }
-export default useStyles;
+export default styles;

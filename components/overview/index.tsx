@@ -11,7 +11,7 @@ import AddressVerification from '../transactions/components/AddressVerification'
 import Details from '../common/details';
 import useSnackbar from '../../utils/snackbar';
 import {HD_DERIVATION_PATH, ERROR_CODE} from '../../utils/constants';
-import useStyles from './style';
+import styles from './style';
 
 interface OverviewProps {
   chain: string;
@@ -26,7 +26,6 @@ function Overview({
   transport,
   setError,
 }: OverviewProps) {
-  const classes = useStyles;
   
   const [state, setState] = useState({
     publicKey: "",
@@ -67,17 +66,17 @@ function Overview({
   return (
     <PaperLayout 
       title='Account Balance'
-      subtitle={<Button type="link" href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank" style={classes.btnNoSpacing}>View All Txns</Button>}>
+      subtitle={<Button type="link" href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank" style={styles.btnNoSpacing}>View All Txns</Button>}>
       <Space style={{marginTop: '-28px'}}>
-        <Typography.Text style={classes.balanceValue}>{balance}</Typography.Text>
-        <Typography.Text style={classes.balanceLabel}>ELF</Typography.Text>
+        <Typography.Text style={styles.balanceValue}>{balance}</Typography.Text>
+        <Typography.Text style={styles.balanceLabel}>ELF</Typography.Text>
       </Space>
-      <div style={classes.accountLayout}>
+      <div style={styles.accountLayout}>
         <AddressVerification
           verifying={state.verifying}
           triggerVerification={() => fetchAddress(true)}
         />
-        <div style={classes.detailsContainer}>
+        <div style={styles.detailsContainer}>
           <Details label='Address' value={<>ELF_{address}_{chain}&nbsp;&nbsp;
             <CopyToClipboard message={`ELF_${address}_${chain}`}/>
           </>}/>

@@ -6,7 +6,7 @@ import Header from '../../common/header';
 import Footer from '../../common/footer';
 import { addressState, chainState } from "../../../state";
 import Transactions from "../../transactions";
-import useStyles from "./style";
+import styles from "./style";
 
 interface DashboardPageProps {
   transport: Transport;
@@ -16,13 +16,12 @@ const DashboardPage = ({
   transport,
 }: DashboardPageProps) => {
   const [isDeviceLocked, setDeviceLocked] = useState(false);
-  const classes = useStyles;
   const [address, setAddress] = useRecoilState(addressState);
   const chain = useRecoilValue(chainState);
   const {Content} = Layout;
   return (
     <Layout className="layout-container">
-      {!isDeviceLocked && <Header showNetwork={Boolean(transport)} externalClasses={{container: classes.stickyHeader}}/>}
+      {!isDeviceLocked && <Header showNetwork={Boolean(transport)} externalClasses={{container: styles.stickyHeader}}/>}
       <Content className={['layout-content', isDeviceLocked && 'p0'].join(' ').trim()}>
         <Transactions
           transport={transport}
