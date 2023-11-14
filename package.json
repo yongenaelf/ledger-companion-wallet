@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "pre-commit": [
-    "lint"
+    "lint",
+    "lint:styles"
   ],
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -35,7 +36,8 @@
     "lint": "next lint",
     "lint:code:fix": "npx eslint --fix",
     "test": "vitest",
-    "generate": "pbjs -t static-module -w commonjs -o ./utils/compiled.js ./utils/message.proto"
+    "generate": "pbjs -t static-module -w commonjs -o ./utils/compiled.js ./utils/message.proto",
+    "lint:styles": "stylelint '**/*.{css,scss}'"
   },
   "devDependencies": {
     "@types/node": "latest",
@@ -53,6 +55,9 @@
     "punycode": "^1.4.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "stylelint": "^15.11.0",
+    "stylelint-config-standard": "^34.0.0",
+    "stylelint-webpack-plugin": "^4.1.1",
     "typescript": "latest",
     "url": "^0.11.1",
     "vitest": "^0.34.6"
