@@ -5,6 +5,12 @@
     "plugins": [
     ],
     "rules": {
+        "indentation": 2,
+        "selector-list-comma-newline-after": "always",
+        "color-hex-case": "lower",
+        "value-list-comma-space-after": "always",
+        "declaration-block-trailing-semicolon": "always",
+        "string-quotes": "double" 
     }
 }
   
