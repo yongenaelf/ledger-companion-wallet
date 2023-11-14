@@ -70,7 +70,7 @@ a {
 }
 
 .hidden-selected-value .ant-select-selector,
-.hidden-selected-value .ant-select-arrow  svg path {
+.hidden-selected-value .ant-select-arrow svg path {
   color: #fff;
   fill: #fff;
 }
@@ -151,7 +151,7 @@ a {
   font-weight: 400;
 }
 
-.ant-message-notice-content  .anticon-close-circle {
+.ant-message-notice-content .anticon-close-circle {
   display: none;
 }
 
