@@ -1,0 +1,21 @@
+.loaderContainer {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  flex-direction: column;
+}
+
+.spinner {
+  width: 11.2px;
+  height: 11.2px;
+  border-radius: 11.2px;
+  box-shadow: 28px 0 0 0 #3263bd33, 22.7px 16.5px 0 0 #3263bd66, 8.68px 26.6px 0 0 #3263bd99, -8.68px 26.6px 0 0 #3263bdcc, -22.7px 16.5px 0 0 #3263bd;
+  animation: spinner-loader 1s infinite linear;
+}
+
+.loadingInfo {
+  padding-top: 60px;
+}

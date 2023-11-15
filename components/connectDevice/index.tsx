@@ -12,7 +12,9 @@ function ConnectDevice({
 }: ConnectDeviceProps) {
 
   const connectUSBDevice = async () => {
+    console.log("connecting...");
     const transport = await TransportWebUSB.create();
+    console.log("transport: ", transport);
     onSelectDevice(transport);
   };
 

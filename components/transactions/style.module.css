@@ -1,0 +1,66 @@
+.btnContainer {
+  background: #ecf7ff;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: -1px -25px -25px;
+  border-radius: 0 0 6px 6px;
+}
+
+.btn {
+  color: #3eabfd;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.floatLink {
+  position: absolute;
+  right: 8px;
+  top: 30px;
+}
+
+.paperlayoutContainer {
+  margin-bottom: 24px;
+}
+
+.blockTag {
+  display: block;
+  text-align: center;
+  background: #f5f6f7;
+  border: 1px solid #e0e0e0;
+}
+
+.inputfield {
+  height: 40px;
+  width: 100%;
+}
+
+.modalTitle {
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.errorBlock {
+  display: block;
+  margin-top: 24px;
+}
+
+.modalInfo {
+  color: #bfbfbf;
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: -8px;
+  display: block;
+}
+
+.clearIcon {
+  position: absolute;
+  top: 50%;
+  right: 32px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #ccc;
+}

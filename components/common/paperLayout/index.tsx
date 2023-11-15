@@ -1,12 +1,19 @@
-import { ReactNode, CSSProperties } from 'react';
+import { ReactNode } from 'react';
 import { Card, Typography } from "antd";
-import styles from "./style";
+import styles from "./style.module.css";
 
+const bodyStyles = {
+  widgetLayout: {
+    background: '#fff',
+    padding: '24px',
+    borderRadius: '8px',
+  }
+}
 interface PaperLayoutProps {
   children: ReactNode;
   title: string;
   subtitle?: ReactNode;
-  externalClasses?: CSSProperties;
+  externalClasses?: string;
 }
 const PaperLayout = ({
   children,
@@ -14,12 +21,11 @@ const PaperLayout = ({
   subtitle,
   externalClasses,
 }: PaperLayoutProps) => {
-
   return (
-    <Card bodyStyle={styles.widgetLayout} style={{...externalClasses, minHeight: '325px'}}>
-      <Typography.Text style={styles.title}>{title}</Typography.Text>
-      {subtitle && <div style={styles.subtitle}>{subtitle}</div>}
-      <div style={styles.content}>{children}</div>
+    <Card bodyStyle={bodyStyles.widgetLayout} style={{minHeight: '325px'}} className={externalClasses}>
+      <Typography.Text className={styles.title}>{title}</Typography.Text>
+      {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
+      <div className={styles.content}>{children}</div>
     </Card>
   )
 }

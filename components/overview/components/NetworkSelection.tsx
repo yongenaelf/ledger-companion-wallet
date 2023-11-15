@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Image from 'next/image';
 import { Select, Space } from "antd";
 import { useRecoilState } from "recoil";
@@ -9,17 +10,17 @@ import {
   networkState,
 } from "../../../state";
 import {NETWORK_OPTIONS, MAINNET_SIDECHAIN_OPTIONS, TESTNET_SIDECHAIN_OPTIONS} from '../constants';
-import styles from '../style';
+import styles from '../style.module.css';
 
 function NetworkSelection() {
   const [network, setNetwork] = useRecoilState(networkState);
   const [chain, setChain] = useRecoilState(chainState);
 
   return (
-    <div style={styles.networkLayout}>
+    <div className={styles.networkLayout}>
       <Space>
         <Select
-          style={styles.selectField}
+          className={styles.selectField}
           options={[{ value: ChainStateEnum.AELF, label: "MainChain AELF" }].concat(
             network === NetworkStateEnum.mainnet
               ? MAINNET_SIDECHAIN_OPTIONS
@@ -30,13 +31,12 @@ function NetworkSelection() {
             setChain(e);
           }}
         />
-        <div style={styles.selectFieldIconWrapper} className='select-field-icon-wrapper'>
-          <div style={styles.selectFieldIconCover}>
-            <Image src={globeImage} alt="Wallet" style={styles.selectFieldIcon}/>
+        <div className={clsx(styles.selectFieldIconWrapper, 'select-field-icon-wrapper')}>
+          <div className={styles.selectFieldIconCover}>
+            <Image src={globeImage} alt="Wallet" className={styles.selectFieldIcon}/>
           </div>
           <Select
-            style={{...styles.selectField, ...styles.SelectFieldWithIcon}}
-            className='hidden-selected-value'
+            className={clsx(styles.selectField, styles.selectFieldWithIcon, 'hidden-selected-value')}
             options={NETWORK_OPTIONS}
             value={network}
             onChange={(e) => {

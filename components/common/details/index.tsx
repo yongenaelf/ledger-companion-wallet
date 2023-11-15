@@ -1,5 +1,5 @@
 import {ReactNode} from 'react';
-import styles from "./style";
+import styles from "./style.module.css";
 
 interface DetailsProps {
   label: string;
@@ -11,9 +11,9 @@ const Details = ({
   value
 }: DetailsProps) => {
   return (
-    <div style={styles.fieldLayout}>
-      <div style={styles.fieldLabel}>{label}</div>
-      <div style={styles.fieldValue}>{value}</div>
+    <div className={styles.fieldLayout}>
+      <div className={styles.fieldLabel}>{label}</div>
+      <div className={styles.fieldValue}>{value}</div>
     </div>
   );
 }

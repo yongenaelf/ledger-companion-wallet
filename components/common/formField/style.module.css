@@ -1,0 +1,23 @@
+.fieldContainer {
+  flex: 1;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.labelContainer {
+  width: 106px;
+  color: #808080;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.valueContainer {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.noValue {
+  font-size: 14px;
+  font-weight: 500;
+}

@@ -1,7 +1,7 @@
 import { Flex, Layout } from 'antd';
 import Header from '../../common/header';
 import Footer from '../../common/footer';
-import styles from "./style";
+import styles from "./style.module.css";
 
 interface ErrorPageProps {
   children: React.ReactNode;
@@ -15,18 +15,18 @@ const ErrorPage = ({
     <>       
       <Flex flex={1}>
         <Flex flex={1} justify='flex-start' align='flex-start' vertical>
-          <Layout style={styles.layoutContainer}>
+          <Layout className={styles.layoutContainer}>
             <Header externalClasses={{
               container: styles.stickyHeader,
               header: styles.headerContainer
             }}/>
-            <Content style={styles.contentContainer}>
+            <Content className={styles.contentContainer}>
               {children}
             </Content>
             <Footer/>
           </Layout>
         </Flex>
-        <div style={styles.rightContainer}/>
+        <div className={styles.rightContainer}/>
       </Flex>
             
     </>

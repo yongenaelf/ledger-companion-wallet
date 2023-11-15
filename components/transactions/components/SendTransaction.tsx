@@ -22,7 +22,7 @@ import { explorerUrlState, rpcUrlState } from "../../../state/selector";
 import { useBalance } from "../../../hooks/useBalance";
 import PaperLayout from '../../common/paperLayout';
 import {HD_DERIVATION_PATH} from '../../../utils/constants';
-import styles from "../style";
+import styles from "../style.module.css";
 
 interface SendTransactionProps {
   transport: Transport;
@@ -221,7 +221,7 @@ function SendTransaction({
               labelCol={{span: 3}}
             >
               <Input 
-                style={styles.inputfield}
+                className={styles.inputfield}
                 allowClear/>
             </Form.Item>
           </Col>
@@ -254,7 +254,7 @@ function SendTransaction({
             >
               <div style={{position: 'relative'}}>
                 <InputNumber
-                  style={styles.inputfield}
+                  className={styles.inputfield}
                   min={0.00000001 as any}
                   value={amountValue}
                   formatter={(value) =>
@@ -265,7 +265,7 @@ function SendTransaction({
                   onChange={setAmountValue}
                 />
                 {amountValue !== null && (
-                  <CloseCircleFilled style={styles.clearIcon} onClick={() => {
+                  <CloseCircleFilled className={styles.clearIcon} onClick={() => {
                     form.setFieldsValue({ amount: '' });
                     setAmountValue(null);
                     setFormData({...formData, amount: ''});
@@ -295,7 +295,7 @@ function SendTransaction({
 
               ]}
             >
-              <Input style={styles.inputfield} showCount maxLength={64} allowClear/>
+              <Input className={styles.inputfield} showCount maxLength={64} allowClear/>
             </Form.Item>
           </Col>
         </Row>
@@ -325,7 +325,7 @@ function SendTransaction({
         <Result
           status="error"
           title="Transaction Failure"
-          subTitle={<div style={{marginTop: '20px', color: '#FC493A'}}>Transaction fee is insufficient.</div>}
+          subTitle={<div style={{marginTop: '20px', color: '#fc493a'}}>Transaction fee is insufficient.</div>}
         />
       </Modal>
       {showTransferVerifyModal && <TransferVerification 

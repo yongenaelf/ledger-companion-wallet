@@ -13,7 +13,8 @@
         "string-quotes": "double",
         "max-line-length": null,
         "selector-descendant-combinator-no-non-space": true,
-        "no-missing-end-of-source-newline": null
+        "no-missing-end-of-source-newline": null,
+        "selector-class-pattern": "^([a-z][a-zA-Z0-9]*|[a-z]+(-[a-z]+)*)$"
     }
 }
   

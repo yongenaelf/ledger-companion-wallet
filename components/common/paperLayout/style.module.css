@@ -1,0 +1,13 @@
+.title {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+.subtitle {
+  display: block;
+}
+
+.content {
+  padding-top: 16px;
+}

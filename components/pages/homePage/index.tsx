@@ -3,7 +3,7 @@ import Transport from "@ledgerhq/hw-transport";
 import Header from '../../common/header';
 import Footer from '../../common/footer';
 import ConnectDevice from "../../connectDevice";
-import styles from "./style";
+import styles from "./style.module.css";
 
 interface HomePageProps {
   // eslint-disable-next-line no-unused-vars
@@ -15,23 +15,21 @@ const HomePage = ({
 }: HomePageProps) => {
   const {Content} = Layout;
   return (
-    <>  
-      <Flex flex={1}>
-        <Flex flex={1} justify='flex-start' align='flex-start' vertical>
-          <Layout style={styles.layoutContainer}>
-            <Header externalClasses={{
-              container: styles.stickyHeader,
-              header: styles.headerContainer
-            }}/>
-            <Content style={styles.contentContainer}>
-              <ConnectDevice {...{onSelectDevice}}/>
-            </Content>
-            <Footer/>
-          </Layout>
-        </Flex>
-        <div style={styles.rightContainer}/>
-      </Flex>    
-    </>
+    <Flex flex={1}>
+      <Flex flex={1} justify='flex-start' align='flex-start' vertical>
+        <Layout className={styles.layoutContainer}>
+          <Header externalClasses={{
+            container: styles.stickyHeader,
+            header: styles.headerContainer
+          }}/>
+          <Content className={styles.contentContainer}>
+            <ConnectDevice {...{onSelectDevice}}/>
+          </Content>
+          <Footer/>
+        </Layout>
+      </Flex>
+      <div className={styles.rightContainer}/>
+    </Flex>
   )
 };
 

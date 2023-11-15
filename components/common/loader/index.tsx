@@ -1,4 +1,4 @@
-import styles from "./style";
+import styles from "./style.module.css";
 
 interface LoaderProps {
   message?: string;
@@ -9,9 +9,9 @@ const Loader = ({
 }: LoaderProps) => {
 
   return (
-    <div style={styles.loaderContainer}>
-      <div style={styles.spinner}></div>
-      <div style={styles.loadingInfo}>{message || 'Loading...'}</div>
+    <div className={styles.loaderContainer}>
+      <div className={styles.spinner}></div>
+      <div className={styles.loadingInfo}>{message || 'Loading...'}</div>
     </div>
   );
 }

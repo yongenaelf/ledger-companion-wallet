@@ -14,7 +14,7 @@ import PaperLayout from '../../common/paperLayout'
 import CopyToClipboard from '../../common/copyToClipboard'
 import rightArrowImage from '../../../assets/icon/right-arrow.svg';
 import rightArrowSuccessImage from '../../../assets/icon/right-arrow-success.svg';
-import styles from "../style";
+import styles from "../style.module.css";
 
 const AllTransactions = () => {
   const address = useRecoilValue(addressState);
@@ -60,7 +60,7 @@ const AllTransactions = () => {
       dataIndex: "action",
       key: "action",
       render: (text) => (
-        <Tag style={styles.blockTag}>{text}</Tag>
+        <Tag className={styles.blockTag}>{text}</Tag>
       ),
       width: 190
     },
@@ -140,8 +140,8 @@ const AllTransactions = () => {
         onChange={(pagination) => setPagination(pagination)}
         size="middle"
       />
-      <Flex justify='center' align='center' style={styles.btnContainer}>
-        <a style={styles.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank">
+      <Flex justify='center' align='center' className={styles.btnContainer}>
+        <a className={styles.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank">
           View all transactions on AELF Explorer
         </a>&nbsp;<Image src={rightArrowImage} alt="Copy to the clipboard"/>
       </Flex>

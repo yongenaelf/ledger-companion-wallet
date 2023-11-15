@@ -8,7 +8,7 @@ import { useAElf } from "../../../hooks/useAElf";
 import { chainState, addressState } from "../../../state";
 import { fetchMainAddress, getFormattedAddress } from "../../../utils/utils";
 import { rpcUrlState } from "../../../state/selector";
-import styles from '../style';
+import styles from '../style.module.css';
 
 interface TransferFormData {
   to: string;
@@ -101,8 +101,8 @@ const TransferVerification = ({
         <Flex flex={1}><Button type="primary" onClick={onConfirm} block disabled={isInsufficient}>Confirm</Button></Flex>
       </Flex>)}
     >
-      <Typography.Text type="secondary" style={styles.modalInfo}>Please verify the below transfer details before clicking confirm.</Typography.Text>
-      {error && <Typography.Text style={styles.errorBlock} type='danger'>{error}</Typography.Text>}
+      <Typography.Text type="secondary" className={styles.modalInfo}>Please verify the below transfer details before clicking confirm.</Typography.Text>
+      {error && <Typography.Text className={styles.errorBlock} type='danger'>{error}</Typography.Text>}
       <FormField label="To">{getFormattedAddress(data.to, chain)}</FormField>
       <FormField label="Amount">{amount.toNumber().toFixed(amount.dp()).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ELF</FormField>
       <FormField label="Memo">{data.memo}</FormField>

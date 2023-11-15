@@ -20,6 +20,7 @@ function App() {
   const value = { snackbar, setSnackbar };
 
   const onSelectDevice = (transport: Transport) => {
+    console.log("transport transport: ", transport);
     // @ts-ignore
     window.ledgerTransport = transport;
     transport.on("disconnect", async () => {

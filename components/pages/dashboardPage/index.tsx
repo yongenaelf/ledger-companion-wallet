@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import {useState} from 'react';
 import { Layout } from 'antd';
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -6,7 +7,7 @@ import Header from '../../common/header';
 import Footer from '../../common/footer';
 import { addressState, chainState } from "../../../state";
 import Transactions from "../../transactions";
-import styles from "./style";
+import styles from "./style.module.css";
 
 interface DashboardPageProps {
   transport: Transport;
@@ -22,7 +23,7 @@ const DashboardPage = ({
   return (
     <Layout className="layout-container">
       {!isDeviceLocked && <Header showNetwork={Boolean(transport)} externalClasses={{container: styles.stickyHeader}}/>}
-      <Content className={['layout-content', isDeviceLocked && 'p0'].join(' ').trim()}>
+      <Content className={clsx('layout-content', isDeviceLocked && 'p0')}>
         <Transactions
           transport={transport}
           chain={chain}

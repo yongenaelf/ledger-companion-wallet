@@ -1,4 +1,4 @@
-import {CSSProperties} from 'react';
+import clsx from 'clsx';
 import Image from 'next/image';
 import { useRecoilValue } from "recoil";
 import { Layout, Typography, Col, Row } from "antd";
@@ -9,11 +9,11 @@ import {
 import NetworkSelection from "../../overview/components/NetworkSelection";
 import logoTestnetImage from '../../../assets/icon/logo-testnet.svg';
 import logoMainnetImage from '../../../assets/icon/logo-mainnet.svg';
-import styles from "./style";
+import styles from "./style.module.css";
 
 interface HeaderProps {
   showNetwork?: boolean;
-  externalClasses?: Partial<{container: CSSProperties, header: CSSProperties}>;
+  externalClasses?: Partial<{container: string, header: string}>;
 }
 const Header = ({
   showNetwork,
@@ -22,12 +22,12 @@ const Header = ({
   const network = useRecoilValue(networkState);
 
   return (
-    <div style={{...styles.headerContainer, ...externalClasses.container}} className={[network == NetworkStateEnum.testnet ? 'testnetwork-header' : 'mainnetwork-header'].join(' ').trim()}>
-      <Layout.Header style={{...styles.header, ...externalClasses.header}} className={[network == NetworkStateEnum.testnet ? 'testnetwork-header' : 'mainnetwork-header'].join(' ').trim()}>
-        <Row style={styles.headerLayout} align="middle">
-          <Col span={12} style={styles.verticalCenter}>
+    <div className={clsx(styles.headerContainer, externalClasses.container, network == NetworkStateEnum.testnet ? 'testnetwork-header' : 'mainnetwork-header')}>
+      <Layout.Header className={clsx(styles.header, externalClasses.header, network == NetworkStateEnum.testnet ? 'testnetwork-header' : 'mainnetwork-header')}>
+        <Row className={styles.headerLayout} align="middle">
+          <Col span={12} className={styles.verticalCenter}>
             <Image src={network == NetworkStateEnum.testnet ? logoTestnetImage : logoMainnetImage} alt="Aelf logo" height={36}/>
-            <Typography.Text style={styles.title} className='header-title'>Ledger Wallet</Typography.Text>
+            <Typography.Text className={[styles.title, 'header-title'].join(' ').trim()}>Ledger Wallet</Typography.Text>
           </Col>
           {showNetwork && <Col span={12}>
             <NetworkSelection />
