@@ -1,7 +1,6 @@
 import bs58 from "bs58";
 import AElf from "aelf-sdk";
 import {ChainStateEnum} from "@/state";
-import {ERROR_CODE} from "@/constants";
 
 const { decodeAddressRep } = AElf.utils;
 
@@ -24,11 +23,6 @@ export const validateAddress = (
     bs58.decode(mid);
     decodeAddressRep(mid);
   } catch (err) {
-    if (err.message == ERROR_CODE.CROSS_CHAIN) {
-      throw new Error("Cross-chain transfer is currently not supported. We aim to launch this feature soon.");
-    } else {
-      throw new Error("Oops! Please input a valid AELF network address!");
-
-    }
+    throw new Error("Oops! Please input a valid AELF network address!");
   }
 };
