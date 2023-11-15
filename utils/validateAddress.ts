@@ -10,11 +10,11 @@ export const validateAddress = (
 ) => {
   if (addr.trim().length === 0) {
     return;
-  } else if (addr.split("_").length !== 3) {
-    throw new Error("Oops! Please input a valid AELF network address!");
   } else if (addr.split("_").length === 1) {
     addr = `ELF_${addr}_${chain}`;
-  }
+  } else if (addr.split("_").length !== 3) {
+    throw new Error("Oops! Please input a valid AELF network address!");
+  } 
   
   const [_, mid, end] = addr.split("_");
   if (end !== chain)
