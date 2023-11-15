@@ -210,8 +210,8 @@ function SendTransaction({
                 },
                 {
                   // eslint-disable-next-line no-unused-vars
-                  async validator(rule, value) {
-                    validateAddress(value, network, chain);
+                  async validator(_, value) {
+                    validateAddress(value, chain);
                     return "";
                   },
                 },

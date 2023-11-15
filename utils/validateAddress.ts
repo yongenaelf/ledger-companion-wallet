@@ -1,36 +1,28 @@
 import bs58 from "bs58";
 import AElf from "aelf-sdk";
-import {ChainStateEnum, NetworkStateEnum} from "@/state";
-import {replaceAll} from "@/utils";
+import {ChainStateEnum} from "@/state";
 import {ERROR_CODE} from "@/constants";
 
 const { decodeAddressRep } = AElf.utils;
 
-export const validateAddress = (addr: string, network: NetworkStateEnum, chain: ChainStateEnum = ChainStateEnum.AELF) => {
+export const validateAddress = (
+  addr: string,
+  chain: ChainStateEnum = ChainStateEnum.AELF
+) => {
+  if (addr.trim().length === 0) {
+    return;
+  } else if (addr.split("_").length !== 3) {
+    throw new Error("Oops! Please input a valid AELF network address!");
+  } else if (addr.split("_").length === 1) {
+    addr = `ELF_${addr}_${chain}`;
+  }
+  
+  const [_, mid, end] = addr.split("_");
+  if (end !== chain)
+    throw new Error("Cross-chain transfer is currently not supported. We aim to launch this feature soon.");
   try {
-    addr = replaceAll(addr, "ELF_", "");
-
-    const chains = {
-      [NetworkStateEnum.mainnet]: {
-        [ChainStateEnum.AELF]: [ChainStateEnum.tDVV],
-        [ChainStateEnum.tDVV]: [ChainStateEnum.AELF],
-      },
-      [NetworkStateEnum.testnet]: {
-        [ChainStateEnum.AELF]: [ChainStateEnum.tDVW],
-        [ChainStateEnum.tDVW]: [ChainStateEnum.AELF],
-      },
-    };
-    const otherChains = chains?.[network]?.[chain];
-
-    if (otherChains) {
-      if (addr.endsWith(`_${chain}`)) {
-        addr = replaceAll(addr, `_${chain}`, "");
-      } else if (addr.endsWith(`_${otherChains}`)) {
-        throw new Error(ERROR_CODE.CROSS_CHAIN);
-      }
-    }
-    bs58.decode(addr);
-    decodeAddressRep(addr);
+    bs58.decode(mid);
+    decodeAddressRep(mid);
   } catch (err) {
     if (err.message == ERROR_CODE.CROSS_CHAIN) {
       throw new Error("Cross-chain transfer is currently not supported. We aim to launch this feature soon.");
