@@ -1,6 +1,6 @@
 import { ChainStateEnum } from "@/state";
-import {CHAIN_OPTIONS} from './constants';
 import { replaceAll } from "@/utils";
+import {CHAIN_OPTIONS} from './constants';
 
 export const fetchMainAddress = (address: string) => {
   if (address.startsWith("ELF_") || address.endsWith(`_${ChainStateEnum.AELF}`) || address.endsWith(`_${ChainStateEnum.tDVW}`)) {

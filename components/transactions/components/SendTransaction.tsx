@@ -335,7 +335,7 @@ function SendTransaction({
         onCancel={() => {
           setShowTransferVerifyModal(false);
         }}
-        tokenContract={data}
+        tokenContract={{tokenContractAddress: data.tokenContractAddress}}
         data={formData}/>}
     </PaperLayout>
   );

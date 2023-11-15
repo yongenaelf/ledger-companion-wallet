@@ -6,8 +6,8 @@ import FormField from '@/components/common/formField';
 import { transfer } from "@/utils/transaction";
 import { useAElf } from "@/hooks/useAElf";
 import { chainState, addressState } from "@/state";
-import { fetchMainAddress, getFormattedAddress } from "../utils";
 import { rpcUrlState } from "@/state/selector";
+import { fetchMainAddress, getFormattedAddress } from "../utils";
 import styles from '../style.module.css';
 
 interface TransferFormData {
@@ -22,8 +22,7 @@ interface TransferVerificationProps {
   onCancel: () => void;
   data: TransferFormData;
   tokenContract: {
-    multiTokenContract: any;
-    tokenContractAddress: any;
+    tokenContractAddress: string;
   };
 }
 const TransferVerification = ({
