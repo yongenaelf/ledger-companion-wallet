@@ -177,7 +177,7 @@ function SendTransaction({
       <Form
         form={form}
         labelCol={{ span: 3 }}
-        style={{ maxWidth: 'none' }}
+        className={styles.noWidth}
         initialValues={{
           to: "",
           amount: '',
@@ -198,9 +198,7 @@ function SendTransaction({
               label={
                 <>To:&nbsp;&nbsp;&nbsp;<Tooltip color='#014795' title="An aelf address contains an 'ELF_' prefix and a suffix according to the chain you intend to interact with - '_AELF' for the main chain">
                   <InfoCircleOutlined
-                    style={{
-                      color: '#5C6876',
-                    }}
+                    className={styles.infoIcon}
                   />
                 </Tooltip></>
               }
@@ -252,7 +250,7 @@ function SendTransaction({
               ]}
               labelCol={{span: 3}}
             >
-              <div style={{position: 'relative'}}>
+              <div className={styles.posRelative}>
                 <InputNumber
                   className={styles.inputfield}
                   min={0.00000001 as any}
@@ -299,11 +297,11 @@ function SendTransaction({
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item style={{textAlign: 'right', marginBottom: 0}}>
+        <Form.Item className={styles.formBtnContainer}>
           <SubmitButton form={form} />
         </Form.Item>
       </Form>
-      <Modal open={!!showTransferModal} footer={null} closeIcon={null} centered width={442} style={{textAlign: 'center'}}>
+      <Modal open={!!showTransferModal} footer={null} closeIcon={null} centered width={442} className={styles.tCenter}>
         Please verify your transaction details on your<br/>Ledger device to continue....
       </Modal>
       <Modal 
@@ -314,7 +312,7 @@ function SendTransaction({
         <Result
           status="success"
           title="Successful transaction"
-          subTitle={<div style={{marginTop: '20px'}}>TransactionId: <a href={`${explorerUrl}/tx/${transactionId}`} target="_blank">{transactionId}</a></div>}
+          subTitle={<div className={styles.resultContainer}>TransactionId: <a href={`${explorerUrl}/tx/${transactionId}`} target="_blank">{transactionId}</a></div>}
         />
       </Modal>
       <Modal 
@@ -325,7 +323,7 @@ function SendTransaction({
         <Result
           status="error"
           title="Transaction Failure"
-          subTitle={<div style={{marginTop: '20px', color: '#fc493a'}}>Transaction fee is insufficient.</div>}
+          subTitle={<div className={styles.failureContainer}>Transaction fee is insufficient.</div>}
         />
       </Modal>
       {showTransferVerifyModal && <TransferVerification 

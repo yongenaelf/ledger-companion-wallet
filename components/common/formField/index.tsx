@@ -22,9 +22,7 @@ const FromField = ({
         {label}
         {tooltipMessage && <Tooltip color='#014795' title={tooltipMessage}>
           <InfoCircleOutlined
-            style={{
-              color: 'rgba(0,0,0,.45)',
-            }}
+            className={styles.infoIcon}
           />
         </Tooltip>}
       </Flex>

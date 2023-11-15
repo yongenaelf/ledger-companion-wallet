@@ -1,3 +1,7 @@
+.card {
+  min-height: 325px;
+}
+
 .title {
   font-size: 20px;
   font-weight: 500;

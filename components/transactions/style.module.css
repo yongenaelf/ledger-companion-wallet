@@ -64,3 +64,37 @@
   cursor: pointer;
   color: #ccc;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
+.noWidth {
+  max-width: none;
+}
+
+.infoIcon {
+  color: #5c6876;
+}
+
+.posRelative {
+  position: relative;
+}
+
+.formBtnContainer {
+  text-align: right;
+  margin-bottom: 0;
+}
+
+.tCenter {
+  text-align: center;
+}
+
+.resultContainer {
+  margin-top: 20px;
+}
+
+.failureContainer {
+  margin-top: 20px; 
+  color: #fc493a;
+}

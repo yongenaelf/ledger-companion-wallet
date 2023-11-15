@@ -67,7 +67,7 @@ function Overview({
     <PaperLayout 
       title='Account Balance'
       subtitle={<Button type="link" href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank" className={styles.btnNoSpacing}>View All Txns</Button>}>
-      <Space style={{marginTop: '-28px'}}>
+      <Space className={styles.spaceIndent}>
         <Typography.Text className={styles.balanceValue}>{balance}</Typography.Text>
         <Typography.Text className={styles.balanceLabel}>ELF</Typography.Text>
       </Space>

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { ReactNode } from 'react';
 import { Card, Typography } from "antd";
 import styles from "./style.module.css";
@@ -22,7 +23,7 @@ const PaperLayout = ({
   externalClasses,
 }: PaperLayoutProps) => {
   return (
-    <Card bodyStyle={bodyStyles.widgetLayout} style={{minHeight: '325px'}} className={externalClasses}>
+    <Card bodyStyle={bodyStyles.widgetLayout} className={clsx(externalClasses, styles.card)}>
       <Typography.Text className={styles.title}>{title}</Typography.Text>
       {subtitle && <div className={styles.subtitle}>{subtitle}</div>}
       <div className={styles.content}>{children}</div>

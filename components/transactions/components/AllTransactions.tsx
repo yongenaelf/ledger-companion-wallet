@@ -67,7 +67,7 @@ const AllTransactions = () => {
     {
       title: () => (
         <span onClick={() => setShowDate((show) => !show)}>
-          {showDate ? "Date Time" : "Age"}  <SwapOutlined style={{cursor: 'pointer'}}/>
+          {showDate ? "Date Time" : "Age"}  <SwapOutlined className={styles.pointer}/>
         </span>
       ),
       dataIndex: "time",
