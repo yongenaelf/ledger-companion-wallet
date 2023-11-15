@@ -1,5 +1,5 @@
 
-import {ChainStateEnum, NetworkStateEnum} from "../../state";
+import {ChainStateEnum, NetworkStateEnum} from "@/state";
 
 type ChainOptions = Array<{ value: ChainStateEnum; label: string }>;
 type NetworkOptions = Array<{ value: NetworkStateEnum; label: string }>;

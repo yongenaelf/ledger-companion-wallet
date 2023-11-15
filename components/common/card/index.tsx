@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { Button, Card as AntCard, Typography } from "antd";
-import walletImage from '../../../assets/icon/wallet.svg';
+import walletImage from '@/assets/icon/wallet.svg';
 import styles from "./style.module.css";
 
 interface CardProps {

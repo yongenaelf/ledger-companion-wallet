@@ -1,6 +1,6 @@
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import Transport from "@ledgerhq/hw-transport";
-import Card from '../common/card';
+import Card from '@/components/common/card';
 
 interface ConnectDeviceProps {
   // eslint-disable-next-line no-unused-vars
@@ -12,9 +12,7 @@ function ConnectDevice({
 }: ConnectDeviceProps) {
 
   const connectUSBDevice = async () => {
-    console.log("connecting...");
     const transport = await TransportWebUSB.create();
-    console.log("transport: ", transport);
     onSelectDevice(transport);
   };
 

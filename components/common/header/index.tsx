@@ -5,10 +5,10 @@ import { Layout, Typography, Col, Row } from "antd";
 import {
   NetworkStateEnum,
   networkState,
-} from "../../../state";
-import NetworkSelection from "../../overview/components/NetworkSelection";
-import logoTestnetImage from '../../../assets/icon/logo-testnet.svg';
-import logoMainnetImage from '../../../assets/icon/logo-mainnet.svg';
+} from "@/state";
+import NetworkSelection from "@/components/overview/components/NetworkSelection";
+import logoTestnetImage from '@/assets/icon/logo-testnet.svg';
+import logoMainnetImage from '@/assets/icon/logo-mainnet.svg';
 import styles from "./style.module.css";
 
 interface HeaderProps {

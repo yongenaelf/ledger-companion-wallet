@@ -1,6 +1,6 @@
 import { Flex, Layout } from 'antd';
-import Header from '../../common/header';
-import Footer from '../../common/footer';
+import Header from '@/components/common/header';
+import Footer from '@/components/common/footer';
 import styles from "./style.module.css";
 
 interface ErrorPageProps {

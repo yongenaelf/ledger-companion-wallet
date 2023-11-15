@@ -23,7 +23,7 @@ import { Logger } from "./Logger";
 
 export const ellipticEc = new elliptic.ec("secp256k1");
 
-export * from "./utils";
+export * from ".";
 
 /**
  * AElf API

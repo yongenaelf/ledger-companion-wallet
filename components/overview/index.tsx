@@ -2,15 +2,15 @@ import { useRecoilValue } from "recoil";
 import { useState} from 'react';
 import { Button, Typography, Space } from "antd";
 import Transport from "@ledgerhq/hw-transport";
-import { useBalance } from "../../hooks/useBalance";
-import AppAelf from "../../utils/Elf";
-import { explorerUrlState } from "../../state/selector";
-import PaperLayout from '../common/paperLayout';
-import CopyToClipboard from '../common/copyToClipboard';
-import AddressVerification from '../transactions/components/AddressVerification';
-import Details from '../common/details';
-import useSnackbar from '../../utils/snackbar';
-import {HD_DERIVATION_PATH, ERROR_CODE} from '../../utils/constants';
+import { useBalance } from "@/hooks/useBalance";
+import AppAelf from "@/utils/Elf";
+import { explorerUrlState } from "@/state/selector";
+import PaperLayout from '@/components/common/paperLayout';
+import CopyToClipboard from '@/components/common/copyToClipboard';
+import AddressVerification from '@/components/transactions/components/AddressVerification';
+import Details from '@/components/common/details';
+import useSnackbar from '@/utils/snackbar';
+import {HD_DERIVATION_PATH, ERROR_CODE} from "@/constants";;
 import styles from './style.module.css';
 
 interface OverviewProps {

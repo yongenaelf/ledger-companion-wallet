@@ -1,8 +1,8 @@
 import { Flex, Layout } from 'antd';
 import Transport from "@ledgerhq/hw-transport";
-import Header from '../../common/header';
-import Footer from '../../common/footer';
-import ConnectDevice from "../../connectDevice";
+import Header from '@/components/common/header';
+import Footer from '@/components/common/footer';
+import ConnectDevice from "@/components/connectDevice";
 import styles from "./style.module.css";
 
 interface HomePageProps {

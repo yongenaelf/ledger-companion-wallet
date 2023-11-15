@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Tooltip, Flex } from "antd";
-import useSnackbar from '../../../utils/snackbar';
-import copyImage from '../../../assets/icon/copy.svg';
+import useSnackbar from '@/utils/snackbar';
+import copyImage from '@/assets/icon/copy.svg';
 import styles from "./style.module.css";
 
 interface CopyToClipboardProps {

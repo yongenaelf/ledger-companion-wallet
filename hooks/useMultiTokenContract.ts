@@ -1,5 +1,5 @@
 import AElf from "aelf-sdk";
-import { useAElf } from "./useAElf";
+import { useAElf } from "@/hooks/useAElf";
 import useSWR from "swr";
 
 const viewWallet = AElf.wallet.createNewWallet();

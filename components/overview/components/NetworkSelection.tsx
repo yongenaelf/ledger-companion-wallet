@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import { Select, Space } from "antd";
 import { useRecoilState } from "recoil";
-import globeImage from '../../../assets/icon/globe.svg';
+import globeImage from '@/assets/icon/globe.svg';
 import {
   ChainStateEnum,
   NetworkStateEnum,
   chainState,
   networkState,
-} from "../../../state";
+} from "@/state";
 import {NETWORK_OPTIONS, MAINNET_SIDECHAIN_OPTIONS, TESTNET_SIDECHAIN_OPTIONS} from '../constants';
 import styles from '../style.module.css';
 

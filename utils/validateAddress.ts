@@ -1,8 +1,8 @@
 import bs58 from "bs58";
 import AElf from "aelf-sdk";
-import {ChainStateEnum, NetworkStateEnum} from "../state";
-import {replaceAll} from "../utils/utils";
-import {ERROR_CODE} from "../utils/constants";
+import {ChainStateEnum, NetworkStateEnum} from "@/state";
+import {replaceAll} from "@/utils";
+import {ERROR_CODE} from "@/constants";
 
 const { decodeAddressRep } = AElf.utils;
 

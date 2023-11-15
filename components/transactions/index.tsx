@@ -2,14 +2,14 @@ import { Dispatch, SetStateAction } from "react";
 import { Component } from "react";
 import { Row, Col } from "antd";
 import Transport from "@ledgerhq/hw-transport";
-import AppAelf from "../../utils/Elf";
-import Overview from "../overview";
+import AppAelf from "@/utils/Elf";
+import Overview from "@/components/overview";
+import Loader from '@/components/common/loader';
+import Card from '@/components/common/card';
+import ErrorPage from '@/pages/errorPage';
+import {HD_DERIVATION_PATH, ERROR_CODE} from "@/constants";;
 import SendTransaction from "./components/SendTransaction";
 import AllTransactions from "./components/AllTransactions";
-import Loader from '../common/loader';
-import ErrorPage from '../pages/errorPage';
-import {HD_DERIVATION_PATH, ERROR_CODE} from '../../utils/constants';
-import Card from '../common/card';
 
 const delay = (ms: number) => new Promise((success) => setTimeout(success, ms));
 

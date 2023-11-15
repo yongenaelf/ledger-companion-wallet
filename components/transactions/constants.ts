@@ -1,5 +1,5 @@
 
-import {ChainStateEnum} from "../../state";
+import {ChainStateEnum} from "@/state";
 
 export const CHAIN_OPTIONS: Record<ChainStateEnum, string> = {
   [ChainStateEnum.AELF]: 'MainChain '.concat(ChainStateEnum.AELF),

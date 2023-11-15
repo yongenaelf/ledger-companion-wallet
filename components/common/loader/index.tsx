@@ -10,7 +10,7 @@ const Loader = ({
 
   return (
     <div className={styles.loaderContainer}>
-      <div className={styles.spinner}></div>
+      <div className='spinner'></div>
       <div className={styles.loadingInfo}>{message || 'Loading...'}</div>
     </div>
   );

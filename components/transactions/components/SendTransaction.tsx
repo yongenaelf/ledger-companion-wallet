@@ -4,24 +4,24 @@ import { InfoCircleOutlined, CloseCircleFilled } from "@ant-design/icons";
 import Transport from "@ledgerhq/hw-transport";
 import { Input, InputNumber, Button, Modal, Result, Form, Row, Col, Tooltip } from "antd";
 import BigNumber from "bignumber.js";
-import AppAelf from "../../../utils/Elf";
-import { transfer } from "../../../utils/transaction";
-import { useMultiTokenContract } from "../../../hooks/useMultiTokenContract";
-import { useAElf } from "../../../hooks/useAElf";
-import { validateAddress } from "../../../utils/validateAddress";
-import useSnackbar from '../../../utils/snackbar';
-import TransferVerification from './TransferVerification';
-import SubmitButton from "./SubmitButton";
+import AppAelf from "@/utils/Elf";
+import { transfer } from "@/utils/transaction";
+import { useMultiTokenContract } from "@/hooks/useMultiTokenContract";
+import { useAElf } from "@/hooks/useAElf";
+import { validateAddress } from "@/utils/validateAddress";
+import useSnackbar from '@/utils/snackbar';
 import {
   addressState,
   unconfirmedTransactionsState,
   networkState,
   chainState,
-} from "../../../state";
-import { explorerUrlState, rpcUrlState } from "../../../state/selector";
-import { useBalance } from "../../../hooks/useBalance";
-import PaperLayout from '../../common/paperLayout';
-import {HD_DERIVATION_PATH} from '../../../utils/constants';
+} from "@/state";
+import { explorerUrlState, rpcUrlState } from "@/state/selector";
+import { useBalance } from "@/hooks/useBalance";
+import PaperLayout from '@/components/common/paperLayout';
+import {HD_DERIVATION_PATH} from "@/constants";
+import TransferVerification from './TransferVerification';
+import SubmitButton from "./SubmitButton";
 import styles from "../style.module.css";
 
 interface SendTransactionProps {

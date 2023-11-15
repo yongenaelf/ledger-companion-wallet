@@ -2,12 +2,12 @@ import { Button, Modal, Typography, Flex } from "antd";
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import BigNumber from "bignumber.js";
-import FormField from '../../common/formField';
-import { transfer } from "../../../utils/transaction";
-import { useAElf } from "../../../hooks/useAElf";
-import { chainState, addressState } from "../../../state";
-import { fetchMainAddress, getFormattedAddress } from "../../../utils/utils";
-import { rpcUrlState } from "../../../state/selector";
+import FormField from '@/components/common/formField';
+import { transfer } from "@/utils/transaction";
+import { useAElf } from "@/hooks/useAElf";
+import { chainState, addressState } from "@/state";
+import { fetchMainAddress, getFormattedAddress } from "../utils";
+import { rpcUrlState } from "@/state/selector";
 import styles from '../style.module.css';
 
 interface TransferFormData {
@@ -112,5 +112,3 @@ const TransferVerification = ({
 };
 
 export default TransferVerification;
-
-//{!getFormattedAddress(data.to, chain).endsWith(chain) && <Typography.Text type="secondary" style={styles.modalInfo}>You are about to transfer from {CHAIN_OPTIONS[chain]} to {getChainFromAddress(getFormattedAddress(data.to, chain))}. Double-check to ensure it is correct!</Typography.Text>}

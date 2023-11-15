@@ -1,5 +1,18 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/constants": ["utils/constants.ts"],
+      "@/state/*": ["state/*"],
+      "@/state": ["state"],
+      "@/utils/*": ["utils/*"],
+      "@/utils": ["utils"],
+      "@/hooks/*": ["hooks/*"],
+      "@/context/*": ["context/*"],
+      "@/components/*": ["components/*"],
+      "@/pages/*": ["components/pages/*"],
+      "@/assets/*": ["assets/*"],
+    },
     "lib": [
       "dom",
       "dom.iterable",

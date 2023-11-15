@@ -3,10 +3,10 @@ import {useState} from 'react';
 import { Layout } from 'antd';
 import { useRecoilState, useRecoilValue } from "recoil";
 import Transport from "@ledgerhq/hw-transport";
-import Header from '../../common/header';
-import Footer from '../../common/footer';
-import { addressState, chainState } from "../../../state";
-import Transactions from "../../transactions";
+import Header from '@/components/common/header';
+import Footer from '@/components/common/footer';
+import { addressState, chainState } from "@/state";
+import Transactions from "@/components/transactions";
 import styles from "./style.module.css";
 
 interface DashboardPageProps {

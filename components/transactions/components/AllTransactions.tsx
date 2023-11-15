@@ -6,14 +6,14 @@ import { Table, Tooltip, Flex, Space, Tag } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { formatDistanceToNow, parseISO, format } from "date-fns";
-import { endEllipsis, middleEllipsis } from "../../../utils/utils";
+import { endEllipsis, middleEllipsis } from "@/utils";
+import { explorerUrlState } from "@/state/selector";
+import { addressState } from "@/state";
+import PaperLayout from '@/components/common/paperLayout'
+import CopyToClipboard from '@/components/common/copyToClipboard'
+import rightArrowImage from '@/assets/icon/right-arrow.svg';
+import rightArrowSuccessImage from '@/assets/icon/right-arrow-success.svg';
 import { List } from "../../../app/transactions/route";
-import { explorerUrlState } from "../../../state/selector";
-import { addressState } from "../../../state";
-import PaperLayout from '../../common/paperLayout'
-import CopyToClipboard from '../../common/copyToClipboard'
-import rightArrowImage from '../../../assets/icon/right-arrow.svg';
-import rightArrowSuccessImage from '../../../assets/icon/right-arrow-success.svg';
 import styles from "../style.module.css";
 
 const AllTransactions = () => {

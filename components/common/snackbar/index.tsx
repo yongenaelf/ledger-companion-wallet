@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import { message as messagePopper } from "antd";
 import { CloseOutlined } from '@ant-design/icons';
-import {SnackbarContextType, SnackbarType} from '../../../context/snackbarContext';
+import {SnackbarContextType, SnackbarType} from '@/context/snackbarContext';
 import styles from "./style.module.css";
 
 export type SnackbarProps = SnackbarContextType;

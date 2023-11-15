@@ -3,11 +3,11 @@ import { useState, useEffect } from "react";
 import { RecoilRoot } from "recoil";
 import { ConfigProvider } from "antd";
 import Transport from "@ledgerhq/hw-transport";
-import Loader from './common/loader';
-import Snackbar from './common/snackbar';
-import HomePage from './pages/homePage';
-import DashboardPage from './pages/dashboardPage';
-import {SnackbarContext, SnackbarContextType, SnackbarType} from '../context/snackbarContext';
+import Loader from '@/components/common/loader';
+import Snackbar from '@/components/common/snackbar';
+import HomePage from '@/components/pages/homePage';
+import DashboardPage from '@/pages/dashboardPage';
+import {SnackbarContext, SnackbarContextType, SnackbarType} from '@/context/snackbarContext';
 import './App.css';
 
 function App() {
@@ -20,7 +20,6 @@ function App() {
   const value = { snackbar, setSnackbar };
 
   const onSelectDevice = (transport: Transport) => {
-    console.log("transport transport: ", transport);
     // @ts-ignore
     window.ledgerTransport = transport;
     transport.on("disconnect", async () => {
