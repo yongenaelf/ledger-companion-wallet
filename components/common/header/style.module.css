@@ -26,3 +26,15 @@
   margin-left: 12px;
   margin-top: 4px;
 }
+
+.mainnetworkHeader {
+  background: #1d2a51 !important;
+}
+
+.mainnetworkHeaderTitle {
+  color: #fff;
+}
+
+.testnetworkHeader {
+  background: #fff !important;
+}

@@ -21,9 +21,9 @@ const DashboardPage = ({
   const chain = useRecoilValue(chainState);
   const {Content} = Layout;
   return (
-    <Layout className="layout-container">
+    <Layout className={styles.layoutContainer}>
       {!isDeviceLocked && <Header showNetwork={Boolean(transport)} externalClasses={{container: styles.stickyHeader}}/>}
-      <Content className={clsx('layout-content', isDeviceLocked && 'p0')}>
+      <Content className={clsx(styles.layoutContent, isDeviceLocked && styles.p0)}>
         <Transactions
           transport={transport}
           chain={chain}

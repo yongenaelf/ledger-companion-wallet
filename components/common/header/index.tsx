@@ -22,12 +22,12 @@ const Header = ({
   const network = useRecoilValue(networkState);
 
   return (
-    <div className={clsx(styles.headerContainer, externalClasses.container, network == NetworkStateEnum.testnet ? 'testnetwork-header' : 'mainnetwork-header')}>
-      <Layout.Header className={clsx(styles.header, externalClasses.header, network == NetworkStateEnum.testnet ? 'testnetwork-header' : 'mainnetwork-header')}>
+    <div className={clsx(styles.headerContainer, externalClasses.container, network == NetworkStateEnum.testnet ? styles.testnetworkHeader : styles.mainnetworkHeader)}>
+      <Layout.Header className={clsx(styles.header, externalClasses.header, network == NetworkStateEnum.testnet ? styles.testnetworkHeader : styles.mainnetworkHeader)}>
         <Row className={styles.headerLayout} align="middle">
           <Col span={12} className={styles.verticalCenter}>
             <Image src={network == NetworkStateEnum.testnet ? logoTestnetImage : logoMainnetImage} alt="Aelf logo" height={36}/>
-            <Typography.Text className={[styles.title, 'header-title'].join(' ').trim()}>Ledger Wallet</Typography.Text>
+            <Typography.Text className={clsx(styles.title, network == NetworkStateEnum.mainnet && styles.mainnetworkHeaderTitle)}>Ledger Wallet</Typography.Text>
           </Col>
           {showNetwork && <Col span={12}>
             <NetworkSelection />

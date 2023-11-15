@@ -15,41 +15,10 @@ a {
   color: #3eabfd;
 }
 
-.layout-container {
-  min-height: 100vh;
-  width: 100%;
-}
-
-.layout-content {
-  padding: 20px 20px 0;
-}
-
-.layout-content-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .container {
   width: 1360px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.p0 {
-  padding: 0;
-}
-
-.mainnetwork-header {
-  background: #1d2a51 !important;
-}
-
-.mainnetwork-header .header-title {
-  color: #fff;
-}
-
-.testnetwork-header {
-  background: #fff !important;
 }
 
 @keyframes spinner-loader {
