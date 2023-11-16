@@ -1,6 +1,6 @@
 import bs58 from "bs58";
 import AElf from "aelf-sdk";
-import {ChainStateEnum} from "@/state";
+import {ChainStateEnum} from "../state";
 
 const { decodeAddressRep } = AElf.utils;
 
