@@ -1,24 +1,135 @@
-html, body {
-    height: 100%;
-}
+html,
 body {
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
+  height: 100%;
 }
-.layout-container {
-    min-height: 100vh;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  color: #1a1a1a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
-.layout-content {
-    padding: 20px 20px 0 20px;
+
+a {
+  color: #3eabfd;
 }
-.layout-content-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.container {
+  width: 1360px;
+  margin-left: auto;
+  margin-right: auto;
 }
+
 @keyframes spinner-loader {
-    to {
-       transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
+
+.spinner {
+  width: 11.2px;
+  height: 11.2px;
+  border-radius: 11.2px;
+  box-shadow: 28px 0 0 0 #3263bd33, 22.7px 16.5px 0 0 #3263bd66, 8.68px 26.6px 0 0 #3263bd99, -8.68px 26.6px 0 0 #3263bdcc, -22.7px 16.5px 0 0 #3263bd;
+  animation: spinner-loader 1s infinite linear;
+}
+
+/* Style override for select field ant design - starts */
+.ant-select .ant-select-selector {
+  color: #0275f5;
+  border-color: #0275f5 !important;
+  border-radius: 6px;
+}
+
+.ant-select-arrow svg path {
+  fill: #266cd3;
+}
+
+.hidden-selected-value .ant-select-selector,
+.hidden-selected-value .ant-select-arrow svg path {
+  color: #fff;
+  fill: #fff;
+}
+
+.select-field-icon-wrapper .ant-select-selector {
+  background: transparent !important;
+}
+
+.select-field-icon-wrapper .ant-select-selection-search,
+.select-field-icon-wrapper .ant-select-selection-item,
+.select-field-icon-wrapper .ant-select-arrow {
+  opacity: 0;
+}
+
+/* Style override for select field ant design - ends */
+
+/* Style override for input number field ant design - starts */
+.ant-input-number-input-wrap {
+  margin-top: 4px;
+}
+
+/* Style override for input number field ant design - ends */
+
+/* Style override for table ant design - starts */
+.ant-table-thead .ant-table-cell {
+  font-size: 14px;
+  font-weight: 500 !important;
+  background: none !important;
+}
+
+.ant-table-thead .ant-table-cell::before {
+  display: none;
+}
+
+.ant-table-tbody .ant-table-cell {
+  font-size: 14px;
+  font-weight: 300 !important;
+}
+
+/* Style override for table ant design - ends */
+
+/* Style override for links ant design - starts */
+.ant-btn-link {
+  color: #3eabfd;
+}
+
+.ant-btn-primary,
+.ant-btn-default {
+  font-weight: 500;
+  padding: 4px 12px;
+  font-size: 14px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Style override for links ant design - ends */
+
+/* Style override for message ant design - starts */
+.ant-message-notice-content {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+.ant-message-custom-content {
+  display: flex;
+}
+
+.ant-message-notice-error .ant-message-notice-content {
+  color: #fff;
+  background: #ff4d4f !important;
+  font-weight: 400;
+  display: flex;
+}
+
+.ant-message-notice-success .ant-message-notice-content {
+  color: #1a1a1a;
+  background: #fff !important;
+  font-weight: 400;
+}
+
+.ant-message-notice-content .anticon-close-circle {
+  display: none;
+}
+
+/* Style override for message ant design - ends */

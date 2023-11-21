@@ -23,8 +23,6 @@ import { Logger } from "./Logger";
 
 export const ellipticEc = new elliptic.ec("secp256k1");
 
-export * from "./middleEllipsis";
-
 /**
  * AElf API
  *
@@ -108,6 +106,7 @@ export default class Elf {
     rawTxHex: string
   ): Promise<{
     signature: string;
+    errorCode: string;
   }> {
     const paths = pathStringToArray(path);
     const pathBuffer = Buffer.alloc(1 + paths.length * 4);
@@ -135,9 +134,11 @@ export default class Elf {
       const res = response.toString("hex");
 
       const signature = res.slice(0, -4);
+      const errorCode = res.slice(-4);
 
       return {
         signature,
+        errorCode,
       };
     });
   }

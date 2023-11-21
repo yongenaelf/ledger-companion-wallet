@@ -1,0 +1,28 @@
+.layoutContainer {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.contentContainer {
+  background: #fff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.headerContainer {
+  width: 425px;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.rightContainer {
+  flex: 1;
+  background-image: url("../../../assets/icon/connect-bg.svg");
+  z-index: 1;
+}
+
+.stickyHeader {
+  display: flex;
+  justify-content: center;
+}

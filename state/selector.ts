@@ -1,5 +1,5 @@
 import { selector } from "recoil";
-import { chainState, networkState } from ".";
+import { chainState, networkState } from "@/state";
 
 // https://recoiljs.org/docs/introduction/getting-started#selector
 export const explorerUrlState = selector({

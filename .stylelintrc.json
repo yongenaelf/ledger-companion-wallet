@@ -1,0 +1,20 @@
+{
+    "extends": [
+      "stylelint-config-standard"
+    ],
+    "plugins": [
+    ],
+    "rules": {
+        "indentation": 2,
+        "selector-list-comma-newline-after": "always",
+        "color-hex-case": "lower",
+        "value-list-comma-space-after": "always",
+        "declaration-block-trailing-semicolon": "always",
+        "string-quotes": "double",
+        "max-line-length": null,
+        "selector-descendant-combinator-no-non-space": true,
+        "no-missing-end-of-source-newline": null,
+        "selector-class-pattern": "^([a-z][a-zA-Z0-9]*|[a-z]+(-[a-z]+)*)$"
+    }
+}
+  

@@ -1,18 +1,17 @@
-import useStyles from "./style";
+import styles from "./style.module.css";
 
 interface LoaderProps {
   message?: string;
 }
 
-function Loader({
+const Loader = ({
   message
-}: LoaderProps) {
-  const classes = useStyles;
+}: LoaderProps) => {
 
   return (
-    <div style={classes.loaderContainer}>
-      <div style={classes.spinner}></div>
-      <div style={classes.loadingInfo}>{message || 'Loading...'}</div>
+    <div className={styles.loaderContainer}>
+      <div className='spinner'></div>
+      <div className={styles.loadingInfo}>{message || 'Loading...'}</div>
     </div>
   );
 }

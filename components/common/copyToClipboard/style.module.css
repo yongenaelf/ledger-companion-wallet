@@ -1,0 +1,8 @@
+.copyTag {
+  cursor: pointer;
+  margin-bottom: -2px;
+}
+
+.inline {
+  display: inline-flex;
+}

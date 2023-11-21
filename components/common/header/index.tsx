@@ -1,16 +1,40 @@
+import clsx from 'clsx';
 import Image from 'next/image';
-import { Layout, Typography } from "antd";
-import logoImage from '../../../assets/icon/logo.png';
-import useStyles from "./style";
+import { useRecoilValue } from "recoil";
+import { Layout, Typography, Col, Row } from "antd";
+import {
+  NetworkStateEnum,
+  networkState,
+} from "@/state";
+import NetworkSelection from "@/components/overview/components/NetworkSelection";
+import logoTestnetImage from '@/assets/icon/logo-testnet.svg';
+import logoMainnetImage from '@/assets/icon/logo-mainnet.svg';
+import styles from "./style.module.css";
 
-function Header() {
-  const classes = useStyles;
+interface HeaderProps {
+  showNetwork?: boolean;
+  externalClasses?: Partial<{container: string, header: string}>;
+}
+const Header = ({
+  showNetwork,
+  externalClasses,
+}: HeaderProps) => {
+  const network = useRecoilValue(networkState);
 
   return (
-    <Layout.Header style={classes.header}>
-      <Image src={logoImage} alt="Aelf logo" width={30} />
-      <Typography.Text style={classes.title}>Ledger + Companion Wallet</Typography.Text>
-    </Layout.Header>
+    <div className={clsx(styles.headerContainer, externalClasses.container, network == NetworkStateEnum.testnet ? styles.testnetworkHeader : styles.mainnetworkHeader)}>
+      <Layout.Header className={clsx(styles.header, externalClasses.header, network == NetworkStateEnum.testnet ? styles.testnetworkHeader : styles.mainnetworkHeader)}>
+        <Row className={styles.headerLayout} align="middle">
+          <Col span={12} className={styles.verticalCenter}>
+            <Image src={network == NetworkStateEnum.testnet ? logoTestnetImage : logoMainnetImage} alt="Aelf logo" height={36}/>
+            <Typography.Text className={clsx(styles.title, network == NetworkStateEnum.mainnet && styles.mainnetworkHeaderTitle)}>Ledger Wallet</Typography.Text>
+          </Col>
+          {showNetwork && <Col span={12}>
+            <NetworkSelection />
+          </Col>}
+        </Row>
+      </Layout.Header>
+    </div>
   );
 }
 

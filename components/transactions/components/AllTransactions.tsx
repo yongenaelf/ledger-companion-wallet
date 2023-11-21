@@ -1,26 +1,31 @@
+import Image from 'next/image';
 import { useState } from "react";
 import useSWR from "swr";
 import { useRecoilValue } from "recoil";
-import { Button, Table, Row, Col, Typography, Descriptions } from "antd";
+import { Table, Tooltip, Flex, Space, Tag } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { formatDistanceToNow, parseISO, format } from "date-fns";
-import { middleEllipsis } from "../../../utils/middleEllipsis";
+import { endEllipsis, middleEllipsis } from "@/utils";
+import { explorerUrlState } from "@/state/selector";
+import { addressState } from "@/state";
+import PaperLayout from '@/components/common/paperLayout'
+import CopyToClipboard from '@/components/common/copyToClipboard'
+import rightArrowImage from '@/assets/icon/right-arrow.svg';
+import rightArrowSuccessImage from '@/assets/icon/right-arrow-success.svg';
 import { List } from "../../../app/transactions/route";
-import { explorerUrlState } from "../../../state/selector";
-import { addressState } from "../../../state";
-import useStyles from "../style";
+import styles from "../style.module.css";
 
 const AllTransactions = () => {
-  const classes = useStyles;
   const address = useRecoilValue(addressState);
   const explorerUrl = useRecoilValue(explorerUrlState);
+  
   const [pagination, setPagination] = useState<TablePaginationConfig>({
     pageSize: 10,
     current: 1,
   });
   const [showDate, setShowDate] = useState(false);
-  const { data, isValidating, mutate } = useSWR(
+  const { data, isValidating } = useSWR(
     [explorerUrl, address, pagination, "all-tx"],
     async ([explorerUrl, address, pagination]) => {
       const res = await fetch(
@@ -45,89 +50,102 @@ const AllTransactions = () => {
       key: "txId",
       render: (text) => (
         <a href={`${explorerUrl}/tx/${text}`} target="_blank">
-          {middleEllipsis(text)}
+          {endEllipsis(text)}
         </a>
       ),
+      width: 190
     },
     {
       title: "Method",
-      dataIndex: "method",
-      key: "method",
+      dataIndex: "action",
+      key: "action",
+      render: (text) => (
+        <Tag className={styles.blockTag}>{text}</Tag>
+      ),
+      width: 190
     },
     {
       title: () => (
         <span onClick={() => setShowDate((show) => !show)}>
-          {showDate ? "Date Time" : "Age"} <SwapOutlined />
+          {showDate ? "Date Time" : "Age"}  <SwapOutlined className={styles.pointer}/>
         </span>
       ),
       dataIndex: "time",
       key: "time",
-      render: (timestamp) => (
-        <span>
-          {showDate
-            ? format(parseISO(timestamp), "yyyy-LL-dd kk:mm:ss")
-            : formatDistanceToNow(parseISO(timestamp), {
-                addSuffix: true,
-              })}
-        </span>
-      ),
+      render: (timestamp) => {
+        try {
+          return (
+            <span>
+              {showDate
+                ? format(parseISO(timestamp), "yyyy-LL-dd kk:mm:ss")
+                : formatDistanceToNow(parseISO(timestamp), {
+                  addSuffix: true,
+                })}
+            </span>
+          );
+        } catch (err) {
+          return "";
+        }
+      },
     },
     {
       title: "From",
-      dataIndex: "addressFrom",
-      key: "addressFrom",
+      dataIndex: "from",
+      key: "from",
       render: (text, record) => (
-        <span>
-          {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
-        </span>
+        <Flex flex={1}>
+          <Flex flex={1}>
+            <Space align='center'>
+              <Tooltip color='#014795' title={`${record.symbol}_${text}_${record.relatedChainId}`}>
+                <a href={`${explorerUrl}/address/${record.symbol}_${text}_${record.relatedChainId}`} target="_blank">
+                  {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
+                </a>
+              </Tooltip>
+              <CopyToClipboard message={`${record.symbol}_${text}_${record.relatedChainId}`}/>
+            </Space>
+          </Flex>
+          <Flex flex={1} justify='center'><Image src={rightArrowSuccessImage} alt="Copy to the clipboard"/></Flex>
+        </Flex>
       ),
     },
     {
       title: "Sent to",
-      dataIndex: "addressTo",
-      key: "addressTo",
+      dataIndex: "to",
+      key: "to",
       render: (text, record) => (
-        <span>
-          {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
-        </span>
+        <Space align='center'><Tooltip color='#014795' title={`${record.symbol}_${text}_${record.relatedChainId}`}>
+          <a href={`${explorerUrl}/address/${record.symbol}_${text}_${record.relatedChainId}`} target="_blank">
+            {middleEllipsis(`${record.symbol}_${text}_${record.relatedChainId}`)}
+          </a>
+        </Tooltip>
+        <CopyToClipboard message={`${record.symbol}_${text}_${record.relatedChainId}`}/>
+        </Space>
       ),
     },
     {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      align: 'right'
     },
   ];
 
   return (
-    <>
-      <Row align='middle' style={{margin: '24px 0 8px 0'}}>
-        <Col span={12}>
-          <Typography.Text style={classes.title}>All Transactions</Typography.Text>
-        </Col>
-        <Col span={12} style={{textAlign: 'right'}}>
-          <Button
-            onClick={() => {
-              setPagination((pagination) => ({ ...pagination, current: 1 }));
-              mutate();
-            }}
-          >
-            Refresh
-          </Button>
-        </Col>
-      </Row>
+    <PaperLayout title="All Transactions" externalClasses={styles.paperlayoutContainer}>
       <Table
         columns={columns}
-        dataSource={data?.list}
+        dataSource={data?.list.slice(0, 8)}
         rowKey={(record) => record.txId}
-        pagination={pagination}
+        pagination={false}
         loading={isValidating}
         onChange={(pagination) => setPagination(pagination)}
         size="middle"
-        bordered
       />
-    </>
+      <Flex justify='center' align='center' className={styles.btnContainer}>
+        <a className={styles.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank">
+          View all transactions on AELF Explorer
+        </a>&nbsp;<Image src={rightArrowImage} alt="Copy to the clipboard"/>
+      </Flex>
+    </PaperLayout>
   );
 };
 

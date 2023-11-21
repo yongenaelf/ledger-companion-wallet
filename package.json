@@ -2,14 +2,20 @@
   "name": "ledger-companion-wallet",
   "version": "0.1.0",
   "private": true,
+  "pre-commit": [
+    "lint",
+    "lint:styles"
+  ],
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@ledgerhq/hw-app-eth": "^6.34.2",
     "@ledgerhq/hw-transport-webusb": "^6.27.18",
     "aelf-sdk": "^3.2.44",
-    "antd": "^5.9.3",
+    "antd": "^5.10.1",
     "bip32-path": "^0.4.2",
+    "bs58": "^5.0.0",
     "buffer": "^6.0.3",
+    "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
     "next": "latest",
     "protobufjs": "^7.2.5",
@@ -29,23 +35,34 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "pbjs -t static-module -w commonjs -o ./utils/compiled.js ./utils/message.proto"
+    "lint:code:fix": "npx eslint --fix",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "generate": "pbjs -t static-module -w commonjs -o ./utils/compiled.js ./utils/message.proto",
+    "lint:styles": "stylelint '**/*.{css,scss}'"
   },
   "devDependencies": {
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@vitest/coverage-istanbul": "^0.34.6",
     "crypto-browserify": "^3.12.0",
-    "eslint": "latest",
+    "eslint": "^8.53.0",
     "eslint-config-next": "latest",
+    "eslint-plugin-import": "^2.29.0",
     "https-browserify": "^1.0.0",
     "parcel": "^2.9.3",
     "path-browserify": "^1.0.1",
+    "pre-commit": "^1.2.2",
     "process": "^0.11.10",
     "punycode": "^1.4.1",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "stylelint": "^15.11.0",
+    "stylelint-config-standard": "^34.0.0",
+    "stylelint-webpack-plugin": "^4.1.1",
     "typescript": "latest",
-    "url": "^0.11.1"
+    "url": "^0.11.1",
+    "vitest": "^0.34.6"
   }
 }
