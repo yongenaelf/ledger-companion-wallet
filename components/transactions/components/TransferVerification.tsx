@@ -7,6 +7,7 @@ import { transfer } from "@/utils/transaction";
 import { useAElf } from "@/hooks/useAElf";
 import { chainState, addressState } from "@/state";
 import { rpcUrlState } from "@/state/selector";
+import { isEmptyObject } from "@/utils";
 import { fetchMainAddress, getFormattedAddress } from "../utils";
 import styles from '../style.module.css';
 
@@ -36,7 +37,7 @@ const TransferVerification = ({
   const rpcUrl = useRecoilValue(rpcUrlState);
   const [isInsufficient, setInsufficient] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const [fees, setFees] = useState<number>(0);
+  const [fees, setFees] = useState<string>('-');
   const chain = useRecoilValue(chainState);
   const aelfInstance = useAElf();
   const amount = new BigNumber(data.amount.replaceAll(",", ""));
@@ -46,7 +47,6 @@ const TransferVerification = ({
     try {
       if (!tokenContract) throw new Error("no contract");
       const { tokenContractAddress } = tokenContract;
-
       const rawTx = await transfer(
         address,
         fetchMainAddress(to),
@@ -69,8 +69,12 @@ const TransferVerification = ({
       );
       const {Success, TransactionFee } = await feeResponse.json();
       if (Success) {
-        const calculatedFees = Number(new BigNumber(TransactionFee.ELF).dividedBy(10 ** 8).toNumber());
-        setFees(calculatedFees);
+        if (isEmptyObject(TransactionFee)) {
+          setFees('-');
+        } else {
+          const calculatedFees = Number(new BigNumber(TransactionFee.ELF).dividedBy(10 ** 8).toNumber());
+          setFees(`${calculatedFees} ELF`);
+        }
         setInsufficient(false);
         setError('');
       } else {
@@ -105,7 +109,7 @@ const TransferVerification = ({
       <FormField label="To">{getFormattedAddress(data.to, chain)}</FormField>
       <FormField label="Amount">{amount.toNumber().toFixed(amount.dp()).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} ELF</FormField>
       <FormField label="Memo">{data.memo}</FormField>
-      {!isInsufficient && <FormField label="Transaction Fee">{fees} ELF</FormField>}
+      {!isInsufficient && <FormField label="Transaction Fee">{fees}</FormField>}
     </Modal>
   );
 };
