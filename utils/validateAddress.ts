@@ -22,6 +22,9 @@ export const validateAddress = (
   try {
     bs58.decode(mid);
     decodeAddressRep(mid);
+    if (!/^[a-zA-Z0-9]+$/.test(mid)) {
+      throw new Error("Oops! Please input a valid AELF network address!");
+    }
   } catch (err) {
     throw new Error("Oops! Please input a valid AELF network address!");
   }

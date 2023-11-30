@@ -140,11 +140,11 @@ const AllTransactions = () => {
         onChange={(pagination) => setPagination(pagination)}
         size="middle"
       />
-      <Flex justify='center' align='center' className={styles.btnContainer}>
-        <a className={styles.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank">
+      {data?.list.length > 8 && <Flex justify='center' align='center' className={styles.btnContainer}>
+        <a className={styles.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#tokentxns`} target="_blank">
           View all transactions on AELF Explorer
         </a>&nbsp;<Image src={rightArrowImage} alt="Copy to the clipboard"/>
-      </Flex>
+      </Flex>}
     </PaperLayout>
   );
 };
