@@ -10,6 +10,7 @@ import CopyToClipboard from '@/components/common/copyToClipboard';
 import AddressVerification from '@/components/transactions/components/AddressVerification';
 import Details from '@/components/common/details';
 import useSnackbar from '@/utils/snackbar';
+import {formatNumber} from '@/utils';
 import {HD_DERIVATION_PATH, ERROR_CODE} from "@/constants";;
 import styles from './style.module.css';
 
@@ -68,7 +69,7 @@ function Overview({
       title='Account Balance'
       subtitle={<Button type="link" href={`${explorerUrl}/address/ELF_${address}_AELF#txns`} target="_blank" className={styles.btnNoSpacing}>View All Txns</Button>}>
       <Space className={styles.spaceIndent}>
-        <Typography.Text className={styles.balanceValue}>{balance}</Typography.Text>
+        <Typography.Text className={styles.balanceValue}>{formatNumber(balance)}</Typography.Text>
         <Typography.Text className={styles.balanceLabel}>ELF</Typography.Text>
       </Space>
       <div className={styles.accountLayout}>

@@ -153,8 +153,10 @@ function SendTransaction({
       const res2 = await signAndSendTransaction(rawTx);
 
       setTransactionId(res2.TransactionId);
-
       if (res2.TransactionId) {
+        setFormData({to: '', amount: '', memo: ''});
+        form.setFieldsValue({to: '', amount: '', memo: ''});
+        setAmountValue(null);
         setShowSuccessModal(true);
       }
     } catch (err) {
@@ -261,6 +263,14 @@ function SendTransaction({
                   stringMode
                   parser={(value) => value.replace(/[\s$,]/g, "")}
                   onChange={setAmountValue}
+                  onStep={(value, stepObj: any) => {
+                    setAmountValue(value);
+                    form.setFieldsValue({ amount: value });
+                    setFormData({...formData, amount: value});
+                    if (stepObj.type === 'up' || stepObj.type === 'down') {
+                      form.validateFields(['amount']);
+                    }
+                  }}
                 />
                 {amountValue !== null && (
                   <CloseCircleFilled className={styles.clearIcon} onClick={() => {

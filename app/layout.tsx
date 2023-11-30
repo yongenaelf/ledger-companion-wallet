@@ -5,6 +5,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <title>Companion wallet</title>
+      </head>
       <body>{children}</body>
     </html>
   );

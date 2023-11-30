@@ -15,6 +15,7 @@
   flex: 1;
   font-size: 14px;
   font-weight: 400;
+  word-break: break-all;
 }
 
 .noValue {
