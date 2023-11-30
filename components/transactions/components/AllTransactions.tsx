@@ -11,6 +11,7 @@ import { explorerUrlState } from "@/state/selector";
 import { addressState } from "@/state";
 import PaperLayout from '@/components/common/paperLayout'
 import CopyToClipboard from '@/components/common/copyToClipboard'
+import {MIN_TRANSACTIONS_TO_SHOW_EXPLORER_LINK} from '@/utils/constants';
 import rightArrowImage from '@/assets/icon/right-arrow.svg';
 import rightArrowSuccessImage from '@/assets/icon/right-arrow-success.svg';
 import { List } from "../../../app/transactions/route";
@@ -140,7 +141,7 @@ const AllTransactions = () => {
         onChange={(pagination) => setPagination(pagination)}
         size="middle"
       />
-      {data?.list.length > 8 && <Flex justify='center' align='center' className={styles.btnContainer}>
+      {data?.list.length > MIN_TRANSACTIONS_TO_SHOW_EXPLORER_LINK && <Flex justify='center' align='center' className={styles.btnContainer}>
         <a className={styles.btn} href={`${explorerUrl}/address/ELF_${address}_AELF#tokentxns`} target="_blank">
           View all transactions on AELF Explorer
         </a>&nbsp;<Image src={rightArrowImage} alt="Copy to the clipboard"/>
