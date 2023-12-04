@@ -97,6 +97,7 @@ const TransferVerification = ({
       closable
       onCancel={onCancel}
       title='Transaction Summary'
+      maskClosable={false}
       centered
       width={672}
       footer={() => (<Flex flex={1} gap={12}>
