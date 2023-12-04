@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 import { Table, Tooltip, Flex, Space, Tag } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import { formatDistanceToNow, parseISO, format } from "date-fns";
+import { parseISO, format } from "date-fns";
 import { endEllipsis, middleEllipsis } from "@/utils";
 import { explorerUrlState } from "@/state/selector";
 import { addressState } from "@/state";
@@ -15,6 +15,7 @@ import {MIN_TRANSACTIONS_TO_SHOW_EXPLORER_LINK} from '@/utils/constants';
 import {roundNumber} from '@/utils';
 import rightArrowImage from '@/assets/icon/right-arrow.svg';
 import rightArrowSuccessImage from '@/assets/icon/right-arrow-success.svg';
+import { getLastTwoUnits } from '../constants';
 import { List } from "../../../app/transactions/route";
 import styles from "../style.module.css";
 
@@ -80,9 +81,7 @@ const AllTransactions = () => {
             <span>
               {showDate
                 ? format(parseISO(timestamp), "yyyy-LL-dd kk:mm:ss")
-                : formatDistanceToNow(parseISO(timestamp), {
-                  addSuffix: true,
-                })}
+                : getLastTwoUnits(parseISO(timestamp))}
             </span>
           );
         } catch (err) {
