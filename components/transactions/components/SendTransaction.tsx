@@ -213,7 +213,10 @@ function SendTransaction({
                 {
                   // eslint-disable-next-line no-unused-vars
                   async validator(_, value) {
-                    validateAddress(value, chain);
+                    const formattedAddress = validateAddress(value, chain);
+                    if (formattedAddress === address) {
+                      throw new Error("The sender and recipient address are identical");
+                    }
                     return "";
                   },
                 },
