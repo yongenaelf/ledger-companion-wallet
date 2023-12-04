@@ -318,6 +318,7 @@ function SendTransaction({
         onCancel={onClose}
         open={showSuccessModal} 
         centered width={442} 
+        maskClosable={false}
         footer={() => <Button type="primary" onClick={onClose} block>Close</Button>}>
         <Result
           status="success"
@@ -329,6 +330,7 @@ function SendTransaction({
         onCancel={onClose}
         open={showFailureModal} 
         centered width={442} 
+        maskClosable={false}
         footer={() => <Button type="primary" onClick={onClose} block>Close</Button>}>
         <Result
           status="error"
