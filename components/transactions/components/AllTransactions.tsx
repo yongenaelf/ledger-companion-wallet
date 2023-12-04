@@ -12,6 +12,7 @@ import { addressState } from "@/state";
 import PaperLayout from '@/components/common/paperLayout'
 import CopyToClipboard from '@/components/common/copyToClipboard'
 import {MIN_TRANSACTIONS_TO_SHOW_EXPLORER_LINK} from '@/utils/constants';
+import {roundNumber} from '@/utils';
 import rightArrowImage from '@/assets/icon/right-arrow.svg';
 import rightArrowSuccessImage from '@/assets/icon/right-arrow-success.svg';
 import { List } from "../../../app/transactions/route";
@@ -127,6 +128,9 @@ const AllTransactions = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
+      render: (val) => (
+        roundNumber(val)
+      ),
     },
   ];
 

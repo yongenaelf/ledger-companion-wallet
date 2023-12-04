@@ -24,3 +24,9 @@ export const formatNumber = (value: string) => {
 export const isEmptyObject = (obj: object) => {
   return Object.keys(obj).length === 0;
 }
+
+export const roundNumber = (num: string) => {
+  const trimmed = parseFloat(num).toString();
+  const formatted = trimmed.replace(/(\.\d*?[1-9])0+$/g, '$1');
+  return formatted;
+}
