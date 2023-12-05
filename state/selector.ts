@@ -15,7 +15,7 @@ export const explorerUrlState = selector({
     } else {
       if (chain === "AELF") return `https://explorer-test.aelf.io`;
 
-      return `https://explorer-test-side02.aelf.io/`;
+      return `https://explorer-test-side02.aelf.io`;
     }
   },
 });
