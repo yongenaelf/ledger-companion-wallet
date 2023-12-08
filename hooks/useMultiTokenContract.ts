@@ -1,5 +1,6 @@
 import AElf from "aelf-sdk";
 import { useAElf } from "@/hooks/useAElf";
+import { SMART_CONTRACT_ADDRESS_MAINCHAIN } from '@/utils/constants';
 import useSWR from "swr";
 
 const viewWallet = AElf.wallet.createNewWallet();
@@ -8,7 +9,7 @@ export const useMultiTokenContract = () => {
   const aelf = useAElf();
 
   return useSWR([aelf, "multiTokenContract"], async () => {
-    const tokenContractName = "AElf.ContractNames.Token";
+    /* const tokenContractName = "AElf.ContractNames.Token";
     const chainStatus = await aelf.chain.getChainStatus();
     // get genesis contract address
     const GenesisContractAddress = chainStatus.GenesisContractAddress;
@@ -21,7 +22,8 @@ export const useMultiTokenContract = () => {
     const tokenContractAddress =
       await zeroContract.GetContractAddressByName.call(
         AElf.utils.sha256(tokenContractName)
-      );
+      ); */
+    const tokenContractAddress = SMART_CONTRACT_ADDRESS_MAINCHAIN;
     const multiTokenContract = await aelf.chain.contractAt(
       tokenContractAddress,
       viewWallet
