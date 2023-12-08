@@ -17,6 +17,7 @@
     "buffer": "^6.0.3",
     "clsx": "^2.0.0",
     "date-fns": "^2.30.0",
+    "from-exponential": "^1.1.1",
     "next": "latest",
     "protobufjs": "^7.2.5",
     "protobufjs-cli": "^1.1.2",

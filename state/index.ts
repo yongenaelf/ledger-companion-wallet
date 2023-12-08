@@ -13,7 +13,7 @@ export enum NetworkStateEnum {
 }
 export const networkState = atom<NetworkStateEnum>({
   key: "networkState",
-  default: NetworkStateEnum.testnet,
+  default: NetworkStateEnum.mainnet,
 });
 
 export enum ChainStateEnum {

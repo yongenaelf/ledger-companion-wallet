@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useState } from "react";
+import fromExponential from 'from-exponential';
 import useSWR from "swr";
 import { useRecoilValue } from "recoil";
 import { Table, Tooltip, Flex, Space, Tag } from "antd";
@@ -128,7 +129,7 @@ const AllTransactions = () => {
       dataIndex: "amount",
       key: "amount",
       render: (val) => (
-        roundNumber(val)
+        fromExponential(roundNumber(val))
       ),
     },
   ];
